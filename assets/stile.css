@@ -1,0 +1,206 @@
+/* ANIMA GAME — Camera Oscura (standard pubblico, palette di JUDY)
+   Una lampada calda in una stanza buia. Ambra, mai neon.
+   — creato da ECHO, 2026-08-01 */
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg-deep:    #0C0B0E;
+  --bg-surface: #141216;
+  --amber:      #C9A15E;
+  --amber-soft: rgba(201, 161, 94, .10);
+  --text-hi:    #ECE7DF;
+  --text-lo:    #A7A29B;
+  --line:       #3A3730;
+  --font-mono:  'Courier Prime', 'Courier New', 'Lucida Console', monospace;
+  --font-serif: 'Iowan Old Style', 'Palatino Linotype', Palatino, 'Georgia', serif;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg-deep);
+  color: var(--text-hi);
+  font-family: var(--font-serif);
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* vignette camera oscura */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9998;
+  background: radial-gradient(ellipse at 50% 45%, transparent 55%, rgba(0, 0, 0, .55) 100%);
+}
+
+/* grana 16mm (~4%) */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: .04;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ── tipografia di servizio ── */
+.marca {
+  font-family: var(--font-mono);
+  letter-spacing: .35em;
+  font-size: .85rem;
+  color: var(--amber);
+  text-transform: uppercase;
+}
+
+.etichetta {
+  font-family: var(--font-mono);
+  font-size: clamp(.7rem, 1.8vw, .85rem);
+  letter-spacing: .35em;
+  text-transform: uppercase;
+  color: var(--text-lo);
+  display: flex;
+  align-items: center;
+  gap: .9rem;
+}
+.etichetta::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--line), transparent);
+}
+
+/* ── struttura ── */
+.sezione {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 4.5rem 1.5rem;
+}
+.sezione .etichetta { margin-bottom: 2.2rem; }
+
+/* ── card ── */
+.card {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 1.6rem 1.4rem;
+  transition: border-color .3s ease, transform .3s ease;
+}
+.card:hover,
+.card:focus-within {
+  border-color: var(--amber);
+  transform: translateY(-3px);
+}
+.card h3 {
+  font-family: var(--font-mono);
+  font-size: 1.1rem;
+  letter-spacing: .06em;
+  color: var(--text-hi);
+  margin-bottom: .55rem;
+}
+.card p {
+  color: var(--text-lo);
+  font-size: .98rem;
+  line-height: 1.6;
+  margin-bottom: 1.3rem;
+  flex: 1;
+}
+
+/* ── bottoni ── */
+.btn {
+  display: inline-block;
+  align-self: flex-start;
+  font-family: var(--font-mono);
+  font-size: .8rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--text-hi);
+  background: transparent;
+  border: 1px solid var(--amber);
+  border-radius: 6px;
+  padding: .55rem 1.2rem;
+  cursor: pointer;
+  transition: background .25s ease;
+}
+.btn:hover { background: var(--amber-soft); }
+.btn:focus-visible { outline: 2px solid var(--amber); outline-offset: 3px; }
+.btn.presto {
+  color: var(--text-lo);
+  border-color: var(--line);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ── pill di stato ── */
+.pill {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--amber);
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  padding: .45rem 1rem;
+}
+.pill.spenta { color: var(--text-lo); }
+
+/* ── footer costellazione ── */
+.footer {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 2.6rem 1.5rem 3.4rem;
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .9rem;
+  text-align: center;
+}
+.footer-domini {
+  font-family: var(--font-mono);
+  font-size: clamp(.74rem, 2vw, .88rem);
+  letter-spacing: .08em;
+  color: var(--text-lo);
+  display: flex;
+  align-items: center;
+  gap: .8rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.footer-domini a {
+  color: var(--text-lo);
+  text-decoration: none;
+  border-bottom: 1px solid var(--line);
+  transition: color .25s ease, border-color .25s ease;
+}
+.footer-domini a:hover,
+.footer-domini a:focus-visible {
+  color: var(--amber);
+  border-color: var(--amber);
+  outline: none;
+}
+.footer-domini .sep { color: var(--amber); opacity: .8; }
+.footer-nota {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: .92rem;
+  color: var(--text-lo);
+  max-width: 40ch;
+}
+
+@keyframes salita {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; }
+}

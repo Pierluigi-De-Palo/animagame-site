@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ANIMA GAME — un gioco a invito</title>
+<meta name="description" content="ANIMA GAME — il gioco a invito del SYSTEMA 77. Giocatori, schede, cerchi, strumenti veri.">
+<link rel="stylesheet" href="assets/stile.css">
+<style>
+  /* ── HERO ── */
+  .hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 88vh;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    position: relative;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 38%, rgba(201, 161, 94, .10), transparent 60%);
+    pointer-events: none;
+  }
+  .hero-inner { position: relative; animation: salita .9s ease-out both; }
+  .hero .marca { margin-bottom: 1.6rem; }
+  .hero h1 {
+    font-size: clamp(1.8rem, 5.5vw, 3rem);
+    font-weight: 400;
+    letter-spacing: .02em;
+    line-height: 1.3;
+    margin-bottom: 1.2rem;
+  }
+  .hero h1 b { color: var(--amber); font-weight: 400; }
+  .riga { width: 3.5rem; height: 1px; background: var(--line); margin: 1.4rem auto; }
+  .hero .patto {
+    max-width: 34rem;
+    margin: 0 auto;
+    color: var(--text-lo);
+    font-size: clamp(1rem, 2.3vw, 1.15rem);
+    line-height: 1.75;
+  }
+  .hero .patto strong { color: var(--text-hi); font-weight: 600; }
+  .hero .pill { margin-top: 2.2rem; }
+
+  /* ── REGOLE ── */
+  .regole {
+    max-width: 640px;
+    border-left: 2px solid var(--amber);
+    padding-left: 1.4rem;
+  }
+  .regole p {
+    font-size: clamp(1rem, 2.2vw, 1.15rem);
+    line-height: 1.8;
+    color: var(--text-lo);
+  }
+  .regole p + p { margin-top: 1rem; }
+  .regole strong { color: var(--text-hi); font-weight: 600; }
+
+  /* ── STRUMENTI ── */
+  .griglia-strumenti {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
+  }
+  @media (min-width: 720px) {
+    .griglia-strumenti { grid-template-columns: 1fr 1fr; }
+  }
+  .stato-riga {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .8rem;
+    margin-bottom: .55rem;
+  }
+  .stato {
+    font-family: var(--font-mono);
+    font-size: .62rem;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: 1px solid var(--line);
+    border-radius: 2px;
+    padding: .2rem .55rem;
+    white-space: nowrap;
+  }
+  .stato.spento { color: var(--text-lo); border-style: dashed; }
+
+  /* ── GIOCATORI ── */
+  .griglia-giocatori {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1rem;
+  }
+  .slot {
+    background: var(--bg-surface);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 1.1rem 1rem 1.2rem;
+    text-align: center;
+    transition: border-color .3s ease;
+  }
+  .slot:hover { border-color: var(--amber); }
+  .slot .numero {
+    font-family: var(--font-mono);
+    font-size: .68rem;
+    letter-spacing: .25em;
+    color: var(--text-lo);
+    margin-bottom: .5rem;
+  }
+  .slot .nome {
+    font-family: var(--font-mono);
+    font-size: .92rem;
+    letter-spacing: .06em;
+    color: var(--text-hi);
+    line-height: 1.4;
+  }
+  .slot.libero { border-style: dashed; }
+  .slot.libero .nome { color: var(--text-lo); font-style: italic; font-family: var(--font-serif); }
+  .nota-slot {
+    margin-top: 1.6rem;
+    font-size: .95rem;
+    color: var(--text-lo);
+    max-width: 56ch;
+  }
+
+  /* ── PUNTEGGIO ── */
+  .punteggio-box {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    max-width: 640px;
+  }
+  .contatore {
+    font-family: var(--font-mono);
+    font-size: clamp(2.4rem, 8vw, 4rem);
+    color: var(--text-hi);
+    line-height: 1;
+  }
+  .contatore .unita {
+    display: block;
+    font-size: .68rem;
+    letter-spacing: .25em;
+    text-transform: uppercase;
+    color: var(--text-lo);
+    margin-top: .6rem;
+  }
+  .punteggio-box p {
+    color: var(--text-lo);
+    font-size: clamp(1rem, 2.2vw, 1.1rem);
+    line-height: 1.75;
+    max-width: 52ch;
+  }
+  .punteggio-box strong { color: var(--text-hi); }
+</style>
+</head>
+<body>
+
+  <!-- ═══ HERO ═══ -->
+  <!-- copy: bozza ECHO — estetica e voce definitive con JUDY -->
+  <section class="hero">
+    <div class="hero-inner">
+      <p class="marca">&#9673; Anima Game</p>
+      <h1>Si entra per invito.<br>Si resta per <b>gioco</b>.</h1>
+      <div class="riga"></div>
+      <p class="patto">
+        Il gioco del SYSTEMA 77. Niente pubblico da conquistare,
+        niente numeri da inseguire: <strong>giocatori</strong>, <strong>schede</strong>,
+        <strong>cerchi</strong> e strumenti veri. Chi produce e condivide, guadagna punti.
+      </p>
+      <span class="pill">Fase DEV &middot; 10 posti</span>
+    </div>
+  </section>
+
+  <!-- ═══ IL GIOCO ═══ -->
+  <section class="sezione" id="il-gioco">
+    <p class="etichetta">il gioco</p>
+    <div class="regole">
+      <p><strong>A invito.</strong> Non si compra un biglietto e non ci si iscrive:
+         qualcuno del cerchio ti porta dentro. Prima ci si conosce, poi si condividono le risorse.</p>
+      <p><strong>Una scheda, non una vetrina.</strong> Ogni giocatore ha la sua scheda:
+         i dati sono suoi, protetti, e decide lui — campo per campo — cosa mostrare agli altri.</p>
+      <p><strong>Gli strumenti sono il gioco.</strong> Verifiche, meteo, radio:
+         usarli è giocare, e usandoli si allena l&rsquo;anima che c&rsquo;è dietro.</p>
+      <p><strong>Il punteggio si guadagna.</strong> Produci contenuti con gli strumenti,
+         condividili nel cerchio: il contatore fa il resto.</p>
+    </div>
+  </section>
+
+  <!-- ═══ STRUMENTI ═══ -->
+  <!-- In fase DEV braindance e fake checker vivono ancora sulla console (cyberboomer.io):
+       la migrazione su animagame.io si fa con SQUELCH senza rompere contatori e coda.
+       Quando avviene, si aggiornano questi due href e niente altro. -->
+  <section class="sezione" id="strumenti">
+    <p class="etichetta">gli strumenti</p>
+    <div class="griglia-strumenti">
+
+      <article class="card">
+        <div class="stato-riga"><h3>Braindance</h3><span class="stato">attivo</span></div>
+        <p>I verdetti: affermazioni pubbliche verificate, con punteggio.
+           Chiedi una verifica — è un&rsquo;azione di gioco.</p>
+        <a class="btn" href="https://cyberboomer.io/braindance/">Entra</a>
+      </article>
+
+      <article class="card">
+        <div class="stato-riga"><h3>Fake checker</h3><span class="stato">attivo</span></div>
+        <p>Lo strumento rapido: controlla un contenuto sospetto
+           prima di farlo girare.</p>
+        <a class="btn" href="https://cyberboomer.io/fake-checker/">Entra</a>
+      </article>
+
+      <article class="card">
+        <div class="stato-riga"><h3>Meteo</h3><span class="stato spento">in arrivo</span></div>
+        <p>Il meteo del gioco, self-contained.
+           Sta cambiando nome per entrare qui.</p>
+        <a class="btn presto" aria-disabled="true">In arrivo</a>
+      </article>
+
+      <article class="card">
+        <div class="stato-riga"><h3>Radio</h3><span class="stato spento">presto</span></div>
+        <p>Suonerà solo musica nostra, con diritti chiari.
+           Finché non c&rsquo;è, resta spenta: niente rumore.</p>
+        <a class="btn presto" aria-disabled="true">Presto</a>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ═══ GIOCATORI ═══ -->
+  <!-- Regola dura: nessun dato personale in questo repo. Il giocatore 0 appare col
+       numero finché il Direttore non sceglie il suo nome pubblico. I nomi veri
+       vivranno nel backend, mai qui. -->
+  <section class="sezione" id="giocatori">
+    <p class="etichetta">i giocatori</p>
+    <div class="griglia-giocatori">
+      <div class="slot">
+        <div class="numero">00</div>
+        <div class="nome">GIOCATORE&nbsp;0</div>
+      </div>
+      <div class="slot">
+        <div class="numero">01</div>
+        <div class="nome">CYBER&nbsp;BOOMER</div>
+      </div>
+      <div class="slot libero"><div class="numero">02</div><div class="nome">posto libero</div></div>
+      <div class="slot libero"><div class="numero">03</div><div class="nome">posto libero</div></div>
+      <div class="slot libero"><div class="numero">04</div><div class="nome">posto libero</div></div>
+      <div class="slot libero"><div class="numero">05</div><div class="nome">posto libero</div></div>
+      <div class="slot libero"><div class="numero">06</div><div class="nome">posto libero</div></div>
+      <div class="slot libero"><div class="numero">07</div><div class="nome">posto libero</div></div>
+      <div class="slot libero"><div class="numero">08</div><div class="nome">posto libero</div></div>
+      <div class="slot libero"><div class="numero">09</div><div class="nome">posto libero</div></div>
+    </div>
+    <p class="nota-slot">Dieci posti in fase DEV. I posti liberi non si chiedono:
+       arrivano per invito, dal cerchio. Anche gli agenti del systema avranno
+       una scheda, con calma.</p>
+    <p style="margin-top:1.6rem"><a class="btn" href="scheda.html">La tua scheda</a></p>
+  </section>
+
+  <!-- ═══ PUNTEGGIO ═══ -->
+  <section class="sezione" id="punteggio">
+    <p class="etichetta">il punteggio</p>
+    <div class="punteggio-box">
+      <div class="contatore">&mdash;<span class="unita">contenuti prodotti dal systema</span></div>
+      <p>Il contatore è <strong>automatico</strong>: conta i contenuti prodotti con gli
+         strumenti e condivisi dai giocatori. Si accende insieme al backend —
+         quando parte, questo trattino diventa un numero. Niente numeri finti.</p>
+    </div>
+  </section>
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer class="footer">
+    <div class="footer-domini">
+      <a href="https://systema77.com">systema77.com — l&rsquo;agenzia</a>
+      <span class="sep">&middot;</span>
+      <a href="https://anima.solar">anima.solar — il mito</a>
+      <span class="sep">&middot;</span>
+      <span>playanima.io — la porta</span>
+    </div>
+    <p class="footer-nota">Un gioco a invito. Se sei qui, qualcuno ti ha pensato.</p>
+  </footer>
+
+<!-- creato da ECHO, 2026-08-01 -->
+</body>
+</html>
