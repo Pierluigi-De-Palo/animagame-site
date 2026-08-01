@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ANIMA GAME — un gioco a invito</title>
 <meta name="description" content="ANIMA GAME — il gioco a invito del SYSTEMA 77. Giocatori, schede, cerchi, strumenti veri.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=Share+Tech+Mono&display=swap">
 <link rel="stylesheet" href="assets/stile.css">
 <style>
   /* ── HERO ── */
@@ -22,7 +25,7 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: radial-gradient(ellipse at 50% 38%, rgba(201, 161, 94, .10), transparent 60%);
+    background: radial-gradient(ellipse at 50% 38%, rgba(56, 224, 138, .06), transparent 60%);
     pointer-events: none;
   }
   .hero-inner { position: relative; animation: salita .9s ease-out both; }
@@ -34,33 +37,33 @@
     line-height: 1.3;
     margin-bottom: 1.2rem;
   }
-  .hero h1 b { color: var(--amber); font-weight: 400; }
-  .riga { width: 3.5rem; height: 1px; background: var(--line); margin: 1.4rem auto; }
+  .hero h1 b { color: var(--verde); font-weight: 400; }
+  .riga { width: 3.5rem; height: 1px; background: var(--linea); margin: 1.4rem auto; }
   .hero .patto {
     max-width: 34rem;
     margin: 0 auto;
-    color: var(--text-lo);
+    color: var(--muto);
     font-size: clamp(1rem, 2.3vw, 1.15rem);
     line-height: 1.75;
   }
-  .hero .patto strong { color: var(--text-hi); font-weight: 600; }
+  .hero .patto strong { color: var(--carta); font-weight: 600; }
   .hero .pill { margin-top: 2.2rem; }
 
   /* ── REGOLE ── */
   .regole {
     max-width: 640px;
-    border-left: 2px solid var(--amber);
+    border-left: 2px solid var(--verde);
     padding-left: 1.4rem;
   }
   .regole p {
     font-size: clamp(1rem, 2.2vw, 1.15rem);
     line-height: 1.8;
-    color: var(--text-lo);
+    color: var(--muto);
   }
   .regole p + p { margin-top: 1rem; }
-  .regole strong { color: var(--text-hi); font-weight: 600; }
+  .regole strong { color: var(--carta); font-weight: 600; }
 
-  /* ── STRUMENTI ── */
+  /* ── STRUMENTI (le stanze) ── */
   .griglia-strumenti {
     display: grid;
     grid-template-columns: 1fr;
@@ -81,13 +84,13 @@
     font-size: .62rem;
     letter-spacing: .2em;
     text-transform: uppercase;
-    color: var(--amber);
-    border: 1px solid var(--line);
+    color: var(--verde);
+    border: 1px solid var(--linea);
     border-radius: 2px;
     padding: .2rem .55rem;
     white-space: nowrap;
   }
-  .stato.spento { color: var(--text-lo); border-style: dashed; }
+  .stato.spento { color: var(--muto); border-style: dashed; }
 
   /* ── GIOCATORI ── */
   .griglia-giocatori {
@@ -96,34 +99,34 @@
     gap: 1rem;
   }
   .slot {
-    background: var(--bg-surface);
-    border: 1px solid var(--line);
+    background: var(--fondo);
+    border: 1px solid var(--linea);
     border-radius: 10px;
     padding: 1.1rem 1rem 1.2rem;
     text-align: center;
     transition: border-color .3s ease;
   }
-  .slot:hover { border-color: var(--amber); }
+  .slot:hover { border-color: var(--verde); }
   .slot .numero {
     font-family: var(--font-mono);
     font-size: .68rem;
     letter-spacing: .25em;
-    color: var(--text-lo);
+    color: var(--muto);
     margin-bottom: .5rem;
   }
   .slot .nome {
     font-family: var(--font-mono);
     font-size: .92rem;
     letter-spacing: .06em;
-    color: var(--text-hi);
+    color: var(--carta);
     line-height: 1.4;
   }
   .slot.libero { border-style: dashed; }
-  .slot.libero .nome { color: var(--text-lo); font-style: italic; font-family: var(--font-serif); }
+  .slot.libero .nome { color: var(--muto); font-style: italic; font-family: var(--font-serif); }
   .nota-slot {
     margin-top: 1.6rem;
     font-size: .95rem;
-    color: var(--text-lo);
+    color: var(--muto);
     max-width: 56ch;
   }
 
@@ -137,33 +140,34 @@
   .contatore {
     font-family: var(--font-mono);
     font-size: clamp(2.4rem, 8vw, 4rem);
-    color: var(--text-hi);
+    color: var(--verde);
     line-height: 1;
   }
   .contatore .unita {
     display: block;
+    font-family: var(--font-mono);
     font-size: .68rem;
     letter-spacing: .25em;
     text-transform: uppercase;
-    color: var(--text-lo);
+    color: var(--muto);
     margin-top: .6rem;
   }
   .punteggio-box p {
-    color: var(--text-lo);
+    color: var(--muto);
     font-size: clamp(1rem, 2.2vw, 1.1rem);
     line-height: 1.75;
     max-width: 52ch;
   }
-  .punteggio-box strong { color: var(--text-hi); }
+  .punteggio-box strong { color: var(--carta); }
 </style>
 </head>
 <body>
 
   <!-- ═══ HERO ═══ -->
-  <!-- copy: bozza ECHO — estetica e voce definitive con JUDY -->
+  <!-- copy: bozza ECHO su binario JUDY (DA-JUDY→ECHO 01/08) — rifinitura insieme -->
   <section class="hero">
     <div class="hero-inner">
-      <p class="marca">&#9673; Anima Game</p>
+      <p class="marca cursore">&#9673; Anima Game</p>
       <h1>Si entra per invito.<br>Si resta per <b>gioco</b>.</h1>
       <div class="riga"></div>
       <p class="patto">
@@ -180,48 +184,47 @@
     <p class="etichetta">il gioco</p>
     <div class="regole">
       <p><strong>A invito.</strong> Non si compra un biglietto e non ci si iscrive:
-         qualcuno del cerchio ti porta dentro. Prima ci si conosce, poi si condividono le risorse.</p>
+         pochi, chiamati per nome, dentro i cerchi. Prima ci si conosce, poi si condividono le risorse.</p>
       <p><strong>Una scheda, non una vetrina.</strong> Ogni giocatore ha la sua scheda:
          i dati sono suoi, protetti, e decide lui — campo per campo — cosa mostrare agli altri.</p>
-      <p><strong>Gli strumenti sono il gioco.</strong> Verifiche, meteo, radio:
-         usarli è giocare, e usandoli si allena l&rsquo;anima che c&rsquo;è dietro.</p>
+      <p><strong>Gli strumenti sono il gioco.</strong> Ogni strumento è una stanza:
+         verifiche, meteo, radio. Usarli è giocare, e usandoli si allena l&rsquo;anima che c&rsquo;è dietro.</p>
       <p><strong>Il punteggio si guadagna.</strong> Produci contenuti con gli strumenti,
          condividili nel cerchio: il contatore fa il resto.</p>
     </div>
   </section>
 
   <!-- ═══ STRUMENTI ═══ -->
-  <!-- In fase DEV braindance e fake checker vivono ancora sulla console (cyberboomer.io):
-       la migrazione su animagame.io si fa con SQUELCH senza rompere contatori e coda.
-       Quando avviene, si aggiornano questi due href e niente altro. -->
+  <!-- Ogni strumento è una STANZA del gioco (binario JUDY §5): la home apre le stanze,
+       le stanze incorniciano gli strumenti. Le mete vive stanno in strumenti.html. -->
   <section class="sezione" id="strumenti">
-    <p class="etichetta">gli strumenti</p>
+    <p class="etichetta">le stanze</p>
     <div class="griglia-strumenti">
 
       <article class="card">
-        <div class="stato-riga"><h3>Braindance</h3><span class="stato">attivo</span></div>
-        <p>I verdetti: affermazioni pubbliche verificate, con punteggio.
-           Chiedi una verifica — è un&rsquo;azione di gioco.</p>
-        <a class="btn" href="https://cyberboomer.io/braindance/">Entra</a>
+        <div class="stato-riga"><h3>Braindance</h3><span class="stato">attiva</span></div>
+        <p>La stanza delle verifiche: affermazioni pubbliche lette a fondo,
+           verdetti con punteggio. Chiedere una verifica è un&rsquo;azione di gioco.</p>
+        <a class="btn" href="strumenti.html#braindance">Apri la stanza</a>
       </article>
 
       <article class="card">
-        <div class="stato-riga"><h3>Fake checker</h3><span class="stato">attivo</span></div>
-        <p>Lo strumento rapido: controlla un contenuto sospetto
+        <div class="stato-riga"><h3>Fake checker</h3><span class="stato">attiva</span></div>
+        <p>La stanza del dubbio rapido: un contenuto sospetto si controlla
            prima di farlo girare.</p>
-        <a class="btn" href="https://cyberboomer.io/fake-checker/">Entra</a>
+        <a class="btn" href="strumenti.html#fake-checker">Apri la stanza</a>
       </article>
 
       <article class="card">
         <div class="stato-riga"><h3>Meteo</h3><span class="stato spento">in arrivo</span></div>
-        <p>Il meteo del gioco, self-contained.
+        <p>La stanza del cielo: il meteo del gioco.
            Sta cambiando nome per entrare qui.</p>
         <a class="btn presto" aria-disabled="true">In arrivo</a>
       </article>
 
       <article class="card">
         <div class="stato-riga"><h3>Radio</h3><span class="stato spento">presto</span></div>
-        <p>Suonerà solo musica nostra, con diritti chiari.
+        <p>La stanza del suono: suonerà solo musica nostra, con diritti chiari.
            Finché non c&rsquo;è, resta spenta: niente rumore.</p>
         <a class="btn presto" aria-disabled="true">Presto</a>
       </article>
@@ -279,9 +282,9 @@
       <span class="sep">&middot;</span>
       <span>playanima.io — la porta</span>
     </div>
-    <p class="footer-nota">Un gioco a invito. Se sei qui, qualcuno ti ha pensato.</p>
+    <p class="footer-nota">Un gioco a invito. Se sei qui, qualcuno ti ha chiamato per nome.</p>
   </footer>
 
-<!-- creato da ECHO, 2026-08-01 -->
+<!-- creato da ECHO, 2026-08-01 · verde su nero su direzione JUDY, 2026-08-02 -->
 </body>
 </html>

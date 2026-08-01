@@ -2,10 +2,13 @@
 
 Il sito del gioco del SYSTEMA 77. **Un gioco a invito, non un social.**
 
-- `index.html` — la home: il gioco, gli strumenti, i dieci posti, il punteggio.
+- `index.html` — la home: il gioco, le stanze, i dieci posti, il punteggio.
+- `strumenti.html` — le stanze del gioco: braindance, fake checker, meteo, radio.
+  Ogni strumento è una stanza, non un link esterno.
 - `scheda.html` — la scheda giocatore: ogni campo ha l'interruttore
-  «visibile agli altri sì/no». In fase DEV (backend spento) i dati restano
-  sul dispositivo del giocatore.
+  «visibile agli altri sì/no» — **il nome compreso** (spento, per gli altri
+  sei il tuo numero). L'unica cosa sempre in vista è il punteggio.
+  In fase DEV (backend spento) i dati restano sul dispositivo del giocatore.
 - `assets/config.js` — l'unico punto da toccare quando il backend si accende.
 - `CNAME` — `animagame.io` (GitHub Pages dalla radice, come le case sorelle).
 
@@ -17,8 +20,10 @@ Il sito del gioco del SYSTEMA 77. **Un gioco a invito, non un social.**
    «GIOCATORE 0» finché il Direttore non sceglie il suo nome pubblico.
 2. **Lessico:** si dice *giocatori, schede, cerchi*. Le parole del mondo
    social sono vietate dal Direttore.
-3. **Estetica:** Camera Oscura (standard pubblico di JUDY) — ambra su buio,
-   mai neon, mai il cyan di SYSTEMA 77 (quello è privato).
+3. **Estetica (direzione JUDY):** il gioco è **VERDE `#38E08A` su nero** —
+   il verde è accento (punteggi, stati, azioni, il cursore), mai fondale.
+   Mono = macchina, serif = umano. Mai il cyan di SYSTEMA 77 (privato),
+   mai il giallo dell'agenzia, mai l'ambra del mito.
 4. La porta (`playanima.io`) è un redirect a questo dominio; si attiva
    a settembre coi tarocchi.
 

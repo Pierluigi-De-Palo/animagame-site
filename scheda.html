@@ -6,6 +6,9 @@
 <title>La tua scheda — ANIMA GAME</title>
 <meta name="description" content="La scheda giocatore di ANIMA GAME. I dati sono tuoi: decidi tu, campo per campo, cosa mostrare.">
 <meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=Share+Tech+Mono&display=swap">
 <link rel="stylesheet" href="assets/stile.css">
 <style>
   .testata {
@@ -22,11 +25,11 @@
     font-size: .75rem;
     letter-spacing: .15em;
     text-transform: uppercase;
-    color: var(--text-lo);
+    color: var(--muto);
     text-decoration: none;
-    border-bottom: 1px solid var(--line);
+    border-bottom: 1px solid var(--linea);
   }
-  .testata a:hover { color: var(--amber); border-color: var(--amber); }
+  .testata a:hover { color: var(--verde); border-color: var(--verde); }
 
   /* striscia DEV: dice la verità sul dove stanno i dati */
   .striscia-dev {
@@ -39,12 +42,12 @@
     font-size: .72rem;
     letter-spacing: .08em;
     line-height: 1.7;
-    color: var(--text-lo);
-    border: 1px dashed var(--line);
+    color: var(--muto);
+    border: 1px dashed var(--linea);
     border-radius: 6px;
     padding: .7rem 1rem;
   }
-  .striscia-dev strong { color: var(--amber); font-weight: 400; }
+  .striscia-dev strong { color: var(--verde); font-weight: 400; }
 
   .pagina {
     max-width: 720px;
@@ -53,7 +56,7 @@
     animation: salita .7s ease-out both;
   }
 
-  /* ── ENTRA (fase DEV: login libero) ── */
+  /* ── ENTRA (fase DEV: la porta è aperta) ── */
   #entra .marca { text-align: center; display: block; margin-bottom: 1.6rem; }
   #entra h1 {
     font-size: clamp(1.5rem, 4.5vw, 2.1rem);
@@ -63,13 +66,13 @@
   }
   #entra .sotto {
     text-align: center;
-    color: var(--text-lo);
+    color: var(--muto);
     max-width: 44ch;
     margin: 0 auto 2.4rem;
   }
   .modulo {
-    background: var(--bg-surface);
-    border: 1px solid var(--line);
+    background: var(--fondo);
+    border: 1px solid var(--linea);
     border-radius: 10px;
     padding: 1.8rem 1.6rem;
     display: flex;
@@ -83,7 +86,7 @@
     font-size: .7rem;
     letter-spacing: .2em;
     text-transform: uppercase;
-    color: var(--text-lo);
+    color: var(--muto);
     display: flex;
     flex-direction: column;
     gap: .5rem;
@@ -91,22 +94,22 @@
   .modulo input, .modulo select {
     font-family: var(--font-serif);
     font-size: 1.05rem;
-    color: var(--text-hi);
-    background: var(--bg-deep);
-    border: 1px solid var(--line);
+    color: var(--carta);
+    background: var(--nero);
+    border: 1px solid var(--linea);
     border-radius: 6px;
     padding: .6rem .8rem;
   }
   .modulo input:focus, .modulo select:focus {
     outline: none;
-    border-color: var(--amber);
+    border-color: var(--verde);
   }
   .modulo .btn { align-self: center; margin-top: .4rem; }
 
   /* ── LA SCHEDA ── */
   .carta {
-    background: var(--bg-surface);
-    border: 1px solid var(--line);
+    background: var(--fondo);
+    border: 1px solid var(--linea);
     border-radius: 12px;
     padding: 2rem 1.7rem;
     position: relative;
@@ -116,10 +119,10 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: radial-gradient(ellipse at 30% 0%, rgba(201, 161, 94, .08), transparent 55%);
+    background: radial-gradient(ellipse at 30% 0%, rgba(56, 224, 138, .06), transparent 55%);
     pointer-events: none;
   }
-  body.vista-altri .carta { border-color: var(--amber); }
+  body.vista-altri .carta { border-color: var(--verde); }
 
   .carta-testa {
     display: flex;
@@ -131,14 +134,14 @@
     font-family: var(--font-mono);
     font-size: .8rem;
     letter-spacing: .3em;
-    color: var(--amber);
+    color: var(--verde);
   }
   .carta-nome {
     font-family: var(--font-mono);
     font-size: clamp(1.3rem, 4vw, 1.9rem);
     letter-spacing: .08em;
     text-transform: uppercase;
-    color: var(--text-hi);
+    color: var(--carta);
   }
 
   .dal-systema {
@@ -148,34 +151,36 @@
     margin-bottom: 2rem;
   }
   .dato {
-    border: 1px solid var(--line);
+    border: 1px solid var(--linea);
     border-radius: 8px;
     padding: .8rem .9rem;
-    background: var(--bg-deep);
+    background: var(--nero);
   }
   .dato .l {
     font-family: var(--font-mono);
     font-size: .6rem;
     letter-spacing: .2em;
     text-transform: uppercase;
-    color: var(--text-lo);
+    color: var(--muto);
   }
   .dato .v {
     font-family: var(--font-mono);
     font-size: 1.35rem;
-    color: var(--text-hi);
+    color: var(--carta);
     margin-top: .3rem;
   }
+  /* il punteggio è IL dato: grande, mono, verde */
+  .dato.punteggio .v { color: var(--verde); font-size: 1.6rem; }
   .nota-systema {
     font-size: .88rem;
-    color: var(--text-lo);
+    color: var(--muto);
     font-style: italic;
     margin: -.8rem 0 2rem;
   }
 
   /* campi con interruttore */
   .campo {
-    border-top: 1px solid var(--line);
+    border-top: 1px solid var(--linea);
     padding: 1.1rem 0;
   }
   .campo-testa {
@@ -190,7 +195,7 @@
     font-size: .72rem;
     letter-spacing: .2em;
     text-transform: uppercase;
-    color: var(--text-lo);
+    color: var(--muto);
   }
   .interruttore {
     display: inline-flex;
@@ -200,18 +205,18 @@
     font-size: .65rem;
     letter-spacing: .1em;
     text-transform: uppercase;
-    color: var(--text-lo);
+    color: var(--muto);
     cursor: pointer;
     user-select: none;
   }
-  .interruttore.acceso { color: var(--amber); }
+  .interruttore.acceso { color: var(--verde); }
   .interruttore input {
     appearance: none;
     width: 2rem;
     height: 1.05rem;
-    border: 1px solid var(--line);
+    border: 1px solid var(--linea);
     border-radius: 1rem;
-    background: var(--bg-deep);
+    background: var(--nero);
     position: relative;
     cursor: pointer;
     transition: border-color .25s ease;
@@ -224,31 +229,31 @@
     width: .72rem;
     height: .72rem;
     border-radius: 50%;
-    background: var(--text-lo);
+    background: var(--muto);
     transition: transform .25s ease, background .25s ease;
   }
-  .interruttore input:checked { border-color: var(--amber); }
+  .interruttore input:checked { border-color: var(--verde); }
   .interruttore input:checked::after {
     transform: translateX(.9rem);
-    background: var(--amber);
+    background: var(--verde);
   }
   .interruttore input:focus-visible {
-    outline: 2px solid var(--amber);
+    outline: 2px solid var(--verde);
     outline-offset: 2px;
   }
   .campo-input {
     width: 100%;
     font-family: var(--font-serif);
     font-size: 1.05rem;
-    color: var(--text-hi);
-    background: var(--bg-deep);
-    border: 1px solid var(--line);
+    color: var(--carta);
+    background: var(--nero);
+    border: 1px solid var(--linea);
     border-radius: 6px;
     padding: .55rem .8rem;
   }
-  .campo-input:focus { outline: none; border-color: var(--amber); }
-  .campo-valore { font-size: 1.05rem; color: var(--text-hi); }
-  .campo-vuoto { font-style: italic; color: var(--text-lo); padding: 1rem 0; }
+  .campo-input:focus { outline: none; border-color: var(--verde); }
+  .campo-valore { font-size: 1.05rem; color: var(--carta); }
+  .campo-vuoto { font-style: italic; color: var(--muto); padding: 1rem 0; }
 
   .carta-azioni {
     display: flex;
@@ -256,17 +261,17 @@
     flex-wrap: wrap;
     margin-top: 1.8rem;
   }
-  .btn.secondario { border-color: var(--line); color: var(--text-lo); }
-  .btn.secondario:hover { color: var(--text-hi); }
+  .btn.secondario { border-color: var(--linea); color: var(--muto); }
+  .btn.secondario:hover { color: var(--carta); }
 
   .regola-privacy {
     margin-top: 1.6rem;
     font-size: .92rem;
-    color: var(--text-lo);
+    color: var(--muto);
     line-height: 1.7;
     max-width: 58ch;
   }
-  .regola-privacy strong { color: var(--text-hi); }
+  .regola-privacy strong { color: var(--carta); }
 </style>
 </head>
 <body>
@@ -277,12 +282,12 @@
   </header>
 
   <div class="striscia-dev">
-    <p><strong>FASE DEV — login libero.</strong> Il backend non è ancora acceso:
+    <p><strong>FASE DEV — la porta è aperta.</strong> Il backend non è ancora acceso:
        la scheda resta su questo dispositivo, non viaggia. Non scriverci
        dati sensibili. Quando il backend parte, i dati veri vivranno lì, protetti.</p>
   </div>
 
-  <!-- ═══ ENTRA (login libero in DEV) ═══ -->
+  <!-- ═══ ENTRA (fase DEV: si entra senza chiave) ═══ -->
   <main class="pagina" id="entra" hidden>
     <h1>La tua scheda</h1>
     <p class="sotto">Scegli il tuo posto e il tuo nome di gioco.
@@ -319,7 +324,7 @@
       </div>
 
       <div class="dal-systema">
-        <div class="dato"><div class="l">punteggio</div><div class="v" id="scheda-punteggio">0</div></div>
+        <div class="dato punteggio"><div class="l">punteggio</div><div class="v" id="scheda-punteggio">0</div></div>
         <div class="dato"><div class="l">contenuti</div><div class="v" id="scheda-contenuti">0</div></div>
         <div class="dato"><div class="l">arcano</div><div class="v" id="scheda-arcano">—</div></div>
         <div class="dato"><div class="l">ingresso</div><div class="v" id="scheda-ingresso">—</div></div>
@@ -335,14 +340,15 @@
       </div>
     </div>
 
-    <p class="regola-privacy"><strong>La regola:</strong> i dati sono tuoi.
-       Nome e punteggio si vedono — è il gioco. Tutto il resto nasce
-       <strong>solo tuo</strong>: si mostra soltanto se accendi l&rsquo;interruttore,
-       e puoi spegnerlo quando vuoi.</p>
+    <p class="regola-privacy"><strong>La regola:</strong> i dati sono tuoi,
+       <strong>il nome compreso</strong>. Ogni campo nasce <strong>solo tuo</strong>
+       e si mostra soltanto se accendi l&rsquo;interruttore — spento il nome,
+       per gli altri sei il tuo numero. L&rsquo;unica cosa che si vede sempre
+       è il <strong>punteggio</strong>: è il gioco.</p>
   </main>
 
 <script src="assets/config.js"></script>
 <script src="assets/scheda.js"></script>
-<!-- creato da ECHO, 2026-08-01 -->
+<!-- creato da ECHO, 2026-08-01 · nome-come-campo e verde su nero su direzione JUDY, 2026-08-02 -->
 </body>
 </html>

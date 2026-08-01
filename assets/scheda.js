@@ -1,26 +1,33 @@
 /* ANIMA GAME — logica della scheda giocatore.
    La regola: i dati sono del giocatore. Ogni campo ha il suo interruttore
    "visibile agli altri"; quello che non è acceso, gli altri non lo vedono.
+   ANCHE IL NOME è un campo come gli altri (direzione JUDY, 01/08): spento,
+   gli altri vedono «GIOCATORE NN». L'unica cosa pubblica per definizione
+   è il punteggio: è il gioco.
    In fase DEV (backend spento) tutto resta sul dispositivo: localStorage.
    Quando SQUELCH accende il Worker, si compila BACKEND_URL in config.js
    e queste stesse funzioni parlano con lui.
-   — creato da ECHO, 2026-08-01 */
+   — creato da ECHO, 2026-08-01 · nome-come-campo su direzione JUDY, 2026-08-02 */
 
 (function () {
   'use strict';
 
   var CHIAVE = 'anima.scheda';
 
-  /* Campi che il giocatore scrive. "visibile" è il default dell'interruttore:
-     spento = privacy prima di tutto. Il nome di gioco fa eccezione (regola
-     del gioco: si gioca con un nome) e il punteggio pure (è il gioco). */
+  /* Campi che il giocatore scrive. "visibile" nasce spento su tutto:
+     privacy prima di tutto, il nome compreso. */
   var CAMPI = [
+    { id: 'nome',      nome: 'Nome mostrato',       segnaposto: 'il nome con cui giochi' },
     { id: 'motto',     nome: 'Motto',               segnaposto: 'una riga che ti somiglia' },
     { id: 'cerchio',   nome: 'Cerchio',             segnaposto: 'chi ti ha portato dentro' },
     { id: 'luogo',     nome: 'Luogo',               segnaposto: 'dove giochi, come vuoi dirlo' },
-    { id: 'strumento', nome: 'Strumento preferito', segnaposto: 'braindance, fake checker…' },
+    { id: 'strumento', nome: 'Stanza preferita',    segnaposto: 'braindance, fake checker…' },
     { id: 'contatto',  nome: 'Contatto',            segnaposto: 'come raggiungerti (resta tuo)' }
   ];
+
+  function nomeSlot(slot) {
+    return 'GIOCATORE ' + ('0' + slot).slice(-2);
+  }
 
   /* ── magazzino: localStorage ora, Worker poi ─────────────────── */
 
@@ -30,11 +37,18 @@
       // In DEV non si passa mai di qui.
       return null;
     }
+    var s;
     try {
-      return JSON.parse(localStorage.getItem(CHIAVE));
+      s = JSON.parse(localStorage.getItem(CHIAVE));
     } catch (e) {
       return null;
     }
+    // schede della prima DEV: il nome viveva fuori dai campi
+    if (s && s.campi && !s.campi.nome) {
+      s.campi.nome = { valore: s.nome || '', visibile: false };
+      delete s.nome;
+    }
+    return s;
   }
 
   function scrivi(scheda) {
@@ -54,9 +68,9 @@
     CAMPI.forEach(function (c) {
       campi[c.id] = { valore: '', visibile: false };
     });
+    campi.nome.valore = nome;
     return {
       slot: slot,
-      nome: nome,
       campi: campi,
       /* Dal systema (li scrive il backend, qui stati onesti a zero): */
       arcano: null,        // il tarocco arriva a settembre, con la Porta
@@ -79,9 +93,15 @@
     return p[2] + '/' + p[1] + '/' + p[0];
   }
 
+  function nomeInTesta(s, comeAltri) {
+    var dato = s.campi.nome;
+    if (comeAltri && !dato.visibile) return nomeSlot(s.slot);
+    return dato.valore || nomeSlot(s.slot);
+  }
+
   function disegnaScheda(s, comeAltri) {
     $('#scheda-slot').textContent = ('0' + s.slot).slice(-2);
-    $('#scheda-nome').textContent = s.nome;
+    $('#scheda-nome').textContent = nomeInTesta(s, comeAltri);
     $('#scheda-punteggio').textContent = s.punteggio;
     $('#scheda-contenuti').textContent = s.contenuti;
     $('#scheda-arcano').textContent = s.arcano || '—';
@@ -91,7 +111,10 @@
     lista.innerHTML = '';
     CAMPI.forEach(function (c) {
       var dato = s.campi[c.id];
-      if (comeAltri && !dato.visibile) return;   // gli altri non lo vedono
+      if (comeAltri) {
+        if (c.id === 'nome') return;           // il nome sta già in testa
+        if (!dato.visibile) return;            // gli altri non lo vedono
+      }
 
       var riga = document.createElement('div');
       riga.className = 'campo';
@@ -110,15 +133,13 @@
         box.type = 'checkbox';
         box.checked = dato.visibile;
         box.setAttribute('aria-label', 'Visibile agli altri: ' + c.nome);
-        box.addEventListener('change', function () {
-          dato.visibile = box.checked;
-          interr.classList.toggle('acceso', box.checked);
-          scrivi(s);
-        });
         var scritta = document.createElement('span');
         scritta.textContent = dato.visibile ? 'visibile agli altri' : 'solo tuo';
         box.addEventListener('change', function () {
+          dato.visibile = box.checked;
+          interr.classList.toggle('acceso', box.checked);
           scritta.textContent = box.checked ? 'visibile agli altri' : 'solo tuo';
+          scrivi(s);
         });
         interr.appendChild(box);
         interr.appendChild(scritta);
@@ -137,8 +158,10 @@
         campo.className = 'campo-input';
         campo.value = dato.valore;
         campo.placeholder = c.segnaposto;
+        if (c.id === 'nome') campo.maxLength = 24;
         campo.addEventListener('input', function () {
           dato.valore = campo.value;
+          if (c.id === 'nome') $('#scheda-nome').textContent = nomeInTesta(s, false);
           scrivi(s);
         });
         riga.appendChild(campo);
@@ -149,7 +172,7 @@
     if (comeAltri && !lista.children.length) {
       var vuoto = document.createElement('p');
       vuoto.className = 'campo-vuoto';
-      vuoto.textContent = 'Questo giocatore mostra solo nome e punteggio. Sua scelta, buona scelta.';
+      vuoto.textContent = 'Questo giocatore mostra solo il suo numero e il punteggio. Sua scelta, buona scelta.';
       lista.appendChild(vuoto);
     }
   }

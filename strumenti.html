@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Le stanze — ANIMA GAME</title>
+<meta name="description" content="Le stanze di ANIMA GAME: braindance, fake checker, meteo, radio. Gli strumenti sono il gioco.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=Share+Tech+Mono&display=swap">
+<link rel="stylesheet" href="assets/stile.css">
+<style>
+  .testata {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 1.6rem 1.5rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+  }
+  .testata a {
+    font-family: var(--font-mono);
+    font-size: .75rem;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: var(--muto);
+    text-decoration: none;
+    border-bottom: 1px solid var(--linea);
+  }
+  .testata a:hover { color: var(--verde); border-color: var(--verde); }
+
+  .apertura {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 3.2rem 1.5rem 0;
+    animation: salita .7s ease-out both;
+  }
+  .apertura h1 {
+    font-size: clamp(1.6rem, 4.5vw, 2.4rem);
+    font-weight: 400;
+    margin-bottom: .8rem;
+  }
+  .apertura h1 b { color: var(--verde); font-weight: 400; }
+  .apertura .sotto {
+    color: var(--muto);
+    max-width: 58ch;
+    font-size: clamp(1rem, 2.2vw, 1.12rem);
+    line-height: 1.75;
+  }
+  .apertura .sotto strong { color: var(--carta); }
+
+  .stanza {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 3.4rem 1.5rem 0;
+    scroll-margin-top: 1.5rem;
+  }
+  .stanza:last-of-type { padding-bottom: 4rem; }
+  .stanza-corpo {
+    background: var(--fondo);
+    border: 1px solid var(--linea);
+    border-radius: 12px;
+    padding: 1.9rem 1.7rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.1rem;
+  }
+  @media (min-width: 760px) {
+    .stanza-corpo { grid-template-columns: 3fr 2fr; align-items: start; gap: 2rem; }
+  }
+  .stanza.spenta .stanza-corpo { border-style: dashed; }
+  .stanza-testa {
+    display: flex;
+    align-items: center;
+    gap: .9rem;
+    margin-bottom: .7rem;
+  }
+  .stanza-testa h2 {
+    font-family: var(--font-mono);
+    font-size: clamp(1.15rem, 3vw, 1.45rem);
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--carta);
+    font-weight: 400;
+  }
+  .stanza-desc {
+    color: var(--muto);
+    font-size: clamp(1rem, 2.2vw, 1.1rem);
+    line-height: 1.75;
+  }
+  .stanza-desc strong { color: var(--carta); }
+  .stanza-lato {
+    border-left: 2px solid var(--verde);
+    padding-left: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: .9rem;
+  }
+  .stanza.spenta .stanza-lato { border-left-color: var(--linea); }
+  .stanza-punti {
+    font-family: var(--font-mono);
+    font-size: .78rem;
+    letter-spacing: .06em;
+    line-height: 1.7;
+    color: var(--muto);
+  }
+  .stanza-punti b { color: var(--verde); font-weight: 400; }
+  .stanza-nota {
+    font-size: .88rem;
+    font-style: italic;
+    color: var(--muto);
+  }
+</style>
+</head>
+<body>
+
+  <header class="testata">
+    <span class="marca">&#9673; Anima Game</span>
+    <a href="index.html">torna alla home</a>
+  </header>
+
+  <section class="apertura">
+    <h1>Le <b>stanze</b> del gioco.</h1>
+    <p class="sotto">Gli strumenti non sono demo: <strong>sono il gioco</strong>.
+       Ogni stanza ne custodisce uno. Ci entri, produci, condividi nel cerchio —
+       e il punteggio cresce da sé. Usandoli, alleni l&rsquo;anima che c&rsquo;è dietro.</p>
+  </section>
+
+  <!-- Le due stanze attive incorniciano strumenti che oggi vivono ancora sulla
+       console (cyberboomer.io): quando la migrazione si fa con SQUELCH, si
+       aggiornano i due href qui sotto e niente altro. -->
+
+  <section class="stanza" id="braindance">
+    <div class="stanza-corpo">
+      <div>
+        <div class="stanza-testa"><h2>Braindance</h2><span class="stato">attiva</span></div>
+        <p class="stanza-desc">La stanza delle verifiche. Un&rsquo;affermazione pubblica
+           entra, viene letta a fondo, esce con un <strong>verdetto e un punteggio</strong>.
+           Puoi leggere i verdetti già emessi o <strong>chiedere una verifica</strong> tu:
+           è un&rsquo;azione di gioco. Una regola sola: si verificano voci pubbliche,
+           <strong>mai persone private</strong>.</p>
+      </div>
+      <div class="stanza-lato">
+        <p class="stanza-punti">verdetti emessi → in stanza<br>chiedi una verifica → <b>+ punti</b></p>
+        <a class="btn" href="https://cyberboomer.io/braindance/">Entra</a>
+        <p class="stanza-nota">La stanza è qui; lo strumento sta traslocando dalla console.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="stanza" id="fake-checker">
+    <div class="stanza-corpo">
+      <div>
+        <div class="stanza-testa"><h2>Fake checker</h2><span class="stato">attiva</span></div>
+        <p class="stanza-desc">La stanza del dubbio rapido. Un contenuto sospetto —
+           un&rsquo;immagine, una voce che gira — si <strong>controlla prima di farlo girare</strong>.
+           Meno rumore in circolo, più punti a chi lo ferma.</p>
+      </div>
+      <div class="stanza-lato">
+        <p class="stanza-punti">controlli fatti e condivisi → <b>+ punti</b></p>
+        <a class="btn" href="https://cyberboomer.io/fake-checker/">Entra</a>
+        <p class="stanza-nota">La stanza è qui; lo strumento sta traslocando dalla console.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="stanza spenta" id="meteo">
+    <div class="stanza-corpo">
+      <div>
+        <div class="stanza-testa"><h2>Meteo</h2><span class="stato spento">in arrivo</span></div>
+        <p class="stanza-desc">La stanza del cielo. Il meteo del gioco esiste già
+           e funziona: sta <strong>cambiando nome</strong> per entrare qui con l&rsquo;abito giusto.</p>
+      </div>
+      <div class="stanza-lato">
+        <p class="stanza-punti">in allestimento</p>
+        <span class="btn presto" aria-disabled="true">In arrivo</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="stanza spenta" id="radio">
+    <div class="stanza-corpo">
+      <div>
+        <div class="stanza-testa"><h2>Radio</h2><span class="stato spento">presto</span></div>
+        <p class="stanza-desc">La stanza del suono. Suonerà <strong>solo musica nostra</strong>,
+           con diritti chiari — niente playlist altrui, niente suoni a tradimento.
+           Finché i brani non ci sono, resta spenta: il silenzio è una promessa, non un guasto.</p>
+      </div>
+      <div class="stanza-lato">
+        <p class="stanza-punti">si accende coi primi brani</p>
+        <span class="btn presto" aria-disabled="true">Presto</span>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-domini">
+      <a href="index.html">la home del gioco</a>
+      <span class="sep">&middot;</span>
+      <a href="scheda.html">la tua scheda</a>
+    </div>
+    <p class="footer-nota">Produci, condividi nel cerchio: il contatore fa il resto.</p>
+  </footer>
+
+<!-- creato da ECHO, 2026-08-02, su direzione JUDY -->
+</body>
+</html>
