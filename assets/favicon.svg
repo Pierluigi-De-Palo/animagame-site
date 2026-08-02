@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- ANIMA GAME — il segno ◉ (fisheye) in verde-gioco su nero -->
+  <rect width="32" height="32" rx="6" fill="#0A0A0A"/>
+  <circle cx="16" cy="16" r="9" fill="none" stroke="#38E08A" stroke-width="2.5"/>
+  <circle cx="16" cy="16" r="3.5" fill="#38E08A"/>
+</svg>
