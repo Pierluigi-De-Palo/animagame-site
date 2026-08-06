@@ -124,6 +124,23 @@
   }
   .slot.libero { border-style: dashed; }
   .slot.libero .nome { color: var(--muto); font-style: italic; font-family: var(--font-serif); }
+  /* posto assegnato: c'è qualcuno, ma il nome non è affare di una pagina pubblica */
+  .slot.preso .nome { color: var(--muto); font-style: italic; font-family: var(--font-serif); }
+  /* la carta 0 sta fuori dal cerchio: larga, sola, sopra la griglia */
+  .slot.fuori {
+    text-align: left;
+    padding: 1.2rem 1.3rem;
+    margin-bottom: 1.6rem;
+    border-left: 2px solid var(--verde);
+  }
+  .slot.fuori .numero { letter-spacing: .18em; text-transform: uppercase; }
+  .slot.fuori .nome { font-size: 1.05rem; letter-spacing: .12em; }
+  .fuori-nota {
+    margin-top: .45rem;
+    font-family: var(--font-serif);
+    font-size: .92rem;
+    color: var(--muto);
+  }
   .nota-slot {
     margin-top: 1.6rem;
     font-size: .95rem;
@@ -165,18 +182,40 @@
 <body>
 
   <!-- ═══ HERO ═══ -->
-  <!-- copy: bozza ECHO su binario JUDY (DA-JUDY→ECHO 01/08) — rifinitura insieme -->
+  <!-- Porta B della carta: chi arriva qui ha DIGITATO «> playanima.io», non scansionato.
+       La porta A (il QR → pagina di verifica di KIROSHI) dice «questa carta è autentica»
+       ed è registro freddo: qui non si ripete, si accoglie. -->
   <section class="hero">
     <div class="hero-inner">
       <p class="marca cursore">&#9673; Anima Game</p>
-      <h1>Si entra per invito.<br>Si resta per <b>gioco</b>.</h1>
+      <h1>Hai digitato.<br>Allora <b>vediamo</b>.</h1>
       <div class="riga"></div>
       <p class="patto">
-        Il gioco del SYSTEMA 77. Niente pubblico da conquistare,
-        niente numeri da inseguire: <strong>giocatori</strong>, <strong>schede</strong>,
-        <strong>cerchi</strong> e strumenti veri. Chi produce e condivide, guadagna punti.
+        Se sei arrivato qui copiando una riga da una tessera nera,
+        hai fatto la cosa giusta. <strong>Questo è il gioco</strong>:
+        pochi giocatori, chiamati per nome, che usano strumenti veri.
+        Se invece sei capitato per caso — resta, guarda, non serve iscriversi a niente.
       </p>
-      <span class="pill">Fase DEV &middot; 10 posti</span>
+      <span class="pill">Il cerchio si apre &middot; dieci posti</span>
+    </div>
+  </section>
+
+  <!-- ═══ LA CARTA ═══ -->
+  <!-- Le due porte della tessera. Regola SQUELCH 06/08: se raccontano la stessa cosa,
+       una delle due è sprecata. La verifica dice SE la carta è vera; qui si dice COS'È. -->
+  <section class="sezione" id="la-carta">
+    <p class="etichetta">la carta</p>
+    <div class="regole">
+      <p><strong>La carta è la chiave.</strong> Non c&rsquo;è una password da inventare
+         né una scheda da riempire prima di cominciare: chi ha la tessera in mano, entra.
+         È un oggetto vero, nero, che ti arriva a casa.</p>
+      <p><strong>Ha due lati e fanno due cose diverse.</strong> Il quadratino a puntini
+         — quello che si inquadra col telefono — serve a controllare che la tessera
+         sia autentica, e lo può fare chiunque. Il codice stampato dietro, invece,
+         lo legge solo chi ce l&rsquo;ha in mano: è quello che apre la porta.</p>
+      <p><strong>Prima entri, poi ti conosciamo.</strong> Non c&rsquo;è una fila da fare
+         e nessuno deve aprirti: entri da solo con la tua carta, e il tuo posto
+         nel cerchio te lo assegna chi te l&rsquo;ha data.</p>
     </div>
   </section>
 
@@ -234,32 +273,38 @@
   </section>
 
   <!-- ═══ GIOCATORI ═══ -->
-  <!-- Regola dura: nessun dato personale in questo repo. Il giocatore 0 appare col
-       numero finché il Direttore non sceglie il suo nome pubblico. I nomi veri
-       vivranno nel backend, mai qui. -->
+  <!-- 🔴 REGOLA DURA: nessun nome di persona reale in questo repo — è pubblico due volte
+       (sito + raw). I giocatori 2 e 3 sono persone vere: appaiono come «assegnata», MAI
+       col nome. «Cyber Boomer» è un personaggio pubblico, non una persona: può stare.
+       Roster: ROSTER-E-CICLO.md 06/08 — la carta 0 è FUORI dal conteggio, non gioca. -->
   <section class="sezione" id="giocatori">
-    <p class="etichetta">i giocatori</p>
+    <p class="etichetta">il cerchio</p>
+
+    <div class="slot fuori">
+      <div class="numero">carta 0 &middot; fuori dal cerchio</div>
+      <div class="nome">OVERLORD</div>
+      <p class="fuori-nota">Chi apre il gioco e non lo gioca.</p>
+    </div>
+
     <div class="griglia-giocatori">
-      <div class="slot">
-        <div class="numero">00</div>
-        <div class="nome">GIOCATORE&nbsp;0</div>
-      </div>
       <div class="slot">
         <div class="numero">01</div>
         <div class="nome">CYBER&nbsp;BOOMER</div>
       </div>
-      <div class="slot libero"><div class="numero">02</div><div class="nome">posto libero</div></div>
-      <div class="slot libero"><div class="numero">03</div><div class="nome">posto libero</div></div>
+      <div class="slot preso"><div class="numero">02</div><div class="nome">assegnata</div></div>
+      <div class="slot preso"><div class="numero">03</div><div class="nome">assegnata</div></div>
       <div class="slot libero"><div class="numero">04</div><div class="nome">posto libero</div></div>
       <div class="slot libero"><div class="numero">05</div><div class="nome">posto libero</div></div>
       <div class="slot libero"><div class="numero">06</div><div class="nome">posto libero</div></div>
       <div class="slot libero"><div class="numero">07</div><div class="nome">posto libero</div></div>
       <div class="slot libero"><div class="numero">08</div><div class="nome">posto libero</div></div>
       <div class="slot libero"><div class="numero">09</div><div class="nome">posto libero</div></div>
+      <div class="slot libero"><div class="numero">10</div><div class="nome">posto libero</div></div>
     </div>
-    <p class="nota-slot">Dieci posti in fase DEV. I posti liberi non si chiedono:
-       arrivano per invito, dal cerchio. Anche gli agenti del systema avranno
-       una scheda, con calma.</p>
+    <p class="nota-slot">Il primo cerchio è di dieci. I posti liberi non si chiedono:
+       arrivano per invito, e chi c&rsquo;è già lo sa. Di chi ha una carta qui trovi
+       il numero, non il nome: i nomi non stanno su una pagina pubblica.
+       Anche gli agenti del systema avranno una scheda, con calma.</p>
     <p style="margin-top:1.6rem"><a class="btn" href="scheda.html">La tua scheda</a></p>
   </section>
 
@@ -268,24 +313,33 @@
     <p class="etichetta">il punteggio</p>
     <div class="punteggio-box">
       <div class="contatore">&mdash;<span class="unita">contenuti prodotti dal systema</span></div>
-      <p>Il contatore è <strong>automatico</strong>: conta i contenuti prodotti con gli
-         strumenti e condivisi dai giocatori. Si accende insieme al backend —
-         quando parte, questo trattino diventa un numero. Niente numeri finti.</p>
+      <p>Il conto si fa <strong>da solo</strong>: ogni cosa che un giocatore produce
+         con gli strumenti e mette in circolo, vale punti. Il contatore non è ancora
+         acceso — e finché non lo è, qui resta un trattino:
+         <strong>preferiamo un trattino onesto a un numero inventato</strong>.</p>
     </div>
   </section>
 
   <!-- ═══ FOOTER ═══ -->
+  <!-- Architettura, parole del Direttore 06/08: «SYSTEMA 77 è il centro del sistema solare,
+       attorno la costellazione di Cyber Boomer». ANIMA GAME è UNO dei pianeti, non il centro:
+       il footer deve dirlo, non lasciar credere che il gioco sia l'agenzia.
+       ⚠️ anima.solar NON è linkato di proposito: oggi serve «Presto qui» e manderebbe
+       la gente a credere che il gioco non esista (accertato da D.R.A.G.O. il 06/08).
+       Si rimette appena fa 301 qui — la decisione è di ROGUE col Direttore. -->
   <footer class="footer">
     <div class="footer-domini">
-      <a href="https://systema77.com">systema77.com — l&rsquo;agenzia</a>
+      <a href="https://systema77.com">systema77.com &mdash; l&rsquo;agenzia, il centro</a>
       <span class="sep">&middot;</span>
-      <a href="https://anima.solar">anima.solar — il mito</a>
+      <span>animagame.io &mdash; il gioco, uno dei pianeti</span>
       <span class="sep">&middot;</span>
-      <span>playanima.io — la porta</span>
+      <span>playanima.io &mdash; la porta</span>
     </div>
-    <p class="footer-nota">Un gioco a invito. Se sei qui, qualcuno ti ha chiamato per nome.</p>
+    <p class="footer-nota">ANIMA GAME è il gioco di SYSTEMA 77, agenzia di servizi fatti con
+       l&rsquo;intelligenza artificiale. Il gioco è una delle cose che facciamo, non l&rsquo;insegna.</p>
   </footer>
 
-<!-- creato da ECHO, 2026-08-01 · verde su nero su direzione JUDY, 2026-08-02 -->
+<!-- creato da ECHO, 2026-08-01 · verde su nero su direzione JUDY, 2026-08-02
+     · voce della porta B e roster nuovo, ECHO 2026-08-06 (staffetta maglia 3) -->
 </body>
 </html>
