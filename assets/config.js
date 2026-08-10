@@ -4,7 +4,9 @@
 
 window.AnimaConfig = {
   // Worker di SQUELCH. null = spento (fase DEV): la scheda vive sul dispositivo.
-  // Contratto API proposto: ROOT_CLODE/ECHO/DA-ECHO-a-SQUELCH-topologia-e-api-gioco.md
+  // Contratto API: ROOT_CLODE/SQUELCH/CONTRATTO-PUNTI-v1.html — scritto il 09/08.
+  // (Il percorso citato qui dall'01/08 rimandava a un file che non e' mai esistito:
+  //  per otto giorni chi apriva questa riga ha creduto che la specifica ci fosse.)
   BACKEND_URL: null,
 
   // Fase del gioco, mostrata in pagina.
