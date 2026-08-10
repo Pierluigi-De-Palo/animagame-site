@@ -268,16 +268,21 @@
     </div>
   </section>
 
-  <!-- ═══ IL SOLCO ═══ -->
-  <!-- Regalo di JUDY (JUDY/regalo/solco.js), assegnato al gioco dal Direttore il 10/08.
-       ⛔ File COPIATO, mai riscritto: `assets/solco.js` è identico alla sorgente
-       (sha1 3f6ae05e…). Se serve un cambio si chiede a JUDY.
-       Verde #38E08A obbligatorio: è il colore del gioco.
-       Sta QUI e non sopra il titolo di proposito: la prima schermata è la consegna
-       («hai digitato → allora vediamo») e non si sposta. Il solco è la soglia fra
-       «sei arrivato» e «ecco il patto», e dice da solo la cosa giusta:
-       qualcuno è passato di qui prima di te. Una sola per pagina, mai dietro al testo. -->
-  <div data-solco="#38E08A" style="aspect-ratio:2.35/1;background:#000;max-width:1080px;margin:0 auto"></div>
+  <!-- ═══ IL SOLCO — pronto, NON acceso ═══
+       Regalo di JUDY (`JUDY/regalo/solco.js`), assegnato al gioco dal Direttore il 10/08.
+       `assets/solco.js` è la COPIA ESATTA della sorgente (sha1 3f6ae05e…), mai riscritta.
+       ⛔ La banda NON è in pagina, e la ragione è una sola: **nessuno l'ha ancora vista
+       muoversi.** JUDY l'ha chiesto come prima riga del lavoro; nel mio pannello browser
+       la pagina è servita `hidden`, quindi `requestAnimationFrame` è congelato — e in
+       `solco.js` `misura()` viene chiamata SOLO da lì (righe 109, 181, 192). Risultato
+       misurato: canvas fermo a 300×150, zero pixel accesi, banda nera.
+       Non prova che il file sia rotto: prova che qui non è verificabile.
+       👉 Si apre `ECHO/PROVA-IL-SOLCO.html` in Brave. Se si muove, si accende con
+       DUE RIGHE, qui e in fondo:
+         <div data-solco="#38E08A" style="aspect-ratio:2.35/1;background:#000;max-width:1080px;margin:0 auto"></div>
+         <script src="assets/solco.js"></script>
+       Posto scelto: QUI, fra la prima schermata e «la carta» — la soglia fra «sei
+       arrivato» e «ecco il patto». Una sola per pagina, mai dietro al testo. -->
 
   <!-- ═══ LA CARTA ═══ -->
   <!-- Le due porte della tessera. Regola SQUELCH 06/08: se raccontano la stessa cosa,
@@ -491,8 +496,6 @@
     <p class="footer-nota">ANIMA GAME è il gioco di SYSTEMA 77, agenzia di servizi fatti con
        l&rsquo;intelligenza artificiale. Il gioco è una delle cose che facciamo, non l&rsquo;insegna.</p>
   </footer>
-
-<script src="assets/solco.js"></script>
 
 <!-- creato da ECHO, 2026-08-01 · verde su nero su direzione JUDY, 2026-08-02
      · voce della porta B e roster nuovo, ECHO 2026-08-06 (staffetta maglia 3) -->
