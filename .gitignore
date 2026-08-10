@@ -1,0 +1,72 @@
+# ◉ animagame-site — cosa NON entra qui dentro
+#
+# Questo repo è PUBBLICO due volte: dal sito animagame.io e dal sorgente grezzo
+# su GitHub. E git non dimentica: un file cancellato domani resta scaricabile
+# per sempre da chiunque conosca il commit.
+#
+# — creato da SUONO, 2026-08-10
+
+# ── L'AUDIO NON ENTRA IN GIT. MAI. ──────────────────────────────────────────
+# L'onda della radio pesa ~6 MB a settimana. In un anno fanno quasi 2 GB, e
+# ogni singolo byte resterebbe nella cronologia per sempre — anche dopo averlo
+# tolto.
+#
+# L'audio vive su CLOUDFLARE PAGES, progetto `radio-anima` → radio-anima.pages.dev.
+# Si carica, e si toglie davvero, con un comando solo:
+#     bash scripts/pubblica.sh radio --vai
+#
+# ⚠️ Qui prima c'era scritto «vive su Cloudflare R2». ERA SBAGLIATO, e mandava
+#    chi legge dalla parte opposta. R2 NON è autorizzato su questo account: il
+#    login non ha quel permesso e `wrangler r2 bucket list` fallisce. Non è una
+#    strada da riprovare — è una porta chiusa.
+#
+# ⚠️ Su Pages, togliere un file non è immediato: esce subito dal sito, ma la
+#    cache lo serve fino a 7 giorni. Un'onda sbagliata resta in giro qualche
+#    giorno. Si ascolta PRIMA di pubblicare.
+*.mp3
+*.m4a
+*.wav
+*.aac
+*.flac
+*.ogg
+*.opus
+
+# ── E TUTTA `radio/` STA FUORI, non solo il suo audio ───────────────────────
+# `radio/` non è una pagina di questo sito: è la CARTELLA SORGENTE che
+# `scripts/pubblica.sh radio` carica su Cloudflare Pages. Sul disco ci sta
+# accanto per comodità, e resta lì — è git che non la deve prendere.
+#
+# Il motivo è che ha DUE uscite, e una la svuota:
+#   · su Pages parte con l'audio dentro  → radio-anima.pages.dev suona
+#   · da git partirebbe senza (le righe qui sopra lo escludono) → animagame.io
+#     avrebbe un player muto, e due case che divergono dal primo giorno
+#
+# Perciò animagame.io NON ospita la radio: ci MANDA. Il pulsante «Entra» di
+# index.html e strumenti.html punta a radio-anima.pages.dev. Una casa sola.
+#
+# In `radio/onda.json` il campo `base` vale `audio/` — è relativo, e funziona
+# perché su Pages l'audio sta accanto al player. Da git non ci sarebbe niente
+# accanto: ecco perché la cartella intera sta fuori, e non solo il suo audio.
+#
+# ⚠️ Se un giorno serve pubblicare audio da qui, NON si toglie questa riga:
+#    si discute prima. È la differenza fra una scelta e un incidente.
+radio/
+
+# ── Video: stesso ragionamento, moltiplicato ────────────────────────────────
+*.mp4
+*.mov
+*.webm
+
+# ── Roba di sistema e di lavoro ─────────────────────────────────────────────
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+
+# ── Segreti: non dovrebbero mai arrivare qui, ma la porta si chiude lo stesso
+.env
+.env.*
+*.pem
+*.key
+.dev.vars
