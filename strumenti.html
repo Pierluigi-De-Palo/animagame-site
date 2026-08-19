@@ -145,7 +145,7 @@
       <div class="stanza-lato">
         <p class="stanza-punti">verdetti emessi → in stanza<br>chiedi una verifica → <b>+ punti</b></p>
         <a class="btn" href="https://cyberboomer.io/braindance/">Entra</a>
-        <p class="stanza-nota">La stanza è qui; lo strumento sta traslocando dalla console.</p>
+        <p class="stanza-nota"><b>Lo strumento è vivo.</b> La tua richiesta entra in lista ed esce con un verdetto pubblicato, con le fonti in chiaro.<span id="bd-ultima"></span></p>
       </div>
     </div>
   </section>
@@ -161,7 +161,7 @@
       <div class="stanza-lato">
         <p class="stanza-punti">controlli fatti e condivisi → <b>+ punti</b></p>
         <a class="btn" href="https://cyberboomer.io/fake-checker/">Entra</a>
-        <p class="stanza-nota">La stanza è qui; lo strumento sta traslocando dalla console.</p>
+        <p class="stanza-nota"><b>Verifica ditte, prodotti e venditori. Non verifica persone.</b> Entri, chiedi, il verdetto si pubblica qui.</p>
       </div>
     </div>
   </section>
@@ -237,6 +237,30 @@
     <p class="footer-nota">Produci, condividi nel cerchio: il contatore fa il resto.</p>
   </footer>
 
+<script>
+// La data dell'ultima risposta NON si scrive a mano: si legge dai verdetti veri.
+// Una riga scritta a mano invecchia il giorno dopo e nessuno se ne accorge - e questa
+// riga esiste apposta per dimostrare che lo strumento e' vivo, quindi invecchiando
+// dimostrerebbe il contrario. Se il dato non arriva non si scrive niente: la frase
+// resta vera senza data, invece di mentire con una vecchia.
+(function(){
+  var box = document.getElementById("bd-ultima");
+  if (!box) return;
+  var MESI = ["gennaio","febbraio","marzo","aprile","maggio","giugno",
+              "luglio","agosto","settembre","ottobre","novembre","dicembre"];
+  fetch("https://cyberboomer.io/data/braindance.json")
+    .then(function(r){ return r.ok ? r.json() : Promise.reject(r.status); })
+    .then(function(d){
+      var date = (d.verdetti || []).map(function(v){ return v.data; }).filter(Boolean).sort();
+      var p = String(date[date.length - 1] || "").split("-");
+      if (p.length !== 3) return;
+      var m = MESI[parseInt(p[1],10) - 1];
+      if (!m) return;
+      box.textContent = " L\u2019ultima risposta \u00e8 del " + parseInt(p[2],10) + " " + m + ".";
+    })
+    .catch(function(){ /* niente data e' meglio di una data vecchia */ });
+})();
+</script>
 <!-- creato da ECHO, 2026-08-02, su direzione JUDY -->
 </body>
 </html>
