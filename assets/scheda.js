@@ -21,7 +21,9 @@
     { id: 'motto',     nome: 'Motto',               segnaposto: 'una riga che ti somiglia' },
     { id: 'cerchio',   nome: 'Cerchio',             segnaposto: 'chi ti ha portato dentro' },
     { id: 'luogo',     nome: 'Luogo',               segnaposto: 'dove giochi, come vuoi dirlo' },
-    { id: 'strumento', nome: 'Stanza preferita',    segnaposto: 'braindance, fake checker…' },
+    /* ⬜ NOME-DEFINITIVO: qui il segnaposto citava per nome due stanze che
+       oggi sono una sola e il cui nome è sotto revisione. Resta neutro. */
+    { id: 'strumento', nome: 'Stanza preferita',    segnaposto: 'le verifiche, la radio…' },
     { id: 'contatto',  nome: 'Contatto',            segnaposto: 'come raggiungerti (resta tuo)' }
   ];
 

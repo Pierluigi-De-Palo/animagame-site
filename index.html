@@ -243,13 +243,37 @@
   /* il trattino non è verde: il verde sono i punti veri, e qui non ce ne sono
      ancora. Un segnaposto colorato come un dato è un dato finto. */
   .contatore.spento { color: var(--muto); }
+
+  /* ── IL SOLCO ──
+     La banda sta DA SOLA fra la prima schermata e «la carta»: mai dietro al
+     testo, mai due per pagina. Il nero è il fondo, il verde è il passaggio. */
+  .solco {
+    max-width: 1080px;
+    margin: 0 auto;
+    aspect-ratio: 2.35 / 1;
+    background: #000;
+    border-top: 1px solid var(--linea);
+    border-bottom: 1px solid var(--linea);
+    touch-action: pan-y;
+  }
+  .solco-didascalia {
+    max-width: 1080px;
+    margin: .9rem auto 0;
+    padding: 0 1.5rem;
+    font-family: var(--font-mono);
+    font-size: .68rem;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: var(--muto);
+    text-align: center;
+  }
 </style>
 </head>
 <body>
 
   <!-- ═══ HERO ═══ -->
   <!-- Porta B della carta: chi arriva qui ha DIGITATO «> playanima.io», non scansionato.
-       La porta A (il QR → pagina di verifica di KIROSHI) dice «questa carta è autentica»
+       La porta A (il QR → la pagina che verifica la carta) dice «questa carta è autentica»
        ed è registro freddo: qui non si ripete, si accoglie. -->
   <section class="hero">
     <div class="hero-inner">
@@ -268,21 +292,32 @@
     </div>
   </section>
 
-  <!-- ═══ IL SOLCO — pronto, NON acceso ═══
-       Regalo di JUDY (`JUDY/regalo/solco.js`), assegnato al gioco dal Direttore il 10/08.
-       `assets/solco.js` è la COPIA ESATTA della sorgente (sha1 3f6ae05e…), mai riscritta.
-       ⛔ La banda NON è in pagina, e la ragione è una sola: **nessuno l'ha ancora vista
-       muoversi.** JUDY l'ha chiesto come prima riga del lavoro; nel mio pannello browser
-       la pagina è servita `hidden`, quindi `requestAnimationFrame` è congelato — e in
-       `solco.js` `misura()` viene chiamata SOLO da lì (righe 109, 181, 192). Risultato
-       misurato: canvas fermo a 300×150, zero pixel accesi, banda nera.
-       Non prova che il file sia rotto: prova che qui non è verificabile.
-       👉 Si apre `ECHO/PROVA-IL-SOLCO.html` in Brave. Se si muove, si accende con
-       DUE RIGHE, qui e in fondo:
-         <div data-solco="#38E08A" style="aspect-ratio:2.35/1;background:#000;max-width:1080px;margin:0 auto"></div>
-         <script src="assets/solco.js"></script>
-       Posto scelto: QUI, fra la prima schermata e «la carta» — la soglia fra «sei
+  <!-- ═══ IL SOLCO — ACCESO il 30/08 ═══
+       Regalo di JUDY, assegnato al gioco dal Direttore il 10/08. Restato spento
+       venti giorni per una ragione giusta: **nessuno l'aveva visto muoversi.**
+       Ora è stato visto, in Chromium, alle larghezze vere — e prima di vederlo
+       si è scoperto perché non andava acceso com'era:
+
+         · la sbiadita non sbiadiva (`destination-out` a 0.018 su canvas 8 bit
+           si blocca ad alpha 25/255): l'inchiostro saliva e basta, 4,5% a 5s →
+           49,6% a 90s su 390px, contro un tetto di casa del 10%;
+         · `unaPassata()` — la versione per chi ha chiesto meno movimento —
+           attraversava dal 5% al 34% della banda e si fermava lì;
+         · il default del colore era #F2E205, il giallo dell'agenzia.
+
+       Tutte e tre riparate in `assets/solco.js` (JUDY, 30/08). Collaudo in
+       Chromium headless, 100s a 390/768/1280/1440px, sempre a 60fps:
+         · l'inchiostro SI ASSESTA e ci resta — 390px 2,91% (15s) · 3,52% (90s)
+           · 3,31% (100s); le tre larghezze maggiori fra 1,3% e 1,5%;
+         · la passata ferma attraversa il 100% della banda (era 5–34%);
+         · col dito addosso per 60s il picco è 5,46%, contro un tetto del 10%.
+       La vita di un cingolo si ricava dalla banda, così il solco è lungo uguale
+       ovunque: a secondi fissi il telefono si riempiva (3,7%) e il desktop
+       restava spoglio (0,6%), e la stessa banda raccontava due cose diverse.
+       Posto: QUI, fra la prima schermata e «la carta» — la soglia fra «sei
        arrivato» e «ecco il patto». Una sola per pagina, mai dietro al testo. -->
+  <div class="solco" data-solco="#38E08A"></div>
+  <p class="solco-didascalia">qualcosa è passato di qui</p>
 
   <!-- ═══ LA CARTA ═══ -->
   <!-- Le due porte della tessera. Regola SQUELCH 06/08: se raccontano la stessa cosa,
@@ -327,18 +362,19 @@
     <p class="etichetta">le stanze</p>
     <div class="griglia-strumenti">
 
+      <!-- ⬜ NOME-DEFINITIVO · qui c'erano DUE card di verifica, e mandavano
+           il giocatore a scegliere lo sportello prima di sapere cosa aveva in
+           mano. Ordine del Direttore 30/08: una porta sola. Il titolo qui sotto
+           è un segnaposto neutro — il nome vero lo sceglie lui. -->
       <article class="card">
-        <div class="stato-riga"><h3>Braindance</h3><span class="stato">attiva</span></div>
-        <p>La stanza delle verifiche: affermazioni pubbliche lette a fondo,
-           verdetti con punteggio. Chiedere una verifica è un&rsquo;azione di gioco.</p>
-        <a class="btn" href="strumenti.html#braindance">Apri la stanza</a>
-      </article>
-
-      <article class="card">
-        <div class="stato-riga"><h3>Fake checker</h3><span class="stato">attiva</span></div>
-        <p>La stanza del dubbio rapido: un contenuto sospetto si controlla
-           prima di farlo girare.</p>
-        <a class="btn" href="strumenti.html#fake-checker">Apri la stanza</a>
+        <div class="stato-riga">
+          <h3 data-nome="segnaposto">La stanza delle verifiche</h3>
+          <span class="stato">attiva</span>
+        </div>
+        <p>Una porta sola. Ci porti dentro una cosa che gira — una frase, un&rsquo;immagine,
+           una ditta, un venditore — ed esci con un referto: verdetto, fonti in chiaro,
+           data. Chiedere una verifica è un&rsquo;azione di gioco.</p>
+        <a class="btn" href="verifiche.html">Apri la stanza</a>
       </article>
 
       <article class="card">
@@ -497,7 +533,10 @@
        l&rsquo;intelligenza artificiale. Il gioco è una delle cose che facciamo, non l&rsquo;insegna.</p>
   </footer>
 
+<script src="assets/solco.js" defer></script>
+
 <!-- creato da ECHO, 2026-08-01 · verde su nero su direzione JUDY, 2026-08-02
-     · voce della porta B e roster nuovo, ECHO 2026-08-06 (staffetta maglia 3) -->
+     · voce della porta B e roster nuovo, ECHO 2026-08-06 (staffetta maglia 3)
+     · il solco riparato e ACCESO col collaudo, JUDY 2026-08-30 -->
 </body>
 </html>

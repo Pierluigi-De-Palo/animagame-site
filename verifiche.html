@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- ⬜ NOME-DEFINITIVO · il <title> porta il nome della stanza. Oggi è un
+     segnaposto neutro: il nome vero lo sceglie il Direttore, non noi. -->
+<title>La stanza delle verifiche — ANIMA GAME</title>
+<meta name="description" content="La stanza delle verifiche di ANIMA GAME: una porta sola. Porti dentro una cosa che gira, esci con un referto.">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=Share+Tech+Mono&display=swap">
+<link rel="stylesheet" href="assets/stile.css">
+<style>
+  .testata {
+    max-width: 1080px; margin: 0 auto; padding: 1.6rem 1.5rem 0;
+    display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+  }
+  .testata a {
+    font-family: var(--font-mono); font-size: .75rem; letter-spacing: .15em;
+    text-transform: uppercase; color: var(--muto); text-decoration: none;
+    border-bottom: 1px solid var(--linea);
+  }
+  .testata a:hover, .testata a:focus-visible { color: var(--verde); border-color: var(--verde); }
+
+  .apertura {
+    max-width: 1080px; margin: 0 auto; padding: 3.2rem 1.5rem 0;
+    animation: salita .7s ease-out both;
+  }
+  .apertura h1 {
+    font-size: clamp(1.6rem, 4.5vw, 2.4rem); font-weight: 400; margin-bottom: .8rem;
+  }
+  .apertura h1 b { color: var(--verde); font-weight: 400; }
+  .apertura .sotto {
+    color: var(--muto); max-width: 58ch;
+    font-size: clamp(1rem, 2.2vw, 1.12rem); line-height: 1.75;
+  }
+  .apertura .sotto strong { color: var(--carta); }
+
+  /* ── LA REGOLA DURA ──
+     Una sola, e sta prima di tutto: chi entra deve sapere subito cosa NON
+     può portare dentro. Verde a sinistra, mai come fondale. */
+  .regola-dura {
+    max-width: 1080px; margin: 2.4rem auto 0; padding: 0 1.5rem;
+  }
+  .regola-dura div {
+    border-left: 2px solid var(--verde); padding: .2rem 0 .2rem 1.3rem;
+    max-width: 62ch;
+  }
+  .regola-dura p { color: var(--muto); font-size: 1.02rem; line-height: 1.7; }
+  .regola-dura strong { color: var(--carta); font-weight: 600; }
+
+  /* ── LA PIANTA DELLA STANZA ──
+     Mono = macchina: la pianta è un disegno tecnico, non una figura. Scorre
+     dentro il suo riquadro, così sul telefono la pagina non scivola di lato. */
+  .pianta-scatola { overflow-x: auto; padding-bottom: .6rem; }
+  .pianta {
+    font-family: var(--font-mono);
+    font-size: clamp(.6rem, 1.55vw, .82rem);
+    line-height: 1.65; color: var(--muto);
+    white-space: pre; display: inline-block; min-width: 0;
+  }
+  .pianta b { color: var(--verde); font-weight: 400; }
+  .pianta i { color: var(--carta); font-style: normal; }
+  .pianta-nota { margin-top: 1.2rem; color: var(--muto); max-width: 58ch; line-height: 1.75; }
+
+  /* ── I QUATTRO MOBILI DELLA STANZA ── */
+  .mobili { display: grid; grid-template-columns: 1fr; gap: 1.2rem; }
+  @media (min-width: 760px) { .mobili { grid-template-columns: 1fr 1fr; } }
+  .mobile-voce { background: var(--fondo); border: 1px solid var(--linea);
+                 border-radius: 10px; padding: 1.5rem 1.4rem; }
+  .mobile-voce h3 {
+    font-family: var(--font-mono); font-size: .78rem; letter-spacing: .24em;
+    text-transform: uppercase; color: var(--verde); margin-bottom: .7rem;
+  }
+  .mobile-voce p { color: var(--muto); line-height: 1.7; font-size: .99rem; }
+  .mobile-voce p + p { margin-top: .8rem; }
+  .mobile-voce strong { color: var(--carta); font-weight: 600; }
+
+  /* ── IL BANCO: la porta unica ── */
+  .banco {
+    max-width: 680px; background: var(--fondo); border: 1px solid var(--linea);
+    border-radius: 12px; padding: 1.8rem 1.6rem;
+  }
+  .banco label {
+    display: block; font-family: var(--font-mono); font-size: .68rem;
+    letter-spacing: .22em; text-transform: uppercase; color: var(--muto);
+    margin-bottom: .55rem;
+  }
+  .banco label .facolt { letter-spacing: .1em; text-transform: none; opacity: .75; }
+  .banco textarea, .banco input {
+    width: 100%; background: #0A0A0A; color: var(--carta);
+    font-family: var(--font-serif); font-size: 1.02rem; line-height: 1.6;
+    border: 1px solid var(--linea); border-radius: 8px; padding: .85rem .95rem;
+    resize: vertical;
+  }
+  .banco textarea:focus, .banco input:focus {
+    outline: none; border-color: var(--verde);
+  }
+  .banco textarea::placeholder, .banco input::placeholder { color: #5C5852; font-style: italic; }
+  .banco .campo + .campo { margin-top: 1.3rem; }
+  .banco .riga-azione {
+    margin-top: 1.6rem; display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;
+  }
+  .banco button { font: inherit; }
+  .esito {
+    margin-top: 1.4rem; padding-top: 1.3rem; border-top: 1px solid var(--linea);
+    color: var(--muto); line-height: 1.75; font-size: .98rem;
+  }
+  .esito[hidden] { display: none; }
+  .esito strong { color: var(--carta); font-weight: 600; }
+  .esito .rotta {
+    display: block; margin-top: .9rem; font-family: var(--font-mono);
+    font-size: .78rem; letter-spacing: .04em; color: var(--verde);
+    word-break: break-all;
+  }
+
+  /* ── IL REFERTO: l'anatomia di quello che si porta via ── */
+  .referto {
+    max-width: 680px; border: 1px solid var(--linea); border-radius: 12px;
+    background: var(--fondo); overflow: hidden;
+  }
+  .referto-testa {
+    padding: 1rem 1.4rem; border-bottom: 1px solid var(--linea);
+    font-family: var(--font-mono); font-size: .68rem; letter-spacing: .24em;
+    text-transform: uppercase; color: var(--muto);
+    display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+  }
+  .referto-testa b { color: var(--verde); font-weight: 400; }
+  .referto-riga {
+    display: grid; grid-template-columns: 1fr; gap: .25rem;
+    padding: 1rem 1.4rem; border-bottom: 1px solid var(--linea);
+  }
+  @media (min-width: 620px) {
+    .referto-riga { grid-template-columns: 11rem 1fr; gap: 1.2rem; align-items: baseline; }
+  }
+  .referto-riga:last-child { border-bottom: 0; }
+  .referto-riga .voce {
+    font-family: var(--font-mono); font-size: .68rem; letter-spacing: .18em;
+    text-transform: uppercase; color: var(--verde);
+  }
+  .referto-riga .spiega { color: var(--muto); line-height: 1.65; font-size: .99rem; }
+  .referto-riga .spiega b { color: var(--carta); font-weight: 600; }
+
+  /* ── LO SCAFFALE: vuoto e onesto ── */
+  .scaffale {
+    max-width: 680px; border: 1px dashed var(--linea); border-radius: 12px;
+    padding: 1.8rem 1.6rem; color: var(--muto); line-height: 1.75;
+  }
+  .scaffale strong { color: var(--carta); font-weight: 600; }
+  .scaffale .rotte {
+    margin-top: 1.2rem; padding-top: 1.2rem; border-top: 1px solid var(--linea);
+    font-family: var(--font-mono); font-size: .78rem; line-height: 2; color: var(--verde);
+    word-break: break-all;
+  }
+  .scaffale .rotte span { color: var(--muto); }
+
+  .coda { max-width: 640px; }
+  .coda p { color: var(--muto); line-height: 1.75; font-size: clamp(1rem, 2.2vw, 1.08rem); }
+  .coda p + p { margin-top: 1.1rem; }
+  .coda strong { color: var(--carta); font-weight: 600; }
+  .coda a { color: var(--verde); text-decoration: none; border-bottom: 1px solid var(--linea); }
+  .coda a:hover, .coda a:focus-visible { border-color: var(--verde); }
+</style>
+</head>
+<body>
+
+  <header class="testata">
+    <span class="marca">&#9673; Anima Game</span>
+    <a href="strumenti.html">tutte le stanze</a>
+  </header>
+
+  <!-- ⬜ NOME-DEFINITIVO · l'<h1> è il cartello sulla porta. «La stanza delle
+       verifiche» è un segnaposto neutro e descrive la funzione: si può leggere
+       oggi senza impegnare nessuno. Quando il Direttore sceglie il nome, si
+       cambia QUI, nel <title>, nella riga di `strumenti.html`, nella card di
+       `index.html` e nel segnaposto di `assets/scheda.js`. Cinque punti, tutti
+       marcati NOME-DEFINITIVO: `grep -rn NOME-DEFINITIVO`. -->
+  <section class="apertura">
+    <h1 data-nome="segnaposto">La stanza delle <b>verifiche</b>.</h1>
+    <p class="sotto">Porti dentro <strong>una cosa che gira</strong> — una frase, un&rsquo;immagine,
+       il nome di una ditta, un venditore che promette troppo. Esci con un
+       <strong>referto</strong>: cosa è stato controllato, cosa ne è uscito, e le fonti
+       in chiaro. Poi decidi tu se metterlo nel cerchio o tenertelo.</p>
+  </section>
+
+  <div class="regola-dura">
+    <div>
+      <p><strong>Una regola sola, e non si tratta.</strong> Qui si verificano
+         <strong>voci pubbliche, ditte, prodotti, venditori</strong>. Mai persone private.
+         Una richiesta che punta a una persona non entra: non viene bocciata dopo,
+         <strong>non entra proprio</strong>.</p>
+    </div>
+  </div>
+
+  <!-- ═══ COME CI SI ENTRA — UNA PORTA SOLA ═══
+       Ordine del Direttore, 30/08: UNA porta di verifica, non due. «Se non è
+       chiaro, il giocatore sbaglierà.» Prima erano due stanze — una per le
+       affermazioni, una per i contenuti sospetti — e il giocatore doveva
+       indovinare a quale bussare PRIMA di sapere cosa aveva in mano.
+       Adesso c'è un banco solo: chi smista sta dietro, ed è affare nostro. -->
+  <section class="sezione" id="la-porta">
+    <p class="etichetta">come ci si entra</p>
+    <div class="mobili">
+
+      <article class="mobile-voce">
+        <h3>La porta</h3>
+        <p>Una sola, e la apre <strong>la carta</strong>. Non c&rsquo;è da scegliere
+           quale verifica chiedere: quella scelta l&rsquo;abbiamo tolta di mezzo,
+           perché era nostra e la stavamo facendo fare a te.</p>
+        <p>Tu porti dentro una cosa. Basta.</p>
+      </article>
+
+      <article class="mobile-voce">
+        <h3>Il banco</h3>
+        <p>È dove appoggi quello che hai in mano. <strong>Un riquadro, una riga
+           per dire dove l&rsquo;hai vista</strong>, e la richiesta è depositata:
+           prende un numero e resta tua.</p>
+        <p>Il numero è quello della <strong>carta</strong>, mai il nome.</p>
+      </article>
+
+      <article class="mobile-voce">
+        <h3>Il retro</h3>
+        <p>Dietro il banco la richiesta viene <strong>smistata</strong>: alcune si
+           chiudono in fretta, altre vanno sul tavolo lungo. Da fuori non cambia
+           niente — <strong>è una porta sola anche quando i tavoli sono due</strong>.</p>
+        <p>Come si smista è affare nostro, non tuo.</p>
+      </article>
+
+      <article class="mobile-voce">
+        <h3>Lo scaffale</h3>
+        <p>I referti che qualcuno ha messo nel cerchio stanno qui, aperti a chi
+           ha una carta. <strong>Leggerli è gratis</strong>; quello che frutta punti
+           è metterceli.</p>
+        <p>Un referto sullo scaffale non si toglie: le fonti restano.</p>
+      </article>
+
+    </div>
+
+    <div class="pianta-scatola" style="margin-top:2.6rem">
+<pre class="pianta" aria-hidden="true">   ┌─────────────────────────────────────────────────────────────┐
+   │                                                             │
+ ──┤ <b>▮ LA PORTA</b>   una sola · la apre la carta                    │
+   │      │                                                      │
+   │      ▼                                                      │
+   │    <i>IL BANCO</i> ────── la tua cosa ──────▶ <i>IL RETRO</i>             │
+   │    quello che porti tu                     │  si smista     │
+   │                                            │  qui           │
+   │                                            ▼                │
+   │                                       <b>IL REFERTO</b>            │
+   │                                            │                │
+   │                        ┌───────────────────┤                │
+   │                        ▼                   ▼                │
+   │                   <i>te lo tieni</i>         <i>LO SCAFFALE</i>           │
+   │                        <i>0</i>           nel cerchio · <b>+10</b>        │
+   │                                                             │
+   └─────────────────────────────────────────────────────────────┘</pre>
+    </div>
+    <p class="pianta-nota">La stanza è tutta qui: si entra da sinistra con la carta,
+       si appoggia una cosa sul banco, la cosa passa dietro, torna un referto — e
+       l&rsquo;ultimo bivio è l&rsquo;unico che tocca a te.</p>
+  </section>
+
+  <!-- ═══ IL BANCO — la porta unica, in fase DEV ═══
+       ⛔ Nessuna richiesta parte davvero: la rotta non esiste ancora e l'impianto
+       è di SQUELCH. Il banco NON finge di spedire — dice che è chiuso, dice quale
+       rotta gli manca, e la bozza resta sul dispositivo (come la scheda in DEV).
+       Un bottone che ringrazia senza aver spedito niente è una bugia con l'aria
+       gentile: qui non si fa. -->
+  <section class="sezione" id="il-banco">
+    <p class="etichetta">il banco</p>
+    <form class="banco" id="banco" novalidate>
+      <div class="campo">
+        <label for="cosa">cosa hai in mano</label>
+        <textarea id="cosa" name="cosa" rows="4"
+          placeholder="la frase che gira, il prodotto che promette troppo, la voce che ti hanno girato…"></textarea>
+      </div>
+      <div class="campo">
+        <label for="dove">dove l&rsquo;hai vista <span class="facolt">(se lo sai)</span></label>
+        <input id="dove" name="dove" type="text" placeholder="un indirizzo, un canale, «me l&rsquo;ha girata qualcuno»">
+      </div>
+      <div class="riga-azione">
+        <button class="btn" type="submit">Porta al banco</button>
+        <span class="pill spenta">banco chiuso &middot; fase DEV</span>
+      </div>
+      <p class="esito" id="esito" hidden role="status"></p>
+    </form>
+  </section>
+
+  <!-- ═══ IL REFERTO — cosa si porta via ═══
+       L'anatomia, non un esempio finto: nessun verdetto inventato in pagina.
+       Il punteggio del referto (quanto regge) lo decide lo strumento, non questa
+       pagina: qui si dice che c'è e dove sta, non quanto vale. -->
+  <section class="sezione" id="il-referto">
+    <p class="etichetta">cosa si porta via</p>
+    <div class="referto">
+      <div class="referto-testa">
+        <span>referto &middot; <b>com&rsquo;è fatto</b></span>
+        <span>carta &#8470; &mdash; &middot; mai il nome</span>
+      </div>
+      <div class="referto-riga">
+        <span class="voce">la cosa</span>
+        <span class="spiega">Quello che hai portato, <b>parola per parola</b>. Non riassunto,
+          non ripulito: se cambia la frase cambia la verifica.</span>
+      </div>
+      <div class="referto-riga">
+        <span class="voce">il verdetto</span>
+        <span class="spiega">Cosa ne è uscito, scritto in modo che si capisca <b>senza
+          essere del mestiere</b> — e col punteggio che lo strumento gli dà.</span>
+      </div>
+      <div class="referto-riga">
+        <span class="voce">le fonti</span>
+        <span class="spiega">In chiaro, apribili una per una. <b>Un verdetto senza fonti
+          non esce dalla stanza</b>: è la differenza fra una verifica e un&rsquo;opinione.</span>
+      </div>
+      <div class="referto-riga">
+        <span class="voce">la data</span>
+        <span class="spiega">Quando è stato controllato. Una cosa vera a marzo può
+          essere falsa a settembre, e <b>il referto lo dice da solo</b>.</span>
+      </div>
+      <div class="referto-riga">
+        <span class="voce">il bivio</span>
+        <span class="spiega"><b>Nel cerchio</b> o <b>te lo tieni</b>. È l&rsquo;unica decisione
+          che la stanza lascia a te, e da lì in poi il conto si fa da sé:
+          <a href="index.html#punteggio" style="color:var(--verde);text-decoration:none;border-bottom:1px solid var(--linea)">le quattro righe</a>.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ I DUE LIVELLI ═══
+       Parole del Direttore, 30/08: la sua console tiene «versioni potenziate
+       degli stessi strumenti» che avranno i giocatori. Non due prodotti: lo
+       stesso strumento, due livelli. Qui si dice al giocatore che il secondo
+       livello esiste e che ci arriva la SUA richiesta — senza mandarlo a
+       bussare da nessuna parte: quella porta non è sua, e non lo sarà. -->
+  <section class="sezione" id="due-livelli">
+    <p class="etichetta">lo stesso strumento, due livelli</p>
+    <div class="coda">
+      <p><strong>Lo strumento della stanza è uno solo, e ha una marcia in più
+         che tu non devi guidare.</strong> Le richieste che si chiudono con quello
+         che c&rsquo;è in chiaro escono di qui. Quelle che non si chiudono
+         <strong>salgono di livello</strong> — stesso strumento, tirato più forte — e
+         il referto <strong>torna qui</strong>, nella tua stanza, con le stesse cinque voci.</p>
+      <p>Non c&rsquo;è una versione «vera» altrove e una versione ridotta per i
+         giocatori: <strong>c&rsquo;è un attrezzo con due marce</strong>, e quale marcia
+         serva alla tua richiesta lo decide il banco. Non ti verrà mai chiesto
+         di sceglierla, e <strong>non ti verrà mai chiesto di andare a cercarla da
+         un&rsquo;altra parte</strong>.</p>
+      <p>Quando qualcuno, attorno al <a href="strumenti.html#falo">falò</a>, dice un
+         numero che non torna e si <strong>chiama la Torre di guardia</strong>, la
+         richiesta arriva a questo banco. E il verdetto torna dentro il falò.</p>
+    </div>
+  </section>
+
+  <!-- ═══ LO SCAFFALE — vuoto, e lo dice ═══
+       ⛔ NON si legge da cyberboomer.io: quello è il banco privato del Direttore,
+       non una sorgente del gioco. La pagina precedente ci pescava dentro
+       (un `fetch` su `cyberboomer.io/data/…`) ed è stato tolto.
+       Qui si dichiara la rotta che servirebbe e ci si ferma: l'impianto è di
+       SQUELCH, e il contratto sta in `assets/config.js`.
+       Uno scaffale con referti finti sarebbe peggio di uno scaffale vuoto:
+       il primo giocatore che apre un verdetto inventato non torna. -->
+  <section class="sezione" id="lo-scaffale">
+    <p class="etichetta">i referti già usciti</p>
+    <div class="scaffale">
+      <p><strong>Lo scaffale è vuoto perché il gioco non è ancora cominciato,
+         non perché lo stiamo nascondendo.</strong> Qui andranno i referti che i
+         giocatori hanno messo nel cerchio: si aprono con la carta, si leggono
+         per intero, e portano il numero di chi li ha chiesti.</p>
+      <p style="margin-top:1rem">Non ci mettiamo dentro roba presa da altrove
+         per far numero. Quando SQUELCH accende le rotte qui sotto, lo scaffale
+         si riempie di referti veri — e non un minuto prima.</p>
+      <p class="rotte">
+        <span>servono, e non esistono ancora:</span><br>
+        GET&nbsp;&nbsp;/verifiche<br>
+        POST&nbsp;/verifiche<br>
+        GET&nbsp;&nbsp;/verifiche/{id}<br>
+        POST&nbsp;/verifiche/{id}/cerchio
+      </p>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-domini">
+      <a href="index.html">la home del gioco</a>
+      <span class="sep">&middot;</span>
+      <a href="strumenti.html">tutte le stanze</a>
+      <span class="sep">&middot;</span>
+      <a href="scheda.html">la tua scheda</a>
+    </div>
+    <p class="footer-nota">Si verificano voci pubbliche, ditte, prodotti, venditori.
+       Mai persone private.</p>
+  </footer>
+
+<script src="assets/config.js"></script>
+<script src="assets/verifiche.js" defer></script>
+<!-- creato da JUDY, 2026-08-30 — la prima stanza vera del gioco -->
+</body>
+</html>
