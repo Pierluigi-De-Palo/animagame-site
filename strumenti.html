@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Le stanze — ANIMA GAME</title>
-<meta name="description" content="Le stanze di ANIMA GAME: braindance, fake checker, meteo, radio. Gli strumenti sono il gioco.">
+<meta name="description" content="Le stanze di ANIMA GAME: verifiche, meteo, radio, il falò. Gli strumenti sono il gioco.">
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -128,40 +128,41 @@
        e il punteggio cresce da sé. Usandoli, alleni l&rsquo;anima che c&rsquo;è dietro.</p>
   </section>
 
-  <!-- Le due stanze attive incorniciano strumenti che oggi vivono ancora sulla
-       console (cyberboomer.io): quando la migrazione si fa con SQUELCH, si
-       aggiornano i due href qui sotto e niente altro. -->
-
-  <section class="stanza" id="braindance">
+  <!-- ═══ LA PORTA UNICA DELLE VERIFICHE ═══
+       Ordine del Direttore, 30/08: UNA porta di verifica invece di due —
+       «se non è chiaro, il giocatore sbaglierà». Qui c'erano due stanze
+       (affermazioni da una parte, contenuti sospetti dall'altra) e il
+       giocatore doveva scegliere PRIMA di sapere cosa aveva in mano: una
+       decisione nostra, scaricata su di lui. Adesso è un banco solo, e chi
+       smista sta dietro.
+       ⛔ I due «Entra» puntavano a cyberboomer.io — il banco privato del
+       Direttore, dove il giocatore non entrerà. Tolti: la stanza è in casa,
+       ed è `verifiche.html`.
+       ⬜ NOME-DEFINITIVO: «la stanza delle verifiche» è un segnaposto neutro.
+       Il nome vero lo sceglie il Direttore. Qui e nel <h2> qui sotto. -->
+  <section class="stanza" id="verifiche">
     <div class="stanza-corpo">
       <div>
-        <div class="stanza-testa"><h2>Braindance</h2><span class="stato">attiva</span></div>
-        <p class="stanza-desc">La stanza delle verifiche. Un&rsquo;affermazione pubblica
-           entra, viene letta a fondo, esce con un <strong>verdetto e un punteggio</strong>.
-           Puoi leggere i verdetti già emessi o <strong>chiedere una verifica</strong> tu:
-           è un&rsquo;azione di gioco. Una regola sola: si verificano voci pubbliche,
-           <strong>mai persone private</strong>.</p>
+        <div class="stanza-testa">
+          <h2 data-nome="segnaposto">La stanza delle verifiche</h2>
+          <span class="stato">attiva</span>
+        </div>
+        <p class="stanza-desc">Una porta sola. Ci porti dentro <strong>una cosa che
+           gira</strong> — una frase, un&rsquo;immagine, una ditta, un venditore che
+           promette troppo — e non devi indovinare a quale sportello bussare:
+           <strong>lo sportello è uno</strong>. Dietro il banco la richiesta viene
+           smistata, e questo è affare nostro.</p>
+        <p class="stanza-desc" style="margin-top:1rem">Esci con un <strong>referto</strong>:
+           la cosa parola per parola, il verdetto, <strong>le fonti in chiaro</strong>,
+           la data. Poi il bivio, che è l&rsquo;unica cosa che la stanza lascia a te:
+           lo metti nel cerchio, o te lo tieni.</p>
       </div>
       <div class="stanza-lato">
-        <p class="stanza-punti">verdetti emessi → in stanza<br>chiedi una verifica → <b>+ punti</b></p>
-        <a class="btn" href="https://cyberboomer.io/braindance/">Entra</a>
-        <p class="stanza-nota"><b>Lo strumento è vivo.</b> La tua richiesta entra in lista ed esce con un verdetto pubblicato, con le fonti in chiaro.<span id="bd-ultima"></span></p>
-      </div>
-    </div>
-  </section>
-
-  <section class="stanza" id="fake-checker">
-    <div class="stanza-corpo">
-      <div>
-        <div class="stanza-testa"><h2>Fake checker</h2><span class="stato">attiva</span></div>
-        <p class="stanza-desc">La stanza del dubbio rapido. Un contenuto sospetto —
-           un&rsquo;immagine, una voce che gira — si <strong>controlla prima di farlo girare</strong>.
-           Meno rumore in circolo, più punti a chi lo ferma.</p>
-      </div>
-      <div class="stanza-lato">
-        <p class="stanza-punti">controlli fatti e condivisi → <b>+ punti</b></p>
-        <a class="btn" href="https://cyberboomer.io/fake-checker/">Entra</a>
-        <p class="stanza-nota"><b>Verifica ditte, prodotti e venditori. Non verifica persone.</b> Entri, chiedi, il verdetto si pubblica qui.</p>
+        <p class="stanza-punti">leggere i referti → in stanza<br>chiedere una verifica → <b>+ punti</b></p>
+        <a class="btn" href="verifiche.html">Entra</a>
+        <p class="stanza-nota"><b>Si verificano voci pubbliche, ditte, prodotti,
+           venditori. Mai persone private.</b> Lo scaffale è ancora vuoto: si riempie
+           di referti veri, non di roba presa altrove.</p>
       </div>
     </div>
   </section>
@@ -237,30 +238,17 @@
     <p class="footer-nota">Produci, condividi nel cerchio: il contatore fa il resto.</p>
   </footer>
 
-<script>
-// La data dell'ultima risposta NON si scrive a mano: si legge dai verdetti veri.
-// Una riga scritta a mano invecchia il giorno dopo e nessuno se ne accorge - e questa
-// riga esiste apposta per dimostrare che lo strumento e' vivo, quindi invecchiando
-// dimostrerebbe il contrario. Se il dato non arriva non si scrive niente: la frase
-// resta vera senza data, invece di mentire con una vecchia.
-(function(){
-  var box = document.getElementById("bd-ultima");
-  if (!box) return;
-  var MESI = ["gennaio","febbraio","marzo","aprile","maggio","giugno",
-              "luglio","agosto","settembre","ottobre","novembre","dicembre"];
-  fetch("https://cyberboomer.io/data/braindance.json")
-    .then(function(r){ return r.ok ? r.json() : Promise.reject(r.status); })
-    .then(function(d){
-      var date = (d.verdetti || []).map(function(v){ return v.data; }).filter(Boolean).sort();
-      var p = String(date[date.length - 1] || "").split("-");
-      if (p.length !== 3) return;
-      var m = MESI[parseInt(p[1],10) - 1];
-      if (!m) return;
-      box.textContent = " L\u2019ultima risposta \u00e8 del " + parseInt(p[2],10) + " " + m + ".";
-    })
-    .catch(function(){ /* niente data e' meglio di una data vecchia */ });
-})();
-</script>
-<!-- creato da ECHO, 2026-08-02, su direzione JUDY -->
+<!-- ⛔ Qui c'era uno <script> che leggeva la data dell'ultima risposta da
+     un file di dati sulla console (`cyberboomer.io/data/…`). Il pescaggio è tolto il
+     30/08: cyberboomer.io è il banco privato del Direttore, non una sorgente
+     del gioco, e questa pagina è pubblica due volte (sito + raw).
+     Il principio di quello script resta buono e vale ancora: una data scritta
+     a mano invecchia il giorno dopo e nessuno se ne accorge. Quando SQUELCH
+     accende `GET /verifiche` (contratto in `assets/config.js`), la riga torna
+     — letta dai referti veri del gioco. Fino ad allora non si scrive niente:
+     nessuna data è meglio di una data vecchia, e MOLTO meglio di una presa
+     dal banco sbagliato. -->
+<!-- creato da ECHO, 2026-08-02, su direzione JUDY
+     · le due porte di verifica diventano una, JUDY 2026-08-30 -->
 </body>
 </html>
