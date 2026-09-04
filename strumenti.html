@@ -71,6 +71,11 @@
     .stanza-corpo { grid-template-columns: 3fr 2fr; align-items: start; gap: 2rem; }
   }
   .stanza.spenta .stanza-corpo { border-style: dashed; }
+  /* Vero e funzionante, ma non ancora di casa qui: verde (funziona) + bordo
+     tratteggiato (non ha ancora la sua stanza nel cerchio). Stessa regola di
+     index.html (JUDY, 2026-09-04); estesa qui da D.R.A.G.O. lo stesso giorno. */
+  .stato.altrove { border-style: dashed; }
+  .stanza.altrove .stanza-corpo { border-style: dashed; }
   .stanza-testa {
     display: flex;
     align-items: center;
@@ -167,16 +172,21 @@
     </div>
   </section>
 
-  <section class="stanza spenta" id="meteo">
+  <!-- Era "in arrivo": falso dal 19/08, il motore (AURA) è online. Non ha ancora
+       una stanza sua qui dentro, quindi non è "attiva" come le altre: è vera e
+       funziona altrove. Nessun indirizzo cyberboomer.io ai giocatori: l'indirizzo
+       pubblico è quello dell'agenzia. Stessa correzione di index.html. -->
+  <section class="stanza altrove" id="meteo">
     <div class="stanza-corpo">
       <div>
-        <div class="stanza-testa"><h2>Meteo</h2><span class="stato spento">in arrivo</span></div>
-        <p class="stanza-desc">La stanza del cielo. Il meteo del gioco esiste già
-           e funziona: sta <strong>cambiando nome</strong> per entrare qui con l&rsquo;abito giusto.</p>
+        <div class="stanza-testa"><h2>Meteo</h2><span class="stato altrove">attiva altrove</span></div>
+        <p class="stanza-desc">La stanza del cielo esiste e funziona gi&agrave;, ma non vive ancora qui:
+           gira su systema77.com, con l&rsquo;abito dell&rsquo;agenzia. Quando cambia
+           nome ed entra nel cerchio, questa stanza si accende qui.</p>
       </div>
       <div class="stanza-lato">
-        <p class="stanza-punti">in allestimento</p>
-        <span class="btn presto" aria-disabled="true">In arrivo</span>
+        <p class="stanza-punti">gira su systema77.com</p>
+        <a class="btn" href="https://systema77.com/meteo.html">Guardalo su systema77.com</a>
       </div>
     </div>
   </section>
