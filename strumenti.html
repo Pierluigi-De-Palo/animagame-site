@@ -74,6 +74,21 @@
   /* Vero e funzionante, ma non ancora di casa qui: verde (funziona) + bordo
      tratteggiato (non ha ancora la sua stanza nel cerchio). Stessa regola di
      index.html (JUDY, 2026-09-04); estesa qui da D.R.A.G.O. lo stesso giorno. */
+  /* Il badge di stato non aveva NESSUNA regola in questa pagina: «attiva» e
+     «in arrivo» uscivano come testo nudo, nel font del corpo. Stesse regole di
+     index.html, così le due pagine dicono la stessa cosa nello stesso modo. */
+  .stato {
+    font-family: var(--font-mono);
+    font-size: .62rem;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--verde);
+    border: 1px solid var(--linea);
+    border-radius: 2px;
+    padding: .2rem .55rem;
+    white-space: nowrap;
+  }
+  .stato.spento { color: var(--muto); border-style: dashed; }
   .stato.altrove { border-style: dashed; }
   .stanza.altrove .stanza-corpo { border-style: dashed; }
   .stanza-testa {
