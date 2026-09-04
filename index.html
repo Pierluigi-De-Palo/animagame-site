@@ -98,6 +98,9 @@
     white-space: nowrap;
   }
   .stato.spento { color: var(--muto); border-style: dashed; }
+  /* Vero e funzionante, ma non ancora di casa qui: verde (funziona) + bordo
+     tratteggiato (non ha ancora la sua stanza nel cerchio). JUDY, 2026-09-04. */
+  .stato.altrove { border-style: dashed; }
 
   /* ── GIOCATORI ── */
   .griglia-giocatori {
@@ -377,11 +380,16 @@
         <a class="btn" href="verifiche.html">Apri la stanza</a>
       </article>
 
+      <!-- Era "in arrivo": falso dal 19/08, il motore (AURA) è online. Non ha
+           ancora una stanza sua qui dentro, quindi non è "attiva" come le altre:
+           è vera e funziona altrove. Nessun indirizzo cyberboomer.io ai giocatori:
+           l'indirizzo pubblico è quello dell'agenzia. JUDY, 2026-09-04. -->
       <article class="card">
-        <div class="stato-riga"><h3>Meteo</h3><span class="stato spento">in arrivo</span></div>
-        <p>La stanza del cielo: il meteo del gioco.
-           Sta cambiando nome per entrare qui.</p>
-        <a class="btn presto" aria-disabled="true">In arrivo</a>
+        <div class="stato-riga"><h3>Meteo</h3><span class="stato altrove">attiva altrove</span></div>
+        <p>La stanza del cielo esiste e funziona gi&agrave;, ma non vive ancora qui:
+           gira su systema77.com, con l&rsquo;abito dell&rsquo;agenzia. Quando cambia
+           nome ed entra nel cerchio, questa card si accende con la sua stanza vera.</p>
+        <a class="btn" href="https://systema77.com/meteo.html">Guardalo su systema77.com</a>
       </article>
 
       <article class="card">
