@@ -270,7 +270,7 @@
         dillo('<strong>La stanza è ancora in arrivo, e la tua occhiata non è partita.</strong> ' +
               'Resta <strong>sul tuo dispositivo</strong>, e la ritrovi qui quando torni. ' +
               'Manca l&rsquo;impianto dietro il banco:' +
-              '<span class="rotta">POST ' + (ROTTE.OSSERVAZIONE || '/aura/osservazione') + '</span>');
+              '<span class="rotta">' + (ROTTE.OSSERVAZIONE || '/aura/osservazione') + '</span>');
         return;
       }
 
