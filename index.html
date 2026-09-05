@@ -392,6 +392,17 @@
         <a class="btn" href="https://systema77.com/meteo.html">Guardalo su systema77.com</a>
       </article>
 
+      <!-- Stanza «guarda fuori» (nome di lavoro) — parole di ECHO, AURA/PAROLE-AURA-2077.md §g.
+           Stato di default: in arrivo (AURA.ACCESE è false in assets/config.js). Uno script
+           in fondo alla pagina la accende quando il backend risponde: un solo punto da
+           cambiare (config.js). ⛔ Nessun numero di punti in chiaro. -->
+      <article class="card">
+        <div class="stato-riga"><h3>Guarda fuori</h3><span class="stato spento" id="guarda-fuori-stato">in arrivo</span></div>
+        <p>Guardi fuori un minuto e dici che cielo vedi: aiuti AURA a capire chi, fra i tre
+           modelli, ha ragione nel tuo posto. Vale punti, ogni giorno.</p>
+        <span class="btn presto" id="guarda-fuori-btn" aria-disabled="true">In arrivo</span>
+      </article>
+
       <article class="card">
         <div class="stato-riga"><h3>Radio</h3><span class="stato">attiva</span></div>
         <p>La stanza del suono: suona solo musica nostra, con diritti chiari.
@@ -541,10 +552,31 @@
        l&rsquo;intelligenza artificiale. Il gioco è una delle cose che facciamo, non l&rsquo;insegna.</p>
   </footer>
 
+<!-- Accende la card «guarda fuori» SOLO se il backend esiste ed è dichiarato
+     acceso in assets/config.js — stesso degrado onesto delle altre stanze. -->
+<script src="assets/config.js"></script>
+<script>
+(function () {
+  var CFG = window.AnimaConfig || {};
+  var AURA = CFG.AURA || {};
+  if (!(CFG.BACKEND_URL && AURA.ACCESE)) return;
+  var stato = document.getElementById('guarda-fuori-stato');
+  if (stato) { stato.textContent = 'attiva'; stato.classList.remove('spento'); }
+  var bottone = document.getElementById('guarda-fuori-btn');
+  if (bottone) {
+    var a = document.createElement('a');
+    a.className = 'btn';
+    a.href = 'guarda-fuori.html';
+    a.textContent = 'Entra';
+    bottone.replaceWith(a);
+  }
+})();
+</script>
 <script src="assets/solco.js" defer></script>
 
 <!-- creato da ECHO, 2026-08-01 · verde su nero su direzione JUDY, 2026-08-02
      · voce della porta B e roster nuovo, ECHO 2026-08-06 (staffetta maglia 3)
-     · il solco riparato e ACCESO col collaudo, JUDY 2026-08-30 -->
+     · il solco riparato e ACCESO col collaudo, JUDY 2026-08-30
+     · stanza «guarda fuori» (nome di lavoro) e accensione condizionale, JUDY 2026-09-04 -->
 </body>
 </html>
