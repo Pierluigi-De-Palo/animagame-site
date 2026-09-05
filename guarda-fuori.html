@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- «Guarda fuori» è il nome DI LAVORO della stanza (ECHO, AURA/PAROLE-AURA-2077.md
+     §g): il nome vero lo sceglie il Direttore, come per la stanza delle verifiche. -->
+<title>Guarda fuori — ANIMA GAME</title>
+<meta name="description" content="La stanza di ANIMA GAME dove guardi il cielo vero un minuto e lo dici ad AURA.">
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=Share+Tech+Mono&display=swap">
+<link rel="stylesheet" href="assets/stile.css">
+<style>
+  .testata {
+    max-width: 1080px; margin: 0 auto; padding: 1.6rem 1.5rem 0;
+    display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+  }
+  .testata a {
+    font-family: var(--font-mono); font-size: .75rem; letter-spacing: .15em;
+    text-transform: uppercase; color: var(--muto); text-decoration: none;
+    border-bottom: 1px solid var(--linea);
+  }
+  .testata a:hover, .testata a:focus-visible { color: var(--verde); border-color: var(--verde); }
+
+  .apertura {
+    max-width: 1080px; margin: 0 auto; padding: 3.2rem 1.5rem 0;
+    animation: salita .7s ease-out both;
+  }
+  .apertura h1 { font-size: clamp(1.6rem, 4.5vw, 2.4rem); font-weight: 400; margin-bottom: .8rem; }
+  .apertura h1 b { color: var(--verde); font-weight: 400; }
+  .apertura .sotto {
+    color: var(--muto); max-width: 58ch;
+    font-size: clamp(1rem, 2.2vw, 1.12rem); line-height: 1.75;
+  }
+
+  /* ── il riquadro d'ingresso: si vede solo quando la stanza è accesa
+     e manca ancora un token ── */
+  .riquadro {
+    max-width: 30rem; background: var(--fondo); border: 1px solid var(--linea);
+    border-radius: 12px; padding: 1.8rem 1.6rem;
+  }
+  .riquadro h2 {
+    font-family: var(--font-mono); font-size: .82rem; letter-spacing: .2em;
+    text-transform: uppercase; color: var(--verde); font-weight: 400; margin-bottom: .6rem;
+  }
+  .riquadro-sotto { color: var(--muto); font-size: .95rem; line-height: 1.65; margin-bottom: 1.3rem; }
+  .riquadro label {
+    display: block; font-family: var(--font-mono); font-size: .68rem;
+    letter-spacing: .22em; text-transform: uppercase; color: var(--muto); margin-bottom: .5rem;
+  }
+  .riquadro input {
+    width: 100%; background: #0A0A0A; color: var(--carta);
+    font-family: var(--font-serif); font-size: 1.02rem; line-height: 1.6;
+    border: 1px solid var(--linea); border-radius: 8px; padding: .75rem .9rem;
+  }
+  .riquadro input:focus { outline: none; border-color: var(--verde); }
+  .riquadro input::placeholder { color: var(--muto); font-style: italic; } /* #5C5852 faceva 2,8:1 sul nero; il muto fa 5,8:1 (collaudo 04/09) */
+  .riquadro .campo + .campo { margin-top: 1.1rem; }
+  .riquadro .riga-azione { margin-top: 1.4rem; }
+  .errore { margin-top: 1rem; color: var(--muto); font-size: .92rem; }
+  .errore:empty { display: none; }
+
+  /* ── la stanza vera ── */
+  .avviso {
+    max-width: 680px; border: 1px dashed var(--linea); border-radius: 12px;
+    padding: 1.6rem 1.5rem; color: var(--muto); line-height: 1.75; margin-bottom: 2.4rem;
+  }
+  .avviso strong { color: var(--carta); font-weight: 600; }
+
+  .minuto { max-width: 640px; }
+  .minuto p { color: var(--muto); line-height: 1.75; font-size: clamp(1rem, 2.2vw, 1.1rem); }
+  #durante-minuto { text-align: center; }
+  .cronometro-numero {
+    font-family: var(--font-mono); font-size: clamp(3rem, 10vw, 5rem);
+    color: var(--verde); line-height: 1;
+  }
+  .cronometro-unita {
+    display: block; font-family: var(--font-mono); font-size: .68rem;
+    letter-spacing: .25em; text-transform: uppercase; color: var(--muto); margin-top: .6rem;
+  }
+  .nota-cronometro { margin-top: 1rem; font-style: italic; }
+
+  .banco { max-width: 680px; }
+  .banco .campo { margin-bottom: 1.5rem; }
+  .etichetta-scelta {
+    font-family: var(--font-mono); font-size: .68rem; letter-spacing: .22em;
+    text-transform: uppercase; color: var(--muto); margin-bottom: .7rem;
+  }
+  .gruppo-scelte { display: flex; flex-wrap: wrap; gap: .6rem; }
+  .scelta {
+    font: inherit; font-family: var(--font-mono); font-size: .82rem; letter-spacing: .05em;
+    text-transform: uppercase; color: var(--carta); background: transparent;
+    border: 1px solid var(--linea); border-radius: 6px; padding: .55rem 1.05rem; cursor: pointer;
+  }
+  .scelta:hover { border-color: var(--verde); }
+  .scelta.selezionato { border-color: var(--verde); background: var(--verde); color: var(--nero); }
+  .scelta:focus-visible { outline: 2px solid var(--verde); outline-offset: 2px; }
+
+  .banco label {
+    display: block; font-family: var(--font-mono); font-size: .68rem;
+    letter-spacing: .22em; text-transform: uppercase; color: var(--muto); margin-bottom: .55rem;
+  }
+  .banco input {
+    width: 100%; background: #0A0A0A; color: var(--carta);
+    font-family: var(--font-serif); font-size: 1.02rem; line-height: 1.6;
+    border: 1px solid var(--linea); border-radius: 8px; padding: .75rem .9rem;
+  }
+  .banco input:focus { outline: none; border-color: var(--verde); }
+  .banco input::placeholder { color: var(--muto); font-style: italic; } /* #5C5852 faceva 2,8:1 sul nero; il muto fa 5,8:1 (collaudo 04/09) */
+
+  .esito {
+    margin-top: 1.4rem; padding-top: 1.3rem; border-top: 1px solid var(--linea);
+    color: var(--muto); line-height: 1.75; font-size: .98rem;
+  }
+  .esito[hidden] { display: none; }
+  .esito strong { color: var(--carta); font-weight: 600; }
+  .esito ul { margin-top: .8rem; padding-left: 1.2rem; }
+  .esito .rotta {
+    display: block; margin-top: .9rem; font-family: var(--font-mono);
+    font-size: .78rem; letter-spacing: .04em; color: var(--verde); word-break: break-all;
+  }
+</style>
+</head>
+<body>
+
+  <header class="testata">
+    <span class="marca">&#9673; Anima Game</span>
+    <a href="strumenti.html">tutte le stanze</a>
+  </header>
+
+  <section class="apertura">
+    <h1>Guarda <b>fuori</b>.</h1>
+    <p class="sotto">Lascia il computer un minuto. Guarda il cielo vero, quello sopra la tua
+       testa — e dillo ad AURA. Ogni occhiata onesta insegna al motore quale dei tre modelli
+       ha ragione, nel tuo posto.</p>
+  </section>
+
+  <!-- ═══ RIENTRA CON LA TUA CARTA ═══
+       Si vede SOLO se la stanza è accesa (BACKEND_URL + AURA.ACCESE) e manca un
+       token: senza backend acceso il concetto di sessione non ha senso, e la
+       stanza si mostra direttamente in modalità degrado (vedi #degrado sotto). -->
+  <section class="sezione" id="porta">
+    <div class="riquadro" id="entra" hidden>
+      <h2>Rientra con la tua carta</h2>
+      <p class="riquadro-sotto">Il numero è quello della tua carta; il codice è quello
+         stampato dietro — lo legge solo chi ce l&rsquo;ha in mano.</p>
+      <form id="entra-form" novalidate>
+        <div class="campo">
+          <label for="entra-carta">carta</label>
+          <input id="entra-carta" name="carta" type="text" autocomplete="off" placeholder="il numero della tua carta">
+        </div>
+        <div class="campo">
+          <label for="entra-codice">codice</label>
+          <input id="entra-codice" name="codice" type="text" autocomplete="off" placeholder="il codice stampato dietro">
+        </div>
+        <div class="riga-azione">
+          <button class="btn" type="submit">Entra</button>
+        </div>
+        <p class="errore" id="errore-entra" role="alert"></p>
+      </form>
+    </div>
+
+    <!-- ═══ LA STANZA ═══ -->
+    <div id="stanza" hidden>
+
+      <!-- degrado onesto: la stanza esiste ma il Worker non risponde ancora -->
+      <div class="avviso" id="degrado" hidden>
+        <p><strong>La stanza dove il gioco guarderà il cielo vero, ancora in allestimento.</strong>
+           Quando si accende: lasci lo schermo un minuto, guardi fuori, e dici che cielo
+           vedi — aiuti AURA a imparare quale modello ha ragione nel tuo posto.</p>
+        <p style="margin-top: .9rem">Non sarà un compito, sarà un&rsquo;occhiata. E conta solo
+           se è vera: il cielo non si inventa da dietro un monitor.</p>
+      </div>
+
+      <!-- fase 1: l'invito al minuto -->
+      <div class="minuto" id="fase-invito">
+        <div id="pre-minuto">
+          <p>Alzati e vai a una finestra — se puoi, esci. Guarda il cielo per un minuto:
+             com&rsquo;è, se piove o sta per piovere, se tira vento. Poi torna qui e dicci
+             in tre mosse quello che hai visto: il cielo, il vento e — se vuoi — una riga
+             su cosa hai davanti. Niente foto, niente misure: basta l&rsquo;occhio.</p>
+          <p style="margin-top: 1.3rem"><button class="btn" id="vai" type="button">Vai</button></p>
+        </div>
+        <div id="durante-minuto" hidden>
+          <div class="cronometro-numero" id="conto" aria-live="polite">60</div>
+          <span class="cronometro-unita">secondi</span>
+          <p class="nota-cronometro">Non serve restare su questa pagina: guarda il cielo, poi torna qui.</p>
+        </div>
+      </div>
+
+      <!-- fase 2: le scelte, al ritorno -->
+      <form class="banco" id="osservazione" hidden novalidate>
+        <div class="campo">
+          <p class="etichetta-scelta">cielo</p>
+          <div class="gruppo-scelte" role="group" aria-label="cielo">
+            <button type="button" class="scelta scelta-cielo" data-valore="sereno" aria-pressed="false">Sereno</button>
+            <button type="button" class="scelta scelta-cielo" data-valore="velato" aria-pressed="false">Velato</button>
+            <button type="button" class="scelta scelta-cielo" data-valore="coperto" aria-pressed="false">Coperto</button>
+            <button type="button" class="scelta scelta-cielo" data-valore="nebbia" aria-pressed="false">Nebbia</button>
+            <button type="button" class="scelta scelta-cielo" data-valore="pioggia" aria-pressed="false">Pioggia</button>
+            <button type="button" class="scelta scelta-cielo" data-valore="temporale" aria-pressed="false">Temporale</button>
+            <button type="button" class="scelta scelta-cielo" data-valore="neve" aria-pressed="false">Neve</button>
+            <button type="button" class="scelta scelta-cielo" data-valore="vento" aria-pressed="false">Vento</button>
+          </div>
+        </div>
+
+        <div class="campo">
+          <p class="etichetta-scelta">vento</p>
+          <div class="gruppo-scelte" role="group" aria-label="vento">
+            <button type="button" class="scelta scelta-vento" data-valore="calmo" aria-pressed="false">Calmo</button>
+            <button type="button" class="scelta scelta-vento" data-valore="brezza" aria-pressed="false">Brezza</button>
+            <button type="button" class="scelta scelta-vento" data-valore="forte" aria-pressed="false">Forte</button>
+          </div>
+        </div>
+
+        <div class="campo">
+          <label for="testo">Cosa vedi, in una riga (max 140 caratteri)</label>
+          <input id="testo" name="testo" type="text" maxlength="140" placeholder="cosa hai davanti, se vuoi dirlo">
+        </div>
+
+        <div class="campo">
+          <label for="localita">il tuo posto</label>
+          <input id="localita" name="localita" type="text" list="localita-suggerimenti"
+                 autocomplete="off" placeholder="scrivi una città o una zona">
+          <datalist id="localita-suggerimenti"></datalist>
+        </div>
+
+        <div class="riga-azione">
+          <button class="btn" type="submit">Manda</button>
+        </div>
+
+        <p class="esito" id="esito" hidden role="status"></p>
+      </form>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-domini">
+      <a href="index.html">la home del gioco</a>
+      <span class="sep">&middot;</span>
+      <a href="strumenti.html">tutte le stanze</a>
+      <span class="sep">&middot;</span>
+      <a href="scheda.html">la tua scheda</a>
+    </div>
+    <p class="footer-nota">Non è un compito, è un&rsquo;occhiata: il cielo non si inventa da dietro un monitor.</p>
+  </footer>
+
+<script src="assets/config.js"></script>
+<script src="assets/sessione.js"></script>
+<script src="assets/guarda-fuori.js" defer></script>
+<!-- creato da JUDY, 2026-09-04 — parole di ECHO (AURA/PAROLE-AURA-2077.md §g) -->
+</body>
+</html>

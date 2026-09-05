@@ -206,6 +206,36 @@
     </div>
   </section>
 
+  <!-- Stanza «guarda fuori» (nome di lavoro) — parole di ECHO, AURA/PAROLE-AURA-2077.md §g.
+       Stato di default: in arrivo (AURA.ACCESE è false in assets/config.js). Lo script in
+       fondo alla pagina la accende quando il backend risponde davvero: un solo punto da
+       cambiare (config.js), qui non si tocca nulla a mano.
+       ⛔ Nessun numero di punti in chiaro — dottrina della home («non ce n'è una quinta»). -->
+  <section class="stanza spenta" id="guarda-fuori">
+    <div class="stanza-corpo">
+      <div>
+        <div class="stanza-testa"><h2>Guarda fuori</h2><span class="stato spento">in arrivo</span></div>
+        <p class="stanza-desc" data-stato="spenta">La stanza dove il gioco guarderà il cielo vero,
+           ancora in allestimento. Quando si accende: lasci lo schermo un minuto, guardi fuori,
+           e dici che cielo vedi — aiuti AURA a imparare quale modello ha ragione nel tuo posto.</p>
+        <p class="stanza-desc" data-stato="attiva" hidden>La stanza dove il gioco guarda il cielo
+           vero. Lasci lo schermo un minuto, ti affacci &mdash; o esci &mdash; e dici che cielo vedi
+           e che vento senti, nel tuo posto. AURA lo confronta con i tre modelli che prova ogni sera,
+           e impara chi ha ragione lì, non in generale.</p>
+        <p class="stanza-desc" data-stato="attiva" hidden style="margin-top:1rem">Non è un compito,
+           è un&rsquo;occhiata: un cielo, un vento, una riga se vuoi. Una al giorno per posto &mdash;
+           così il cerchio insegna al motore a fidarsi del posto giusto.</p>
+      </div>
+      <div class="stanza-lato">
+        <p class="stanza-punti" data-stato="spenta">in allestimento</p>
+        <p class="stanza-punti" data-stato="attiva" hidden>un minuto &rarr; punti, ogni giorno</p>
+        <span class="btn presto" id="guarda-fuori-btn" aria-disabled="true">In arrivo</span>
+        <p class="stanza-nota" data-stato="spenta">Non sarà un compito, sarà un&rsquo;occhiata. E conta
+           solo se è vera: il cielo non si inventa da dietro un monitor.</p>
+      </div>
+    </div>
+  </section>
+
   <section class="stanza" id="radio">
     <div class="stanza-corpo">
       <div>
@@ -273,7 +303,38 @@
      — letta dai referti veri del gioco. Fino ad allora non si scrive niente:
      nessuna data è meglio di una data vecchia, e MOLTO meglio di una presa
      dal banco sbagliato. -->
+<!-- Accende la stanza «guarda fuori» SOLO se il backend esiste ed è dichiarato
+     acceso in assets/config.js — stesso principio di degrado onesto delle
+     altre stanze: di default la sezione sopra resta "in arrivo", nessuna finta. -->
+<script src="assets/config.js"></script>
+<script>
+(function () {
+  var CFG = window.AnimaConfig || {};
+  var AURA = CFG.AURA || {};
+  var stanza = document.getElementById('guarda-fuori');
+  if (!stanza || !(CFG.BACKEND_URL && AURA.ACCESE)) return;
+
+  stanza.classList.remove('spenta');
+  var stato = stanza.querySelector('.stato');
+  if (stato) { stato.textContent = 'attiva'; stato.classList.remove('spento'); }
+
+  var tutte = stanza.querySelectorAll('[data-stato]');
+  for (var i = 0; i < tutte.length; i++) {
+    tutte[i].hidden = (tutte[i].getAttribute('data-stato') !== 'attiva');
+  }
+
+  var bottone = document.getElementById('guarda-fuori-btn');
+  if (bottone) {
+    var a = document.createElement('a');
+    a.className = 'btn';
+    a.href = 'guarda-fuori.html';
+    a.textContent = 'Entra';
+    bottone.replaceWith(a);
+  }
+})();
+</script>
 <!-- creato da ECHO, 2026-08-02, su direzione JUDY
-     · le due porte di verifica diventano una, JUDY 2026-08-30 -->
+     · le due porte di verifica diventano una, JUDY 2026-08-30
+     · stanza «guarda fuori» (nome di lavoro) e accensione condizionale, JUDY 2026-09-04 -->
 </body>
 </html>

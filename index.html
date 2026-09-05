@@ -124,6 +124,26 @@
     </div>
   </main>
 
+<!-- Accende la card «guarda fuori» SOLO se il backend esiste ed è dichiarato
+     acceso in assets/config.js — stesso degrado onesto delle altre stanze. -->
+<script src="assets/config.js"></script>
+<script>
+(function () {
+  var CFG = window.AnimaConfig || {};
+  var AURA = CFG.AURA || {};
+  if (!(CFG.BACKEND_URL && AURA.ACCESE)) return;
+  var stato = document.getElementById('guarda-fuori-stato');
+  if (stato) { stato.textContent = 'attiva'; stato.classList.remove('spento'); }
+  var bottone = document.getElementById('guarda-fuori-btn');
+  if (bottone) {
+    var a = document.createElement('a');
+    a.className = 'btn';
+    a.href = 'guarda-fuori.html';
+    a.textContent = 'Entra';
+    bottone.replaceWith(a);
+  }
+})();
+</script>
 <script src="assets/solco.js" defer></script>
 
 <!-- creato da ECHO, 2026-08-01 · verde su nero su direzione JUDY, 2026-08-02

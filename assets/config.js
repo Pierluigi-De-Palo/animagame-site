@@ -61,4 +61,37 @@ window.AnimaConfig = {
   PORTA: {
     ACCESA: false,          // true solo quando POST /porta risponde
   },
+
+  // ── LA STANZA «GUARDA FUORI» (nome di lavoro, ECHO/PAROLE-AURA-2077.md §g) ─
+  // Il giocatore guarda il cielo un minuto e lo confronta con AURA. Diversa
+  // dalla stanza delle verifiche: qui il giocatore si riconosce con un TOKEN
+  // (header Authorization: Bearer <token>), non con un cookie — lo gestisce
+  // assets/sessione.js. Il token nasce da una rotta del Worker del gioco che
+  // esiste già:
+  //   POST {BACKEND_URL}/sessione   corpo { carta, codice } → { token, scade }
+  //
+  // Le rotte di AURA (contratto del Worker, già scritto e provato — non si
+  // cambia da qui):
+  //   POST {BACKEND_URL}/aura/osservazione
+  //        corpo  { localita, lat, lon, cielo, vento, testo }
+  //        esito  201 { punti_assegnati, perche: [...],
+  //                      modello_che_ci_ha_preso: {modello,giuste,totali} | null }
+  //        errori 401 sessione_assente · 409 gia_guardato_oggi ·
+  //               400 testo_non_ammesso | osservazione_incompleta | luogo_mancante
+  //   GET  {BACKEND_URL}/aura/osservazioni/mie   le occhiate di chi ha la carta
+  //   GET  {BACKEND_URL}/aura/previsione         la previsione che il modello impara
+  //
+  // ⚠️ LOCALITA non è nel contratto originale del Worker: è una rotta di
+  // comodo per suggerire il posto mentre si scrive (`?q=`). Dichiarata qui
+  // per lo stesso motivo delle altre — se non risponde, la stanza usa quattro
+  // località di casa come ripiego (assets/guarda-fuori.js), niente si rompe.
+  AURA: {
+    ACCESE: false,           // true solo quando le rotte sopra rispondono
+    ROTTE: {
+      OSSERVAZIONE: '/aura/osservazione',
+      MIE: '/aura/osservazioni/mie',
+      PREVISIONE: '/aura/previsione',
+      LOCALITA: '/aura/localita',
+    },
+  },
 };
