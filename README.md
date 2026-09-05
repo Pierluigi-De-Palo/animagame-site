@@ -47,6 +47,21 @@ Il sito del gioco del SYSTEMA 77. **Un gioco a invito, non un social.**
 6. **Il tetto della luce.** Nessuna animazione accende più del **10%** della sua
    banda. Non è un'opinione: si misura prima di accendere (vedi `solco.js`).
 
+## La luce 2077 (05/09)
+
+Ordine del Direttore: «la 2077 è stupenda, falla anche nel gioco». Stessa idea
+della vetrina di systema77.com, con l'unico colore di questa casa: **una riga
+al neon verde in cima a ogni pagina**, **un'alba verde** che sale dal bordo
+alto (alfa al 10%), e i pezzi già verdi — la marca, le parole forti — che
+**emettono luce** invece di riceverla (`text-shadow`). Tutto fermo: niente
+animazione, quindi il tetto della luce non si tocca. Sta in fondo a
+`assets/stile.css`, un blocco solo, e vale per le sette pagine.
+
+Nello stesso giro il guardiano ha trovato una promessa falsa: il gioco diceva
+**«Radio attiva»** e la radio è spenta (il Direttore l'ha aperta il 05/09 e non
+suona). Ora dice «in accordatura», senza bottone. E la stanza Meteo porta a
+`systema77.com/aura.html`, la pagina pubblica, non alla console.
+
 ## La porta
 
 Ordine del Direttore, 04/09: «si arriva. Se hai una carta hai le info. Se no,
