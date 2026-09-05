@@ -2,7 +2,12 @@
 
 Il sito del gioco del SYSTEMA 77. **Un gioco a invito, non un social.**
 
-- `index.html` — la home: il gioco, le stanze, i dieci posti, il punteggio.
+- `index.html` — **LA PORTA.** Quello che vede chi arriva senza carta: pochissimo,
+  e nessun link al gioco. Vedi «La porta» qui sotto.
+- `entra.html` — la soglia: si digita il codice stampato dietro la tessera.
+  Oggi la porta non risponde e lo dice (`assets/porta.js`).
+- `gioco.html` — **il gioco per intero**: le stanze, i dieci posti, il punteggio.
+  Era `index.html` fino al 04/09. Sta dietro la porta e non è linkato da fuori.
 - `strumenti.html` — le stanze del gioco: le verifiche, il meteo, la radio, il falò.
   Ogni strumento è una stanza, non un link esterno.
 - `verifiche.html` — **la prima stanza vera**: una porta sola, il banco, il referto,
@@ -16,8 +21,9 @@ Il sito del gioco del SYSTEMA 77. **Un gioco a invito, non un social.**
 - `assets/config.js` — l'unico punto da toccare quando il backend si accende.
   Contiene anche il contratto delle quattro rotte delle verifiche, dichiarate
   e spente: l'impianto è di SQUELCH.
-- `assets/solco.js` — il solco: la firma vivente, **accesa il 30/08** in home fra
-  la prima schermata e «la carta». Un canvas, zero dipendenze, un colore per casa.
+- `assets/solco.js` — il solco: la firma vivente. Dal 04/09 sta **sulla porta**,
+  dove fa il lavoro che farebbe un testo e lo fa meglio: qualcosa è passato di
+  qui, e non si è visto cos'era. Un canvas, zero dipendenze, un colore per casa.
 - `CNAME` — `animagame.io` (GitHub Pages dalla radice, come le case sorelle).
 
 ## Regole del repo
@@ -41,6 +47,35 @@ Il sito del gioco del SYSTEMA 77. **Un gioco a invito, non un social.**
 6. **Il tetto della luce.** Nessuna animazione accende più del **10%** della sua
    banda. Non è un'opinione: si misura prima di accendere (vedi `solco.js`).
 
+## La porta
+
+Ordine del Direttore, 04/09: «si arriva. Se hai una carta hai le info. Se no,
+solo qualcosa per incuriosire. Ma non puoi giocare, è a invito: e quindi non si
+legge niente se non una enigmatica spiegazione del gioco.»
+
+Fino a ieri `index.html` spiegava **tutto** a chiunque passasse: le stanze, le
+quattro righe del punteggio, i dieci posti. Un gioco a invito che si racconta
+per intero al primo che passa ha già smesso di essere a invito — il valore
+della carta è anche quello che la carta apre.
+
+Da oggi:
+
+| chi arriva | cosa trova |
+|---|---|
+| senza carta | `index.html`: il solco, sei righe, e una porta. Nient'altro. |
+| con la carta | `entra.html`: il campo del codice — **e oggi la porta non risponde** |
+| dietro la porta | `gioco.html`, `strumenti.html`, `verifiche.html`, `scheda.html` |
+
+**Perché la porta non risponde.** Il controllo del codice non vive nel sito e
+non ci vivrà mai: qualunque verifica scritta in una pagina statica è una
+verifica che chiunque apre il sorgente supera in trenta secondi. La rotta
+`POST /porta` è dichiarata e spenta in `assets/config.js` — la accende SQUELCH.
+Meglio una porta che dice «non ancora» di una che dice «prego» a chiunque bussi.
+
+⛔ **Non aggiungere link al gioco dentro `index.html`.** Se una cosa si può
+leggere senza carta, non sta dietro la porta. E il codice della carta non si
+scrive mai su `localStorage`: è il segreto che apre, non una preferenza.
+
 ## Il nome della stanza delle verifiche — SOTTO REVISIONE
 
 I due nomi usati finora vengono da un videogioco altrui e il Direttore teme un
@@ -55,7 +90,7 @@ questi punti e basta — sono tutti marcati, `grep -rn NOME-DEFINITIVO` li trova
 |---|---|
 | `verifiche.html` | il `<title>` e l'`<h1>` |
 | `strumenti.html` | l'`<h2>` della stanza |
-| `index.html` | l'`<h3>` della card |
+| `gioco.html` | l'`<h3>` della card |
 | `assets/scheda.js` | il segnaposto del campo «Stanza preferita» |
 | `assets/config.js` | solo il commento: la chiave resta `VERIFICHE`, funzionale apposta |
 

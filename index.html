@@ -3,548 +3,132 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ANIMA GAME — un gioco a invito</title>
-<meta name="description" content="ANIMA GAME — il gioco a invito del SYSTEMA 77. Giocatori, schede, cerchi, strumenti veri.">
+<title>ANIMA GAME</title>
+<meta name="description" content="ANIMA GAME — un gioco a invito. Arriva una tessera nera, e dietro c'è un codice.">
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=Share+Tech+Mono&display=swap">
 <link rel="stylesheet" href="assets/stile.css">
 <style>
-  /* ── HERO ── */
-  .hero {
+  /* ═══ LA PORTA ═══════════════════════════════════════════════════════
+     Ordine del Direttore, 04/09: «si arriva. se hai una carta hai le info.
+     se no, solo qualcosa per incuriosire. ma non puoi giocare, è a invito:
+     e quindi non si legge niente se non una enigmatica spiegazione del gioco.»
+
+     Fino a oggi questa pagina spiegava TUTTO a chiunque passasse: le stanze,
+     le quattro righe del punteggio, i dieci posti, il cerchio. Un gioco a
+     invito che si racconta per intero al primo che passa ha già smesso di
+     essere a invito — il valore della carta è anche quello che la carta apre.
+
+     Quindi: il gioco per intero non è sparito, si è spostato in `gioco.html`
+     e sta dietro la porta. Qui resta la soglia. Niente menu, niente sezioni,
+     nessun link al contenuto: una pagina che si legge in venti secondi e da
+     cui si esce con una domanda invece che con un riassunto.
+
+     ⛔ NON aggiungere qui link alle stanze, al punteggio o alla scheda.
+        Se una cosa si può leggere senza carta, non sta dietro la porta. */
+  .porta {
+    min-height: 100svh;
     display: flex;
     flex-direction: column;
-    align-items: center;
     justify-content: center;
-    min-height: 88vh;
-    padding: 2rem 1.5rem;
-    text-align: center;
-    position: relative;
-  }
-  .hero::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse at 50% 38%, rgba(56, 224, 138, .06), transparent 60%);
-    pointer-events: none;
-  }
-  .hero-inner { position: relative; animation: salita .9s ease-out both; }
-  .hero .marca { margin-bottom: 1.6rem; }
-  .hero h1 {
-    font-size: clamp(1.8rem, 5.5vw, 3rem);
-    font-weight: 400;
-    letter-spacing: .02em;
-    line-height: 1.3;
-    margin-bottom: 1.2rem;
-  }
-  .hero h1 b { color: var(--verde); font-weight: 400; }
-  .riga { width: 3.5rem; height: 1px; background: var(--linea); margin: 1.4rem auto; }
-  .hero .patto {
-    max-width: 34rem;
-    margin: 0 auto;
-    color: var(--muto);
-    font-size: clamp(1rem, 2.3vw, 1.15rem);
-    line-height: 1.75;
-  }
-  .hero .patto strong { color: var(--carta); font-weight: 600; }
-  .hero .pill { margin-top: 2.2rem; }
-
-  /* ── REGOLE ── */
-  .regole {
-    max-width: 640px;
-    border-left: 2px solid var(--verde);
-    padding-left: 1.4rem;
-  }
-  .regole p {
-    font-size: clamp(1rem, 2.2vw, 1.15rem);
-    line-height: 1.8;
-    color: var(--muto);
-  }
-  .regole p + p { margin-top: 1rem; }
-  .regole strong { color: var(--carta); font-weight: 600; }
-  .regole a {
-    color: var(--verde);
-    text-decoration: none;
-    border-bottom: 1px solid var(--linea);
-  }
-  .regole a:hover, .regole a:focus-visible { border-color: var(--verde); }
-
-  /* ── STRUMENTI (le stanze) ── */
-  .griglia-strumenti {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1.2rem;
-  }
-  @media (min-width: 720px) {
-    .griglia-strumenti { grid-template-columns: 1fr 1fr; }
-  }
-  .stato-riga {
-    display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: .8rem;
-    margin-bottom: .55rem;
-  }
-  .stato {
-    font-family: var(--font-mono);
-    font-size: .62rem;
-    letter-spacing: .2em;
-    text-transform: uppercase;
-    color: var(--verde);
-    border: 1px solid var(--linea);
-    border-radius: 2px;
-    padding: .2rem .55rem;
-    white-space: nowrap;
-  }
-  .stato.spento { color: var(--muto); border-style: dashed; }
-  /* Vero e funzionante, ma non ancora di casa qui: verde (funziona) + bordo
-     tratteggiato (non ha ancora la sua stanza nel cerchio). JUDY, 2026-09-04. */
-  .stato.altrove { border-style: dashed; }
-
-  /* ── GIOCATORI ── */
-  .griglia-giocatori {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 1rem;
-  }
-  .slot {
-    background: var(--fondo);
-    border: 1px solid var(--linea);
-    border-radius: 10px;
-    padding: 1.1rem 1rem 1.2rem;
+    padding: 3rem 1.5rem 4rem;
     text-align: center;
-    transition: border-color .3s ease;
   }
-  .slot:hover { border-color: var(--verde); }
-  .slot .numero {
-    font-family: var(--font-mono);
-    font-size: .68rem;
-    letter-spacing: .25em;
-    color: var(--muto);
-    margin-bottom: .5rem;
+  .porta-inner {
+    width: 100%;
+    max-width: 44rem;
+    animation: salita 1s ease-out both;
   }
-  .slot .nome {
-    font-family: var(--font-mono);
-    font-size: .92rem;
-    letter-spacing: .06em;
-    color: var(--carta);
-    line-height: 1.4;
-  }
-  .slot.libero { border-style: dashed; }
-  .slot.libero .nome { color: var(--muto); font-style: italic; font-family: var(--font-serif); }
-  /* posto assegnato: c'è qualcuno, ma il nome non è affare di una pagina pubblica */
-  .slot.preso .nome { color: var(--muto); font-style: italic; font-family: var(--font-serif); }
-  /* la carta 0 sta fuori dal cerchio: larga, sola, sopra la griglia */
-  .slot.fuori {
-    text-align: left;
-    padding: 1.2rem 1.3rem;
-    margin-bottom: 1.6rem;
-    border-left: 2px solid var(--verde);
-  }
-  .slot.fuori .numero { letter-spacing: .18em; text-transform: uppercase; }
-  .slot.fuori .nome { font-size: 1.05rem; letter-spacing: .12em; }
-  .fuori-nota {
-    margin-top: .45rem;
-    font-family: var(--font-serif);
-    font-size: .92rem;
-    color: var(--muto);
-  }
-  .nota-slot {
-    margin-top: 1.6rem;
-    font-size: .95rem;
-    color: var(--muto);
-    max-width: 56ch;
-  }
+  .porta .marca { margin-bottom: 2.6rem; }
 
-  /* ── PUNTEGGIO ── */
-  .punteggio-box {
-    display: flex;
-    flex-direction: column;
-    gap: 1.2rem;
-    max-width: 640px;
-  }
-  .contatore {
-    font-family: var(--font-mono);
-    font-size: clamp(2.4rem, 8vw, 4rem);
-    color: var(--verde);
-    line-height: 1;
-  }
-  .contatore .unita {
-    display: block;
-    font-family: var(--font-mono);
-    font-size: .68rem;
-    letter-spacing: .25em;
-    text-transform: uppercase;
-    color: var(--muto);
-    margin-top: .6rem;
-  }
-  .punteggio-box p {
-    color: var(--muto);
-    font-size: clamp(1rem, 2.2vw, 1.1rem);
-    line-height: 1.75;
-    max-width: 52ch;
-  }
-  .punteggio-box strong { color: var(--carta); }
-
-  /* ── LA TABELLINA ──
-     Quattro righe, stesso peso visivo. Lo zero NON è mutato e NON è rosso:
-     è bianco pieno come le altre. Il colore fa metà del lavoro che dovrebbero
-     fare le parole — un gesto che non frutta non è un gesto punito. */
-  .tabellina {
-    max-width: 680px;
-    border-top: 1px solid var(--linea);
-  }
-  .riga-punti {
-    display: grid;
-    grid-template-columns: 4.5rem 1fr;
-    gap: .2rem 1.1rem;
-    padding: 1.05rem 0;
-    border-bottom: 1px solid var(--linea);
-    align-items: baseline;
-  }
-  @media (min-width: 720px) {
-    .riga-punti { grid-template-columns: 4.5rem 15rem 1fr; align-items: baseline; }
-  }
-  .riga-punti .p {
-    font-family: var(--font-mono);
-    font-size: 1.35rem;
-    color: var(--verde);
-    letter-spacing: .02em;
-  }
-  .riga-punti.zero .p { color: var(--carta); }
-  .riga-punti .gesto {
-    color: var(--carta);
-    font-size: clamp(1rem, 2.2vw, 1.1rem);
-    line-height: 1.5;
-  }
-  .riga-punti .cosa {
-    grid-column: 2 / -1;
-    color: var(--muto);
-    font-size: .95rem;
-    line-height: 1.6;
-  }
-  @media (min-width: 720px) {
-    .riga-punti .cosa { grid-column: 3; }
-  }
-  .riga-punti .cosa b { color: var(--carta); font-weight: 600; }
-
-  .chiose { max-width: 640px; display: flex; flex-direction: column; gap: 1.15rem; }
-  .chiose p {
-    color: var(--muto);
-    font-size: clamp(1rem, 2.2vw, 1.08rem);
-    line-height: 1.75;
-    max-width: 56ch;
-  }
-  .chiose p strong { color: var(--carta); font-weight: 600; }
-  .contatore-box {
-    margin-top: 1rem;
-    padding-top: 2.2rem;
-    border-top: 1px solid var(--linea);
-    max-width: 640px;
-  }
-  /* il trattino non è verde: il verde sono i punti veri, e qui non ce ne sono
-     ancora. Un segnaposto colorato come un dato è un dato finto. */
-  .contatore.spento { color: var(--muto); }
-
-  /* ── IL SOLCO ──
-     La banda sta DA SOLA fra la prima schermata e «la carta»: mai dietro al
-     testo, mai due per pagina. Il nero è il fondo, il verde è il passaggio. */
+  /* il solco: la firma che si muove. Qui fa il lavoro che farebbe un testo,
+     e lo fa meglio — qualcosa è passato di qui, e non si è visto cos'era. */
   .solco {
-    max-width: 1080px;
-    margin: 0 auto;
+    max-width: 34rem;
+    margin: 0 auto 2.8rem;
     aspect-ratio: 2.35 / 1;
     background: #000;
     border-top: 1px solid var(--linea);
     border-bottom: 1px solid var(--linea);
     touch-action: pan-y;
   }
-  .solco-didascalia {
-    max-width: 1080px;
-    margin: .9rem auto 0;
-    padding: 0 1.5rem;
+
+  .porta .detto {
+    font-size: clamp(1.15rem, 3vw, 1.6rem);
+    line-height: 1.65;
+    color: var(--carta);
+    margin: 0 auto;
+    max-width: 30ch;
+  }
+  .porta .detto + .detto { margin-top: 1.5rem; }
+  .porta .detto.muta { color: var(--muto); font-size: clamp(1rem, 2.4vw, 1.15rem); max-width: 34ch; }
+  .porta .detto b { color: var(--verde); font-weight: 400; }
+
+  .chiave {
+    display: inline-block;
+    margin-top: 3rem;
+    font-family: var(--font-mono);
+    font-size: .85rem;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--verde);
+    border: 1px solid var(--verde);
+    border-radius: 6px;
+    padding: 1rem 2rem;
+    transition: background .25s ease;
+  }
+  .chiave:hover, .chiave:focus-visible { background: var(--verde-soft); outline: none; }
+
+  .coda-porta {
+    margin-top: 3.4rem;
     font-family: var(--font-mono);
     font-size: .68rem;
-    letter-spacing: .22em;
+    letter-spacing: .2em;
     text-transform: uppercase;
     color: var(--muto);
-    text-align: center;
   }
+  .coda-porta a { color: var(--muto); border-bottom: 1px solid var(--linea); }
+  .coda-porta a:hover { color: var(--verde); border-color: var(--verde); }
 </style>
 </head>
 <body>
 
-  <!-- ═══ HERO ═══ -->
-  <!-- Porta B della carta: chi arriva qui ha DIGITATO «> playanima.io», non scansionato.
-       La porta A (il QR → la pagina che verifica la carta) dice «questa carta è autentica»
-       ed è registro freddo: qui non si ripete, si accoglie. -->
-  <section class="hero">
-    <div class="hero-inner">
+  <main class="porta">
+    <div class="porta-inner">
+
       <p class="marca cursore">&#9673; Anima Game</p>
-      <h1>Hai digitato.<br>Allora <b>vediamo</b>.</h1>
-      <div class="riga"></div>
-      <p class="patto">
-        Se sei arrivato qui copiando una riga da una tessera nera,
-        hai fatto la cosa giusta. <strong>Questo è il gioco</strong>:
-        pochi giocatori, chiamati per nome, che usano strumenti veri.
-        Quello che fai con gli strumenti e metti nel cerchio <strong>vale punti</strong>;
-        quello che ti tieni per te <strong>non ti costa niente</strong>.
-        Se invece sei capitato per caso — resta, guarda, non serve iscriversi a niente.
+
+      <div class="solco" data-solco="#38E08A"></div>
+
+      <p class="detto">Non si compra. Non ci si iscrive. Non si chiede.</p>
+
+      <p class="detto">Arriva una tessera nera. Dietro c&rsquo;&egrave; un codice,
+         e il codice apre <b>una porta sola</b>.</p>
+
+      <p class="detto">Dentro ci sono strumenti veri e dieci posti.<br>
+         Fuori c&rsquo;&egrave; questa pagina.</p>
+
+      <a class="chiave" href="entra.html">Ho una carta &rarr;</a>
+
+      <p class="detto muta" style="margin-top:3rem">Se sei capitato per caso, hai visto tutto.
+         Non &egrave; poco: la maggior parte delle cose non ti dice nemmeno
+         che esiste una porta.</p>
+
+      <p class="coda-porta">
+        Un gioco di <a href="https://systema77.com">systema77.com</a>
       </p>
-      <span class="pill">Il cerchio si apre &middot; dieci posti</span>
-    </div>
-  </section>
-
-  <!-- ═══ IL SOLCO — ACCESO il 30/08 ═══
-       Regalo di JUDY, assegnato al gioco dal Direttore il 10/08. Restato spento
-       venti giorni per una ragione giusta: **nessuno l'aveva visto muoversi.**
-       Ora è stato visto, in Chromium, alle larghezze vere — e prima di vederlo
-       si è scoperto perché non andava acceso com'era:
-
-         · la sbiadita non sbiadiva (`destination-out` a 0.018 su canvas 8 bit
-           si blocca ad alpha 25/255): l'inchiostro saliva e basta, 4,5% a 5s →
-           49,6% a 90s su 390px, contro un tetto di casa del 10%;
-         · `unaPassata()` — la versione per chi ha chiesto meno movimento —
-           attraversava dal 5% al 34% della banda e si fermava lì;
-         · il default del colore era #F2E205, il giallo dell'agenzia.
-
-       Tutte e tre riparate in `assets/solco.js` (JUDY, 30/08). Collaudo in
-       Chromium headless, 100s a 390/768/1280/1440px, sempre a 60fps:
-         · l'inchiostro SI ASSESTA e ci resta — 390px 2,91% (15s) · 3,52% (90s)
-           · 3,31% (100s); le tre larghezze maggiori fra 1,3% e 1,5%;
-         · la passata ferma attraversa il 100% della banda (era 5–34%);
-         · col dito addosso per 60s il picco è 5,46%, contro un tetto del 10%.
-       La vita di un cingolo si ricava dalla banda, così il solco è lungo uguale
-       ovunque: a secondi fissi il telefono si riempiva (3,7%) e il desktop
-       restava spoglio (0,6%), e la stessa banda raccontava due cose diverse.
-       Posto: QUI, fra la prima schermata e «la carta» — la soglia fra «sei
-       arrivato» e «ecco il patto». Una sola per pagina, mai dietro al testo. -->
-  <div class="solco" data-solco="#38E08A"></div>
-  <p class="solco-didascalia">qualcosa è passato di qui</p>
-
-  <!-- ═══ LA CARTA ═══ -->
-  <!-- Le due porte della tessera. Regola SQUELCH 06/08: se raccontano la stessa cosa,
-       una delle due è sprecata. La verifica dice SE la carta è vera; qui si dice COS'È. -->
-  <section class="sezione" id="la-carta">
-    <p class="etichetta">la carta</p>
-    <div class="regole">
-      <p><strong>La carta è la chiave.</strong> Non c&rsquo;è una password da inventare
-         né una scheda da riempire prima di cominciare: chi ha la tessera in mano, entra.
-         È un oggetto vero, nero, che ti arriva a casa.</p>
-      <p><strong>Ha due lati e fanno due cose diverse.</strong> Il quadratino a puntini
-         — quello che si inquadra col telefono — serve a controllare che la tessera
-         sia autentica, e lo può fare chiunque. Il codice stampato dietro, invece,
-         lo legge solo chi ce l&rsquo;ha in mano: è quello che apre la porta.</p>
-      <p><strong>Prima entri, poi ti conosciamo.</strong> Non c&rsquo;è una fila da fare
-         e nessuno deve aprirti: entri da solo con la tua carta, e il tuo posto
-         nel cerchio te lo assegna chi te l&rsquo;ha data.</p>
-    </div>
-  </section>
-
-  <!-- ═══ IL GIOCO ═══ -->
-  <section class="sezione" id="il-gioco">
-    <p class="etichetta">il gioco</p>
-    <div class="regole">
-      <p><strong>A invito.</strong> Non si compra un biglietto e non ci si iscrive:
-         pochi, chiamati per nome, dentro i cerchi. Prima ci si conosce, poi si condividono le risorse.</p>
-      <p><strong>Una scheda, non una vetrina.</strong> Ogni giocatore ha la sua scheda:
-         i dati sono suoi, protetti, e decide lui — campo per campo — cosa mostrare agli altri.</p>
-      <p><strong>Gli strumenti sono il gioco.</strong> Ogni strumento è una stanza:
-         verifiche, meteo, radio. Usarli è giocare, e usandoli si allena l&rsquo;anima che c&rsquo;è dietro.</p>
-      <p><strong>Il punteggio si guadagna, e non si perde mai.</strong> Quello che
-         produci con gli strumenti e metti nel cerchio vale punti; quello che decidi
-         di tenerti vale zero — e zero è zero, non una penalità.
-         <a href="#punteggio">Le quattro righe stanno qui sotto</a>.</p>
-    </div>
-  </section>
-
-  <!-- ═══ STRUMENTI ═══ -->
-  <!-- Ogni strumento è una STANZA del gioco (binario JUDY §5): la home apre le stanze,
-       le stanze incorniciano gli strumenti. Le mete vive stanno in strumenti.html. -->
-  <section class="sezione" id="strumenti">
-    <p class="etichetta">le stanze</p>
-    <div class="griglia-strumenti">
-
-      <!-- ⬜ NOME-DEFINITIVO · qui c'erano DUE card di verifica, e mandavano
-           il giocatore a scegliere lo sportello prima di sapere cosa aveva in
-           mano. Ordine del Direttore 30/08: una porta sola. Il titolo qui sotto
-           è un segnaposto neutro — il nome vero lo sceglie lui. -->
-      <article class="card">
-        <div class="stato-riga">
-          <h3 data-nome="segnaposto">La stanza delle verifiche</h3>
-          <span class="stato">attiva</span>
-        </div>
-        <p>Una porta sola. Ci porti dentro una cosa che gira — una frase, un&rsquo;immagine,
-           una ditta, un venditore — ed esci con un referto: verdetto, fonti in chiaro,
-           data. Chiedere una verifica è un&rsquo;azione di gioco.</p>
-        <a class="btn" href="verifiche.html">Apri la stanza</a>
-      </article>
-
-      <!-- Era "in arrivo": falso dal 19/08, il motore (AURA) è online. Non ha
-           ancora una stanza sua qui dentro, quindi non è "attiva" come le altre:
-           è vera e funziona altrove. Nessun indirizzo cyberboomer.io ai giocatori:
-           l'indirizzo pubblico è quello dell'agenzia. JUDY, 2026-09-04. -->
-      <article class="card">
-        <div class="stato-riga"><h3>Meteo</h3><span class="stato altrove">attiva altrove</span></div>
-        <p>La stanza del cielo esiste e funziona gi&agrave;, ma non vive ancora qui:
-           gira su systema77.com, con l&rsquo;abito dell&rsquo;agenzia. Quando cambia
-           nome ed entra nel cerchio, questa card si accende con la sua stanza vera.</p>
-        <a class="btn" href="https://systema77.com/meteo.html">Guardalo su systema77.com</a>
-      </article>
-
-      <article class="card">
-        <div class="stato-riga"><h3>Radio</h3><span class="stato">attiva</span></div>
-        <p>La stanza del suono: suona solo musica nostra, con diritti chiari.
-           Sei minuti e mezzo, e non gira in tondo.</p>
-        <a class="btn" href="https://radio-anima.pages.dev/">Sintonizzati</a>
-      </article>
-
-      <!-- Stanza D — IL FALÒ. Ordine del Direttore dell'08/08, direzione JUDY
-           (JUDY/PROGETTO-FALO-interazioni-cerchio.md). ⛔ Nessun numero qui:
-           i punti del falò (v1.1) aspettano la ratifica del Direttore.
-           ⛔ Lessico: mai «forum», «thread», «feed», «commenti». Mai «social». -->
-      <article class="card">
-        <div class="stato-riga"><h3>Il falò</h3><span class="stato spento">in arrivo</span></div>
-        <p>La stanza dove il cerchio parla. Si accende un falò su una cosa che gira,
-           e chi vuole dice la sua. Niente «mi piace», e niente che scorre.</p>
-        <a class="btn" href="strumenti.html#falo">Cos&rsquo;è</a>
-      </article>
 
     </div>
-  </section>
-
-  <!-- ═══ GIOCATORI ═══ -->
-  <!-- 🔴 REGOLA DURA: nessun nome di persona reale in questo repo — è pubblico due volte
-       (sito + raw). I giocatori 2 e 3 sono persone vere: appaiono come «assegnata», MAI
-       col nome. «Cyber Boomer» è un personaggio pubblico, non una persona: può stare.
-       Roster: ROSTER-E-CICLO.md 06/08 — la carta 0 è FUORI dal conteggio, non gioca. -->
-  <section class="sezione" id="giocatori">
-    <p class="etichetta">il cerchio</p>
-
-    <div class="slot fuori">
-      <div class="numero">carta 0 &middot; fuori dal cerchio</div>
-      <div class="nome">OVERLORD</div>
-      <p class="fuori-nota">Chi apre il gioco e non lo gioca.</p>
-    </div>
-
-    <div class="griglia-giocatori">
-      <div class="slot">
-        <div class="numero">01</div>
-        <div class="nome">CYBER&nbsp;BOOMER</div>
-      </div>
-      <div class="slot preso"><div class="numero">02</div><div class="nome">assegnata</div></div>
-      <div class="slot preso"><div class="numero">03</div><div class="nome">assegnata</div></div>
-      <div class="slot libero"><div class="numero">04</div><div class="nome">posto libero</div></div>
-      <div class="slot libero"><div class="numero">05</div><div class="nome">posto libero</div></div>
-      <div class="slot libero"><div class="numero">06</div><div class="nome">posto libero</div></div>
-      <div class="slot libero"><div class="numero">07</div><div class="nome">posto libero</div></div>
-      <div class="slot libero"><div class="numero">08</div><div class="nome">posto libero</div></div>
-      <div class="slot libero"><div class="numero">09</div><div class="nome">posto libero</div></div>
-      <div class="slot libero"><div class="numero">10</div><div class="nome">posto libero</div></div>
-    </div>
-    <p class="nota-slot">Il primo cerchio è di dieci. I posti liberi non si chiedono:
-       arrivano per invito, e chi c&rsquo;è già lo sa. Di chi ha una carta qui trovi
-       il numero, non il nome: i nomi non stanno su una pagina pubblica.
-       Anche gli agenti del systema avranno una scheda, con calma.</p>
-    <p style="margin-top:1.6rem"><a class="btn" href="scheda.html">La tua scheda</a></p>
-  </section>
-
-  <!-- ═══ PUNTEGGIO ═══ -->
-  <!-- 🟢 Punteggio v1 RATIFICATO dal Direttore l'08/08 («super. confermo»), fonte
-       SQUELCH/DA-JUDY-punteggio-ratificato.md — e già implementato nel Worker
-       (SQUELCH/worker-punti/src/worker.js, righe 251-299).
-       ⚠️ Qui NON si inventa niente: le REGOLE sono canone e si possono dire oggi;
-       il CONTATORE è un numero vivo e resta un trattino finché il Worker non è
-       online. Sono due cose diverse, e confonderle ha tenuto muta questa pagina.
-       ⛔ L'estensione v1.1 del falò (+5 / +2) NON è ratificata: non compare qui. -->
-  <section class="sezione" id="punteggio">
-    <p class="etichetta">il punteggio</p>
-
-    <div class="punteggio-box">
-      <p>Un <strong>referto</strong> è quello che esce quando usi uno strumento:
-         una verifica, un controllo, una cosa guardata a fondo e scritta.
-         Quando ne hai uno, scegli: <strong>lo metti nel cerchio</strong> o
-         <strong>te lo tieni</strong>. Da lì in poi il conto si fa da solo,
-         e sono quattro righe — non ce n&rsquo;è una quinta.</p>
-    </div>
-
-    <div class="tabellina" style="margin-top:2rem">
-      <div class="riga-punti">
-        <span class="p">+10</span>
-        <span class="gesto">metti un referto nel cerchio</span>
-        <span class="cosa">chi ha una carta può aprirlo e leggerlo</span>
-      </div>
-      <div class="riga-punti">
-        <span class="p">&times;2</span>
-        <span class="gesto">se è il primo della giornata</span>
-        <span class="cosa">una volta al giorno, non a ogni referto</span>
-      </div>
-      <div class="riga-punti">
-        <span class="p">+1</span>
-        <span class="gesto">ogni persona che lo apre</span>
-        <span class="cosa">fino a dieci</span>
-      </div>
-      <div class="riga-punti zero">
-        <span class="p">0</span>
-        <span class="gesto">te lo tieni per te</span>
-        <span class="cosa"><b>Niente. Resta tuo.</b></span>
-      </div>
-    </div>
-
-    <div class="chiose" style="margin-top:2.4rem">
-      <p><strong>Il &times;2 premia chi torna, non chi pubblica a raffica.</strong>
-         Vale una volta al giorno: il secondo referto di oggi vale dieci come tutti
-         gli altri. Riempire il cerchio non conviene, e non è un caso.</p>
-
-      <p><strong>Il +1 conta le persone, non i clic.</strong> Se apri dieci volte
-         lo stesso referto resta un punto solo. E quando si ferma a dieci non è un
-         tetto che ti blocca: vuol dire che <strong>dieci persone diverse</strong>
-         l&rsquo;hanno aperto — che è la cosa che volevamo sapere.</p>
-
-      <p><strong>Quello zero è uno zero, non un meno.</strong> Puoi verificare una
-         cosa e tenertela: non prendi punti, e non succede nient&rsquo;altro.
-         Non perdi il posto, non scendi in nessuna classifica, non sparisci se stai
-         fermo un mese. Il tuo posto nel cerchio è la carta, e la carta ce l&rsquo;hai
-         già: <strong>i punti dicono cosa hai fatto, non se meriti di restare.</strong></p>
-    </div>
-
-    <div class="contatore-box">
-      <p class="etichetta" style="margin-bottom:1rem">punti contati finora</p>
-      <div class="contatore spento">&mdash;</div>
-      <span class="pill spenta" style="margin-top:1.1rem">contatore non ancora acceso</span>
-      <p style="color:var(--muto);max-width:52ch;margin-top:1.4rem;line-height:1.75">
-         Questo è l&rsquo;unico numero che oggi non possiamo scrivere. Non perché
-         manchi: <strong style="color:var(--carta)">i punti stanno dietro la carta</strong>,
-         e questa è una pagina che legge chiunque. Le regole qui sopra invece sono
-         decise e valgono già.
-         <strong style="color:var(--carta)">Preferiamo un trattino onesto a un numero
-         inventato.</strong></p>
-    </div>
-  </section>
-
-  <!-- ═══ FOOTER ═══ -->
-  <!-- Architettura, parole del Direttore 06/08: «SYSTEMA 77 è il centro del sistema solare,
-       attorno la costellazione di Cyber Boomer». ANIMA GAME è UNO dei pianeti, non il centro:
-       il footer deve dirlo, non lasciar credere che il gioco sia l'agenzia.
-       ⚠️ anima.solar NON è linkato di proposito: oggi serve «Presto qui» e manderebbe
-       la gente a credere che il gioco non esista (accertato da D.R.A.G.O. il 06/08).
-       Si rimette appena fa 301 qui — la decisione è di ROGUE col Direttore. -->
-  <footer class="footer">
-    <div class="footer-domini">
-      <a href="https://systema77.com">systema77.com &mdash; l&rsquo;agenzia, il centro</a>
-      <span class="sep">&middot;</span>
-      <span>animagame.io &mdash; il gioco, uno dei pianeti</span>
-      <span class="sep">&middot;</span>
-      <span>playanima.io &mdash; la porta</span>
-    </div>
-    <p class="footer-nota">ANIMA GAME è il gioco di SYSTEMA 77, agenzia di servizi fatti con
-       l&rsquo;intelligenza artificiale. Il gioco è una delle cose che facciamo, non l&rsquo;insegna.</p>
-  </footer>
+  </main>
 
 <script src="assets/solco.js" defer></script>
 
 <!-- creato da ECHO, 2026-08-01 · verde su nero su direzione JUDY, 2026-08-02
-     · voce della porta B e roster nuovo, ECHO 2026-08-06 (staffetta maglia 3)
-     · il solco riparato e ACCESO col collaudo, JUDY 2026-08-30 -->
+     · il solco acceso col collaudo, JUDY 2026-08-30
+     · LA PORTA: la home diventa una soglia, il gioco passa in gioco.html —
+       JUDY 2026-09-04, ordine del Direttore -->
 </body>
 </html>
