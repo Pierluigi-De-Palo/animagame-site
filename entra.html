@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>La porta — ANIMA GAME</title>
+<meta name="description" content="ANIMA GAME — la porta. Il codice sta dietro la tessera.">
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=Share+Tech+Mono&display=swap">
+<link rel="stylesheet" href="assets/stile.css">
+<style>
+  /* ═══ LA SOGLIA ══════════════════════════════════════════════════════
+     Qui si digita il codice stampato dietro la tessera.
+     ⛔ OGGI LA PORTA NON RISPONDE, e lo dice. La rotta che legge i codici
+        non esiste (l'impianto e' di SQUELCH, contratto in assets/config.js).
+        Non si finge un controllo: un controllo scritto nel sito e' un
+        controllo che chiunque apre il sorgente supera in trenta secondi.
+        Meglio una porta che dice «non ancora» di una che dice «prego»
+        a chiunque bussi. */
+  .soglia {
+    min-height: 100svh;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    padding: 3rem 1.5rem 4rem;
+  }
+  .soglia-inner { width: 100%; max-width: 34rem; animation: salita .8s ease-out both; }
+  .soglia .marca { margin-bottom: 2.4rem; display: block; }
+  .soglia h1 {
+    font-family: var(--font-mono);
+    font-size: clamp(1.1rem, 3vw, 1.5rem);
+    font-weight: 400;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: var(--carta);
+    margin-bottom: .9rem;
+  }
+  .soglia .sotto { color: var(--muto); line-height: 1.7; max-width: 40ch; }
+
+  .campo-codice { margin-top: 2.2rem; }
+  .campo-codice label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: .68rem; letter-spacing: .22em; text-transform: uppercase;
+    color: var(--muto); margin-bottom: .6rem;
+  }
+  .campo-codice input {
+    width: 100%;
+    background: var(--fondo);
+    color: var(--verde);
+    font-family: var(--font-mono);
+    font-size: 1.15rem;
+    letter-spacing: .3em;
+    text-transform: uppercase;
+    border: 1px solid var(--linea);
+    border-radius: 8px;
+    padding: 1rem 1.1rem;
+  }
+  .campo-codice input:focus { outline: none; border-color: var(--verde); }
+  .campo-codice input::placeholder { color: #4A4740; letter-spacing: .2em; }
+
+  .riga-porta { margin-top: 1.5rem; display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+  .riga-porta button { font: inherit; }
+
+  .risposta {
+    margin-top: 1.8rem; padding-top: 1.5rem;
+    border-top: 1px solid var(--linea);
+    color: var(--muto); line-height: 1.75;
+  }
+  .risposta[hidden] { display: none; }
+  .risposta strong { color: var(--carta); font-weight: 600; }
+  .risposta .verde { color: var(--verde); }
+
+  .indietro {
+    margin-top: 2.6rem;
+    font-family: var(--font-mono);
+    font-size: .68rem; letter-spacing: .2em; text-transform: uppercase;
+    color: var(--muto);
+  }
+  .indietro a { color: var(--muto); border-bottom: 1px solid var(--linea); }
+  .indietro a:hover { color: var(--verde); border-color: var(--verde); }
+</style>
+</head>
+<body>
+
+  <main class="soglia">
+    <div class="soglia-inner">
+
+      <a class="marca" href="index.html">&#9673; Anima Game</a>
+
+      <h1>La porta</h1>
+      <p class="sotto">Il codice sta stampato dietro la tessera. Lo legge solo
+         chi ce l&rsquo;ha in mano &mdash; ed &egrave; quello che apre.</p>
+
+      <form id="porta" novalidate>
+        <div class="campo-codice">
+          <label for="codice">il codice della carta</label>
+          <input id="codice" name="codice" type="text" inputmode="text"
+                 autocomplete="off" autocapitalize="characters" spellcheck="false"
+                 placeholder="&middot; &middot; &middot; &middot; &middot; &middot;">
+        </div>
+        <div class="riga-porta">
+          <button class="btn" type="submit">Apri</button>
+          <span class="pill spenta">fase DEV</span>
+        </div>
+        <p class="risposta" id="risposta" hidden role="status"></p>
+      </form>
+
+      <p class="indietro"><a href="index.html">&larr; torna fuori</a></p>
+
+    </div>
+  </main>
+
+<script src="assets/config.js"></script>
+<script src="assets/porta.js" defer></script>
+<!-- creato da JUDY, 2026-09-04 — la soglia -->
+</body>
+</html>

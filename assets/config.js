@@ -39,6 +39,29 @@ window.AnimaConfig = {
     ACCESE: false,          // true solo quando le quattro rotte rispondono
   },
 
+  // ── LA PORTA ─────────────────────────────────────────────────────────
+  // Dal 04/09 animagame.io e' una SOGLIA: la home mostra pochissimo e il
+  // gioco (gioco.html, le stanze, la scheda) sta dietro. Ordine del
+  // Direttore: «se hai una carta hai le info; se no, solo qualcosa per
+  // incuriosire — non puoi giocare, e' a invito».
+  //
+  // Il codice stampato dietro la tessera si legge QUI e si verifica LA'.
+  // Nessuna validazione vive in questa pagina, e non ci vivra' mai: un
+  // controllo scritto nel sito e' un controllo che chiunque legge nel
+  // sorgente e supera. Serve una rotta:
+  //
+  //   POST {BACKEND_URL}/porta                   apre con il codice della carta
+  //        corpo  { codice: string }
+  //        esito  200 { slot: number, gettone: string }   la carta e' valida
+  //               401 { }                                 non lo e'
+  //        → il gettone e' quello che tiene aperta la sessione del giocatore
+  //
+  // ⛔ Il codice NON si scrive mai su questo dispositivo: e' il segreto
+  //    della carta, non una preferenza. Si digita, si spedisce, si dimentica.
+  PORTA: {
+    ACCESA: false,          // true solo quando POST /porta risponde
+  },
+
   // ── LA STANZA «GUARDA FUORI» (nome di lavoro, ECHO/PAROLE-AURA-2077.md §g) ─
   // Il giocatore guarda il cielo un minuto e lo confronta con AURA. Diversa
   // dalla stanza delle verifiche: qui il giocatore si riconosce con un TOKEN
