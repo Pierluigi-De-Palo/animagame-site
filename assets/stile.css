@@ -221,3 +221,22 @@ body::after {
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; }
 }
+
+/* ── LA LUCE 2077 — JUDY, 05/09 ──────────────────────────────────────────
+   Ordine del Direttore: «la 2077 è stupenda, falla anche nel gioco».
+   Stessa idea della vetrina di systema77.com, con l'unico colore di questa
+   casa: una riga al neon in cima a ogni pagina, un'alba verde che sale dal
+   bordo alto, e i pezzi già verdi (la marca, le parole forti) che emettono
+   luce invece di riceverla. Tutto FERMO: niente animazione, quindi il tetto
+   della luce non si tocca. Alfa dell'alba al 10%: il verde resta accento,
+   il nero resta fondale. */
+body {
+  border-top: 2px solid transparent;
+  border-image: linear-gradient(90deg, var(--verde) 0%, rgba(56, 224, 138, .35) 55%, transparent 100%) 1;
+  background-image: radial-gradient(60% 38% at 50% 0%, rgba(56, 224, 138, .10), transparent 70%);
+  background-repeat: no-repeat;
+}
+.marca,
+h1 b, h2 b, .detto b {
+  text-shadow: 0 0 16px rgba(56, 224, 138, .45);
+}
