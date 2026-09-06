@@ -1,10 +1,10 @@
 /* IL SOLCO — la firma vivente di SYSTEMA 77
  *
  * Una creatura che non si vede mai attraversa la banda e lascia una traccia.
- * La traccia è un cingolato: due file di trattini, come il solco che la
- * tartaruga lascia sulla sabbia — «simile al passaggio di un piccolo
- * cingolato» (Centro visite di Torre Guaceto, verificato dalla stanza
- * delle verifiche).
+ * Dal 05/09 la creatura ha una forma nuova, per ordine del Direttore: è il
+ * serpente dei vecchi telefoni. Cammina su una griglia, gira solo ad angolo
+ * retto, ha una lunghezza fissa e la coda segue la testa. La traccia che
+ * lascia — il solco — è il suo corpo che si spegne dietro di lui.
  *
  * Zero dipendenze. Un file. Un colore per casa.
  *
@@ -15,44 +15,39 @@
  *   data-solco        colore della casa (default: il verde del gioco)
  *   data-solco-ratio  proporzione della banda (default 2.35 — il cinema)
  *   data-solco-vel    velocità (default 1)
- *   data-solco-vita   secondi di vita di un cingolo (default: ricavato dalla
- *                     banda, così il solco è lungo uguale a ogni larghezza)
+ *   data-solco-lungo  lunghezza del serpente in celle (default 60)
+ *
+ * ── I TRE NUMERI, PER CHI NON LO GUARDA ─────────────────────────────────
+ * Rilievo del Direttore, 05/09: «va reso verificabile senza guardarlo».
+ * Una volta al secondo il solco scrive tre numeri, sulla banda e in pagina:
+ *
+ *   data-solco-misure="luce=5.4% cingoli=60 fps=60"
+ *   window.SOLCO = [{ luce, cingoli, fps, cella, larghezza, altezza }]
+ *
+ *   luce     quanta banda è accesa, in percentuale: celle vive × area di una
+ *            cella ÷ area della banda. È il tetto di casa (10%), e non è una
+ *            stima: è un conto, perché la luce sta su una griglia.
+ *   cingoli  le celle vive in questo istante — la lunghezza del serpente.
+ *   fps      i fotogrammi nell'ultimo secondo.
+ *
+ * Il guardiano (strumenti/collaudo.mjs) li legge dopo tre secondi e si
+ * arrabbia se la luce supera il 10%. Nessuno deve più «vederlo muoversi»
+ * per sapere se rispetta le regole: l'animazione ferma venti giorni del
+ * 10/08 non si ripete.
+ *
+ * ── IL TETTO DELLA LUCE, CON LA GRIGLIA ─────────────────────────────────
+ * La cella è il 6% dell'altezza della banda, il quadrato dentro la cella
+ * il 78% del lato. Con la banda al cinema (2,35:1) una cella accesa vale
+ * lo 0,094% della banda: 60 celle = 5,6%, il massimo è fisso perché il
+ * serpente è lungo fisso. Il dito del visitatore lo fa correre più veloce,
+ * non più lungo: il tetto non si sfonda nemmeno volendo.
  *
  * Regole di casa rispettate: il nero beve la luce · mai più del 10% acceso ·
  * si ferma da solo se il visitatore ha chiesto meno movimento o se la banda
  * non è sullo schermo.
  *
- * — creato da JUDY, 2026-08-10 · riparato e misurato da JUDY, 2026-08-30
- *
- * ┌─ COSA È CAMBIATO IL 30/08, E PERCHÉ ────────────────────────────────────┐
- * │ 1. LA SBIADITA NON SBIADIVA. La versione del 10/08 richiudeva la sabbia │
- * │    con `destination-out` a `rgba(0,0,0,0.018)`. Su un canvas a 8 bit    │
- * │    quella è una moltiplicazione: alpha ← round(alpha × 0.982). Sotto    │
- * │    alpha ≈ 28 il decremento arrotonda a ZERO e il pixel non scende più. │
- * │    Misurato in Chromium: **plateau esatto ad alpha 25/255**, identico   │
- * │    a tutte e quattro le larghezze. Conseguenza: l'inchiostro si somma   │
- * │    e non si toglie mai — 390px passava da 4,5% (5s) a 49,6% (90s),      │
- * │    cioè cinque volte oltre il tetto di casa del 10%, e saliva ancora.   │
- * │    Non era un colore sbagliato: era una banda che si riempiva di verde. │
- * │ 2. LA CORREZIONE. La sbiadita esce dal canvas ed entra nella memoria:   │
- * │    la traccia è un elenco di cingoli con l'ora di nascita; ogni fotogr. │
- * │    si pulisce e si ridisegna, e il cingolo che ha superato la sua vita  │
- * │    esce dall'elenco. Non c'è arrotondamento che tenga: quando è morto   │
- * │    è morto. L'inchiostro si assesta su un altopiano invece di salire,   │
- * │    e l'altopiano si calcola: cingoli-al-secondo × vita.                 │
- * │    In più una cintura: l'elenco ha un tetto duro (`maxTracce`), quindi  │
- * │    nemmeno il dito del visitatore — che accelera di 1,6× — può          │
- * │    sfondare il 10%.                                                     │
- * │ 3. `unaPassata()` NON ATTRAVERSAVA. Faceva 260 passi da 1,6px = 416px   │
- * │    di corsa massima su una banda che ne misura 1080, senza la sterzata  │
- * │    che tiene la creatura dentro i bordi: chi ha chiesto meno movimento  │
- * │    vedeva un moncone in alto a sinistra. Ora cammina finché non è       │
- * │    uscita davvero dal bordo destro, con la stessa densità e la stessa   │
- * │    sterzata della versione viva.                                        │
- * │ 4. IL DEFAULT ERA #F2E205, il giallo dell'agenzia — vietato dentro il   │
- * │    gioco. Il default ora è il verde del gioco; ogni casa passa il suo   │
- * │    con `data-solco`.                                                    │
- * └─────────────────────────────────────────────────────────────────────────┘
+ * — creato da JUDY, 2026-08-10 · riparato e misurato 2026-08-30 ·
+ *   il serpente e i tre numeri, 2026-09-05
  */
 (function () {
   'use strict';
@@ -61,19 +56,20 @@
               window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   var VERDE_GIOCO = '#38E08A';   // mai il giallo dell'agenzia qui dentro
-  // Quanto è LUNGO il solco, contato in cingoli. Non in secondi: una banda
-  // larga e una stretta stampano cingoli a ritmi diversi, e a secondi fissi
-  // il telefono si riempiva mentre il desktop restava quasi vuoto — misurato
-  // il 30/08: 3,7% contro 0,6%. Contando i cingoli invece che i secondi, la
-  // banda è lunga uguale ovunque e la VITA si ricava (vedi `misura`).
-  var CINGOLI = 88;
+  var LUNGO = 60;                // celle: la lunghezza del serpente
+  var CROCIERA = 69;             // px al secondo, come prima del 05/09
+  var PIENO = 0.78;              // il quadrato dentro la cella, per lato
+
+  // est · sud · ovest · nord — il serpente conosce solo queste quattro
+  var DX = [1, 0, -1, 0], DY = [0, 1, 0, -1];
+
+  window.SOLCO = window.SOLCO || [];
 
   function Solco(host) {
     var colore = host.getAttribute('data-solco') || VERDE_GIOCO;
     var ratio = parseFloat(host.getAttribute('data-solco-ratio')) || 2.35;
     var vel = parseFloat(host.getAttribute('data-solco-vel')) || 1;
-    var vitaDetta = parseFloat(host.getAttribute('data-solco-vita')) || 0;
-    var vita = 12;            // ricavata dalla banda in `misura()`, se non è detta
+    var lungo = parseInt(host.getAttribute('data-solco-lungo'), 10) || LUNGO;
 
     var cv = document.createElement('canvas');
     cv.setAttribute('aria-hidden', 'true');
@@ -82,16 +78,20 @@
     var ctx = cv.getContext('2d');
 
     var L = 0, A = 0, dpr = 1;
-    // la creatura: posizione, direzione, e il conto di quanto ha camminato
-    var x = 0, y = 0, ang = 0, t = Math.random() * 1000, percorso = 0;
+    var cella = 12, colonne = 0, righe = 0;
+    // la testa: cella e direzione; il conto dei passi fatti (per le curve)
+    var cx = 0, cy = 0, dir = 0, passi = 0;
     var mira = null;          // dove punta il dito del visitatore, se c'è
     var vivo = true, inCorsa = false;
+    var seme = Math.random() * 1000;
 
-    // il solco: l'elenco dei cingoli vivi, ciascuno con l'ora in cui è nato.
-    // È QUI che sta la sbiadita, non nel canvas: la memoria non arrotonda.
-    var tracce = [];
-    var distanza = 5;         // ogni quanti px si stampa un cingolo
-    var maxTracce = 400;      // cintura: il tetto duro all'inchiostro
+    // il corpo: le celle vive, dalla coda alla testa. La sbiadita sta qui.
+    var corpo = [];
+
+    // i tre numeri
+    var misure = { luce: 0, cingoli: 0, fps: 0, cella: 0, larghezza: 0, altezza: 0 };
+    window.SOLCO.push(misure);
+    var fotogrammi = 0, ultimoConto = 0;
 
     // Ritorna true solo quando la banda ha una misura vera.
     // ⚠️ pagato al collaudo del 10/08: misurando subito si prende 0×0 —
@@ -111,18 +111,15 @@
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, L, A);
 
-      distanza = Math.max(5, A * 0.05);
-      // La creatura va a ≈69 px/s di crociera, quindi stampa 69/distanza
-      // cingoli al secondo: perché ne restino vivi CINGOLI, ognuno deve
-      // vivere CINGOLI × distanza / 69 secondi. Estremi tenuti a bada.
-      vita = vitaDetta || Math.min(30, Math.max(6, CINGOLI * distanza / 69));
-      // cintura: il tetto duro all'inchiostro, col margine per il dito del
-      // visitatore che accelera la creatura di 1,6×.
-      maxTracce = Math.ceil(CINGOLI * 1.7) + 20;
-      tracce.length = 0;
+      cella = Math.max(6, Math.round(A * 0.06));
+      colonne = Math.ceil(L / cella);
+      righe = Math.ceil(A / cella);
+      corpo.length = 0;
 
-      // entra dal bordo sinistro, all'altezza della battigia
-      x = -20; y = A * 0.62; ang = -0.15; percorso = 0;
+      // entra dal bordo sinistro, all'altezza della battigia, verso est
+      cx = -1; cy = Math.round(righe * 0.62); dir = 0; passi = 0;
+
+      misure.cella = cella; misure.larghezza = L; misure.altezza = A;
       return true;
     }
 
@@ -132,147 +129,136 @@
              Math.sin(k * 1.7 + 2.6) * 0.1;
     }
 
-    // sterzata dolce verso casa quando la creatura si avvicina al bordo.
-    // Serve alla versione viva E a quella ferma: senza, `unaPassata()` usciva
-    // dalla banda al terzo respiro e non tornava.
-    function sterza() {
-      var mx = L * 0.5, my = A * 0.55;
-      var bordo = Math.min(x, L - x, y * 1.6, (A - y) * 1.6);
-      if (bordo >= A * 0.28) return;
-      var verso = Math.atan2(my - y, mx - x) - ang;
-      while (verso > Math.PI) verso -= Math.PI * 2;
-      while (verso < -Math.PI) verso += Math.PI * 2;
-      ang += verso * 0.035;
-    }
+    // Il serpente decide dove girare. Tre voci, in ordine di forza:
+    //   1. il muro: a due celle dal bordo si gira dalla parte opposta;
+    //   2. il dito del visitatore: si va verso di lui, un angolo alla volta;
+    //   3. la deriva: ogni tanto una curva, come il serpente che vagabonda.
+    // Mai una retromarcia: il serpente non torna su se stesso.
+    function gira() {
+      var margine = 2;
+      var sx = cx < margine, dx_ = cx > colonne - 1 - margine;
+      var su = cy < margine, giu = cy > righe - 1 - margine;
 
-    // due trattini perpendicolari: è il cingolato.
-    // `alone` accende il bagliore: costa caro, quindi lo porta solo la testa
-    // del solco — dietro resta sabbia opaca, che è anche più vera.
-    function cingolo(px, py, dir, forza, alone) {
-      var nx = Math.cos(dir + Math.PI / 2), ny = Math.sin(dir + Math.PI / 2);
-      var largo = Math.max(3, A * 0.022);   // la carreggiata
-      var lungo = largo * 0.72;             // il singolo trattino
-      var sb = Math.cos(dir), sy = Math.sin(dir);
-
-      ctx.strokeStyle = colore;
-      ctx.lineCap = 'round';
-      ctx.shadowColor = colore;
-      ctx.shadowBlur = alone ? 6 : 0;
-
-      for (var s = -1; s <= 1; s += 2) {
-        var cx = px + nx * largo * s, cy = py + ny * largo * s;
-        ctx.globalAlpha = 0.75 * forza;
-        ctx.lineWidth = Math.max(1, largo * 0.16);
-        ctx.beginPath();
-        ctx.moveTo(cx - sb * lungo / 2, cy - sy * lungo / 2);
-        ctx.lineTo(cx + sb * lungo / 2, cy + sy * lungo / 2);
-        ctx.stroke();
+      if ((dir === 0 && dx_) || (dir === 2 && sx)) {
+        dir = (cy > righe / 2) ? 3 : 1;           // via dal muro, verso il centro
+        return;
       }
-      // la linea di mezzo: il ventre che striscia, tenue
-      ctx.globalAlpha = 0.16 * forza;
-      ctx.shadowBlur = 0;
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.moveTo(px - sb * 4, py - sy * 4);
-      ctx.lineTo(px + sb * 4, py + sy * 4);
-      ctx.stroke();
-      ctx.globalAlpha = 1;
-    }
-
-    function lascia(px, py, dir) {
-      tracce.push({ x: px, y: py, a: dir, n: t });
-      while (tracce.length > maxTracce) tracce.shift();
-    }
-
-    // il vento della Torre richiude la sabbia: si ridisegna tutto il solco
-    // vivo e si buttano i cingoli scaduti. Nessun arrotondamento, nessun
-    // residuo: quando la forza arriva a zero il pixel è nero davvero.
-    function disegna() {
-      ctx.clearRect(0, 0, L, A);
-      var vivi = 0;
-      for (var i = 0; i < tracce.length; i++) {
-        var c = tracce[i];
-        var eta = t - c.n;
-        if (eta >= vita) continue;
-        if (vivi !== i) tracce[vivi] = c;
-        vivi++;
-        var u = eta / vita;
-        cingolo(c.x, c.y, c.a, (1 - u) * (1 - u * 0.35), u < 0.2);
+      if ((dir === 1 && giu) || (dir === 3 && su)) {
+        dir = (cx > colonne / 2) ? 2 : 0;
+        return;
       }
-      tracce.length = vivi;
-    }
-
-    function passo() {
-      if (!vivo) { inCorsa = false; return; }
-      if (!misura()) { requestAnimationFrame(passo); return; }  // aspetta il layout
-      t += 0.016 * vel;
-
-      var v = (1.15 + Math.sin(t * 0.9) * 0.25) * vel;
 
       if (mira) {
-        // il visitatore è passato di qui: adesso il solco è suo
-        var da = Math.atan2(mira.y - y, mira.x - x) - ang;
-        while (da > Math.PI) da -= Math.PI * 2;
-        while (da < -Math.PI) da += Math.PI * 2;
-        ang += da * 0.09;
-        v *= 1.6;
-      } else {
-        ang += deriva(t) * 0.035;
-        sterza();
+        var mx = Math.floor(mira.x / cella), my = Math.floor(mira.y / cella);
+        var ddx = mx - cx, ddy = my - cy;
+        var voglia = (Math.abs(ddx) >= Math.abs(ddy))
+          ? (ddx > 0 ? 0 : 2) : (ddy > 0 ? 1 : 3);
+        if (voglia !== dir && voglia !== (dir + 2) % 4 && spazio(voglia) > margine) dir = voglia;
+        return;
       }
 
-      x += Math.cos(ang) * v;
-      y += Math.sin(ang) * v;
+      // la deriva: una curva quando il rumore cambia segno con decisione.
+      // Non si gira verso un muro vicino: altrimenti il serpente finiva a
+      // strisciare lungo i bordi (misurato il 05/09 nella versione ferma).
+      var d = deriva(seme + passi * 0.23);
+      if (Math.abs(d) > 0.55 && passi % 3 === 0) {
+        var nuova = (dir + (d > 0 ? 1 : 3)) % 4;
+        if (spazio(nuova) <= margine + 2) nuova = (dir + (d > 0 ? 3 : 1)) % 4;
+        if (spazio(nuova) > margine + 2) dir = nuova;
+      }
+    }
+
+    // quante celle libere ci sono davanti, in quella direzione
+    function spazio(verso) {
+      if (verso === 0) return colonne - 1 - cx;
+      if (verso === 2) return cx;
+      if (verso === 1) return righe - 1 - cy;
+      return cy;
+    }
+
+    function avanza() {
+      gira();
+      cx += DX[dir]; cy += DY[dir];
+      passi++;
 
       // se esce davvero, rientra dall'altra parte: non muore mai
-      if (x < -40) x = L + 30; if (x > L + 40) x = -30;
-      if (y < -40) y = A + 30; if (y > A + 40) y = -30;
+      if (cx < -1) cx = colonne; if (cx > colonne) cx = -1;
+      if (cy < -1) cy = righe;   if (cy > righe) cy = -1;
 
-      percorso += v;
-      if (percorso >= distanza) {
-        percorso = 0;
-        lascia(x, y, ang);
+      corpo.push({ x: cx, y: cy });
+      while (corpo.length > lungo) corpo.shift();
+    }
+
+    // una cella accesa: un quadrato, e la testa porta il bagliore
+    function quadrato(gx, gy, forza, testa) {
+      var lato = cella * PIENO, off = (cella - lato) / 2;
+      ctx.globalAlpha = forza;
+      ctx.fillStyle = colore;
+      ctx.shadowColor = colore;
+      ctx.shadowBlur = testa ? 8 : 0;
+      ctx.fillRect(gx * cella + off, gy * cella + off, lato, lato);
+    }
+
+    // si ridisegna tutto il corpo: la coda si spegne, la testa brilla
+    function disegna() {
+      ctx.clearRect(0, 0, L, A);
+      var n = corpo.length;
+      for (var i = 0; i < n; i++) {
+        var u = (n - 1 - i) / Math.max(1, lungo - 1);   // 0 = testa, 1 = coda
+        var forza = 0.9 * (1 - u) * (1 - u * 0.4) + 0.06;
+        quadrato(corpo[i].x, corpo[i].y, forza, i === n - 1);
       }
+      ctx.globalAlpha = 1;
+      ctx.shadowBlur = 0;
+    }
+
+    // i tre numeri, una volta al secondo
+    function conta(ora) {
+      fotogrammi++;
+      if (ora - ultimoConto < 1000) return;
+      var areaCella = (cella * PIENO) * (cella * PIENO);
+      misure.luce = Math.round(corpo.length * areaCella / (L * A) * 1000) / 10;
+      misure.cingoli = corpo.length;
+      misure.fps = fotogrammi;
+      fotogrammi = 0; ultimoConto = ora;
+      host.setAttribute('data-solco-misure',
+        'luce=' + misure.luce + '% cingoli=' + misure.cingoli + ' fps=' + misure.fps);
+    }
+
+    var accumulo = 0, prima = 0;
+    function passo(ora) {
+      if (!vivo) { inCorsa = false; return; }
+      if (!misura()) { requestAnimationFrame(passo); return; }  // aspetta il layout
+      if (!prima) prima = ora;
+      var dt = Math.min(100, ora - prima); prima = ora;
+
+      // a crociera fa CROCIERA px/s; il dito lo fa correre 1,6×
+      var v = CROCIERA * vel * (mira ? 1.6 : 1);
+      accumulo += dt * v / 1000;
+      while (accumulo >= cella) { accumulo -= cella; avanza(); }
 
       disegna();
+      conta(ora);
       requestAnimationFrame(passo);
     }
 
-    // versione ferma, per chi ha chiesto meno movimento: il solco già lasciato.
-    // Qui la creatura non vagabonda: ha già ATTRAVERSATO, e quello che si vede
-    // è la traccia di una traversata sola, da bordo a bordo.
-    // ⚠️ 10/08: erano 260 passi da 1,6px = 416px di corsa massima, su bande
-    // che ne misurano fino a 1080 — e senza nessuna rotta, quindi la deriva
-    // la faceva girare in tondo. Misurato: attraversava il 5–34% della banda.
-    // Ora la deriva resta (l'onda è la firma) ma sopra c'è una rotta verso il
-    // bordo destro, e una battigia che tiene la creatura dentro l'inquadratura.
+    // versione ferma, per chi ha chiesto meno movimento: il serpente ha già
+    // attraversato, e quello che si vede è il suo corpo fermo, da bordo a bordo.
     function unaPassata() {
-      var passi = 0;
-      var tetto = Math.ceil(L / 0.7) + 500;   // sicurezza, non progetto
-      percorso = distanza;                    // il primo cingolo si stampa subito
-      while (passi++ < tetto) {
-        t += 0.016;
-        ang += deriva(t) * 0.035;
-
-        // la rotta: l'angolo torna sempre verso levante, piano
-        while (ang > Math.PI) ang -= Math.PI * 2;
-        while (ang < -Math.PI) ang += Math.PI * 2;
-        ang -= ang * 0.05;
-
-        // la battigia: sopra e sotto non si esce
-        if (y < A * 0.22) ang += (0.5 - ang) * 0.08;
-        if (y > A * 0.86) ang += (-0.5 - ang) * 0.08;
-
-        var v = 1.15 + Math.sin(t * 0.9) * 0.25;
-        x += Math.cos(ang) * v;
-        y += Math.sin(ang) * v;
-        percorso += v;
-        if (percorso >= distanza) {
-          percorso = 0;
-          cingolo(x, y, ang, 0.85, false);
-        }
-        if (x > L + 30) break;
+      var tetto = colonne * 6 + 200;   // sicurezza, non progetto
+      var n = 0;
+      corpo.length = 0;
+      cx = -1; cy = Math.round(righe * 0.62); dir = 0; passi = 0; mira = null;
+      while (n++ < tetto) {
+        avanza();
+        if (cx >= colonne - 1) break;
       }
+      disegna();
+      var areaCella = (cella * PIENO) * (cella * PIENO);
+      misure.luce = Math.round(corpo.length * areaCella / (L * A) * 1000) / 10;
+      misure.cingoli = corpo.length; misure.fps = 0;
+      host.setAttribute('data-solco-misure',
+        'luce=' + misure.luce + '% cingoli=' + misure.cingoli + ' fps=0');
     }
 
     function tocco(e) {
@@ -296,7 +282,7 @@
     }
 
     if (FERMO) {
-      // niente giostra: si disegna il solco già lasciato, e ci si ferma
+      // niente giostra: si disegna il serpente già passato, e ci si ferma
       requestAnimationFrame(function attendi() {
         if (misura()) unaPassata(); else requestAnimationFrame(attendi);
       });
@@ -309,6 +295,7 @@
     function accendi() {
       if (inCorsa) return;
       inCorsa = true;
+      prima = 0;
       requestAnimationFrame(passo);
     }
 

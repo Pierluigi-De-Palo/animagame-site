@@ -77,7 +77,26 @@ Da oggi:
 
 | chi arriva | cosa trova |
 |---|---|
-| senza carta | `index.html`: il solco, sei righe, e una porta. Nient'altro. |
+| senza carta | `index.html`: il solco, tre frasi, e una porta. Nient'altro. |
+
+**I testi, il 05/09.** Rilievo del Direttore: «l'invito deve capirsi
+*indirettamente*. Direzione consegnata, testi no.» Vero: la porta diceva la
+tessera nera, il codice, i dieci posti — un libretto d'istruzioni. Adesso dice
+cosa *non* è («non si compra, non ci si iscrive, non si chiede»), cosa è in
+una riga («si gioca in pochi, con strumenti veri, e quello che si fa conta»),
+e chi sta dove («chi è dentro sa come è entrato; chi è fuori, per ora,
+guarda»). La maniglia dice «Sono atteso»: chi ha la carta capisce da solo.
+
+**Il solco è un serpente, e scrive tre numeri.** Stesso giorno: «si tiene per
+ordine, ma va reso verificabile senza guardarlo (tre numeri). E ha una
+reference nuova: il serpente dei vecchi telefoni». Ora la creatura cammina
+su una griglia, gira solo ad angolo retto, è lunga fissa (60 celle) e la coda
+si spegne dietro la testa. Una volta al secondo la banda scrive
+`data-solco-misure="luce=… cingoli=… fps=…"` e `window.SOLCO`: la luce è un
+conto (celle vive × area della cella ÷ banda), non una stima, e a corpo
+pieno fa il 5,7% — metà del tetto. Il guardiano la legge dopo tre secondi
+e diventa rosso sopra il 10%. Nessuno deve più guardarla muoversi per sapere
+se rispetta le regole.
 | con la carta | `entra.html`: il campo del codice — **e oggi la porta non risponde** |
 | dietro la porta | `gioco.html`, `strumenti.html`, `verifiche.html`, `scheda.html` |
 

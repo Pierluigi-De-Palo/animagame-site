@@ -242,7 +242,7 @@ if (!chromium) {
   const eseguibile = process.env.PLAYWRIGHT_CHROMIUM || '/opt/pw-browsers/chromium';
   const b = await chromium.launch(existsSync(eseguibile) ? { executablePath: eseguibile } : {});
   for (const p of pagine) {
-    const male_a = [];
+    const male_a = [], solco_a = [];
     for (const L of LARGHEZZE) {
       const ctx = await b.newContext({ viewport: { width: L, height: 900 } });
       // Fuori non si esce: il collaudo misura le pagine, non la rete.
@@ -259,11 +259,21 @@ if (!chromium) {
         largo: document.documentElement.scrollWidth, vista: window.innerWidth,
       }));
       if (misura.largo > misura.vista + 1) male_a.push(`${L}px scivola (${misura.largo}>${misura.vista})`);
+      // IL SOLCO, SENZA GUARDARLO (05/09). La banda scrive tre numeri una volta
+      // al secondo: dopo tre secondi si leggono. Luce sopra il 10% = rosso.
+      if (relativo(p) === 'index.html' && (L === 390 || L === 1280)) {
+        await pg.waitForTimeout(3200);
+        const s = await pg.evaluate(() => (window.SOLCO && window.SOLCO[0]) || null);
+        if (!s) male_a.push(`${L}px il solco non scrive i suoi numeri`);
+        else if (s.luce > 10) male_a.push(`${L}px il solco accende il ${s.luce}% della banda (tetto 10%)`);
+        else solco_a.push(`${L}px luce ${s.luce}% · cingoli ${s.cingoli} · fps ${s.fps}`);
+      }
       if (errori.length) male_a.push(`${L}px ${errori[0].slice(0, 50)}`);
       await ctx.close();
     }
     if (male_a.length) male(`${relativo(p)} — ${male_a.join(' · ')}`);
     else ok(`${relativo(p)} — pulita a ${LARGHEZZE.join('/')}px`);
+    for (const r of solco_a) ok(`il solco, misurato a ${r}`);
   }
   await b.close();
 }
