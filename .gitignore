@@ -58,6 +58,10 @@ radio/
 *.webm
 
 # ── Roba di sistema e di lavoro ─────────────────────────────────────────────
+# Il guardiano dice «npm i -D playwright»: senza questa riga quel comando metteva
+# in git l'intera cartella dei moduli (misurato l'08/09: mancava, e systema77-site
+# ce l'aveva). Gli attrezzi del guardiano non sono il sito.
+node_modules/
 .DS_Store
 ._*
 .Spotlight-V100
