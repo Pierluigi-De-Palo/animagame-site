@@ -13,6 +13,11 @@
  * privato del Direttore, non una sorgente del gioco.
  *
  * — creato da JUDY, 2026-08-30
+ *
+ * Impianto di JUDY e SQUELCH NON toccato: nessun `id`, nessuna classe,
+ * nessuna logica, nessuna condizione. Qui è cambiato SOLO il testo che
+ * legge il giocatore — le due frasi del banco (chiuso, e acceso).
+ * — testo di ECHO, 2026-09-10 · su impianto JUDY
  */
 (function () {
   'use strict';
@@ -80,15 +85,26 @@
       dillo('<strong>Il banco non è ancora acceso, e la tua richiesta non è partita.</strong> ' +
             'Non è andata persa e non è andata da nessuna parte: quello che hai scritto ' +
             'resta <strong>sul tuo dispositivo</strong>, e lo ritrovi qui quando torni. ' +
-            'Manca l&rsquo;impianto dietro il banco — la rotta che accetta una richiesta ' +
-            'non esiste ancora:' +
-            '<span class="rotta">POST /verifiche &nbsp;→&nbsp; { id }</span>');
+            'Dietro il banco non c&rsquo;è ancora nessuno che possa prenderla in mano — ' +
+            'e finché è così, questo bottone non finge di spedire.' +
+            '<span class="rotta">quando il banco apre, quello che hai scritto è ancora qui</span>');
       return;
     }
 
     // Col banco acceso: POST {BACKEND_URL}/verifiche, poi si segue {id}.
     // In DEV non si passa mai di qui — e finché non ci si passa, non si
     // scrive una riga che finge di averlo fatto.
-    dillo('<strong>Richiesta depositata al banco.</strong> Prende un numero e resta tua.');
+    //
+    // ✍ Le parole di questo momento sono scritte ADESSO, spente, perché il
+    //   giorno dell'accensione nessuno le improvvisi. Non promettono un tempo:
+    //   a «quando» non si risponde con un numero che non possiamo mantenere.
+    //   Il numero della richiesta lo conosce solo la risposta del banco: quando
+    //   SQUELCH aggancia la rotta, si infila qui e la frase regge lo stesso.
+    dillo('<strong>La tua richiesta è al banco.</strong> Ha un numero suo, e da adesso ' +
+          'è quello a seguirla: la <strong>carta</strong> dice che è tua, il tuo nome ' +
+          'non parte con lei. Il referto <strong>torna qui</strong>, in questa stanza — ' +
+          'non altrove, e non per posta. Quanto ci mette dipende da cosa hai portato: ' +
+          'le richieste che si chiudono con quello che è già in chiaro escono presto, ' +
+          'le altre passano dal tavolo lungo.');
   });
 })();

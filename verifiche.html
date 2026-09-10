@@ -216,8 +216,8 @@
         <h3>Il banco</h3>
         <p>È dove appoggi quello che hai in mano. <strong>Un riquadro, una riga
            per dire dove l&rsquo;hai vista</strong>, e la richiesta è depositata:
-           prende un numero e resta tua.</p>
-        <p>Il numero è quello della <strong>carta</strong>, mai il nome.</p>
+           <strong>prende un numero suo</strong> e resta tua.</p>
+        <p>A dire che è tua è la <strong>carta</strong>, mai il nome.</p>
       </article>
 
       <article class="mobile-voce">
@@ -371,12 +371,22 @@
       <p style="margin-top:1rem">Non ci mettiamo dentro roba presa da altrove
          per far numero. Quando SQUELCH accende le rotte qui sotto, lo scaffale
          si riempie di referti veri — e non un minuto prima.</p>
+      <!-- ⬇ Le quattro rotte in lingua macchina NON stanno più qui: questa pagina
+           la legge un giocatore, e in una stanza del gioco la lingua della macchina
+           è gergo come «issue» o «commit». Vivono dove le tocca SQUELCH —
+           `assets/config.js`, che il README chiama il punto unico — e sono, nello
+           stesso ordine delle quattro righe qui sotto:
+             POST /verifiche              appoggiare una cosa sul banco
+             GET  /verifiche/{id}         seguire la propria richiesta
+             GET  /verifiche              leggere lo scaffale
+             POST /verifiche/{id}/cerchio mettere un referto nel cerchio
+           Stessa verità, detta a chi entra. — ECHO, 2026-09-10 -->
       <p class="rotte">
-        <span>servono, e non esistono ancora:</span><br>
-        GET&nbsp;&nbsp;/verifiche<br>
-        POST&nbsp;/verifiche<br>
-        GET&nbsp;&nbsp;/verifiche/{id}<br>
-        POST&nbsp;/verifiche/{id}/cerchio
+        <span>servono quattro cose, e non ce n&rsquo;è ancora nessuna:</span><br>
+        appoggiare una cosa sul banco<br>
+        seguire la propria richiesta<br>
+        leggere lo scaffale<br>
+        mettere un referto nel cerchio
       </p>
     </div>
   </section>
@@ -396,5 +406,9 @@
 <script src="assets/config.js"></script>
 <script src="assets/verifiche.js" defer></script>
 <!-- creato da JUDY, 2026-08-30 — la prima stanza vera del gioco -->
+<!-- Impianto di JUDY NON toccato: struttura, `id`, classi, CSS e la pianta
+     restano suoi. Qui è cambiato SOLO il testo — il numero della richiesta
+     nel «banco», e le quattro cose che mancano allo scaffale, dette senza la
+     lingua della macchina. — testo di ECHO, 2026-09-10 · su impianto JUDY -->
 </body>
 </html>
